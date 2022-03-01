@@ -10,7 +10,8 @@
     <meta name="author" content="upupwords">
     
     <meta name="description" content="关于《CUDA C编程权威指南》第3.6节
-动态并行">
+动态并行CUDA的动态并行允许在GPU端直接创建和同步新的GPU内核。在GPU端直接创建工作的能力可以减少在主机和设备之间传输执行控制和数据的需求，因为在设备上执行的线程可以在运行时决定启动配置。
+嵌套执行在动态并行中，内核执行分为两种类型：父母和孩子。父">
     
     
     
@@ -76,7 +77,7 @@
     </p>
   <p class="article-time">
     <time datetime="2022-02-28T02:45:17.000Z" itemprop="datePublished">2022-02-28</time>
-    更新日期:<time datetime="2022-02-28T04:29:13.508Z" itemprop="dateModified">2022-02-28</time>
+    更新日期:<time datetime="2022-02-28T14:30:25.477Z" itemprop="dateModified">2022-02-28</time>
     
   </p>
 </header>
@@ -85,11 +86,45 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text">动态并行</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text">动态并行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text">嵌套执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C%E7%9A%84%E9%99%90%E5%88%B6%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">动态并行的限制条件</span></a></li></ol></li></ol>
 		</div>
 		
 		<p>关于《CUDA C编程权威指南》第3.6节</p>
-<h2 id="动态并行"><a href="#动态并行" class="headerlink" title="动态并行"></a>动态并行</h2><p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/blogpic@main/20220228/20220228120642.58dizq8tk7o0.webp" alt="wwq"></p>
+<h1 id="动态并行"><a href="#动态并行" class="headerlink" title="动态并行"></a>动态并行</h1><p>CUDA的动态并行允许在GPU端直接创建和同步新的GPU内核。在GPU端直接创建工作的能力可以减少在主机和设备之间传输执行控制和数据的需求，因为在设备上执行的线程可以在<strong>运行时</strong>决定启动配置。</p>
+<h2 id="嵌套执行"><a href="#嵌套执行" class="headerlink" title="嵌套执行"></a>嵌套执行</h2><p>在动态并行中，内核执行分为两种类型：父母和孩子。父线程、父线程块或父网格启动一个新的网格，即子网格。子线程、子线程块或子网格被父母启动。子网格必须在父线程、父线程块或父网格完成之前完成。只有在所有的子网格都完成之后，父母才会完成。</p>
+<p>下图说明了父网格和子网格的使用范围。主机线程配置和启动父网格，父网格配置和启动子网格。在线程创建的所有子网格都完成之后，父网格才会完成。如果调用的线程没有显式同步启动子网格，那么运行时保证父母和孩子之间的隐式同步。下图在父线程中设置了栅栏，从而可以与其子网格显式同步。</p>
+<div  align="center">    
+ <img src="https://cdn.jsdelivr.net/gh/HURONG0510/blogpic@main/20220228/20220228120642.58dizq8tk7o0.webp" width = "400" height = "200" />
+</div>
+
+<blockquote>
+<p>设置栅栏，需要补充</p>
+</blockquote>
+<ul>
+<li>设备线程中的网格启动，在线程块间是可见的。在线程块中，只有所有线程创建的子网格完成之后，线程块才结束。如果线程块中的线程在所有网格完成之前退出，那么在那些子网格上隐式同步会被触发。</li>
+<li>当父母启动一个子网格，父线程块与孩子显式同步之后，孩子才能开始执行。</li>
+<li>父网格和子网格共享相同的全局和常量内存存储，但他们有不同的局部内存和共享内存。</li>
+<li>父网格和子网格可以对全局内存并发存取。有两个时刻，子网格和他的父线程见到的内存完全相同：<ul>
+<li>子网格开始时</li>
+<li>子网格完成时</li>
+</ul>
+</li>
+<li>共享内存和局部内存分别于线程块或线程来说是私有的，同时在父母和孩子之间不是可见或一致的。局部内存对线程来说是私有存储，并且对该线程外部不可见。当启动一个子网格时，向局部内存传递一个指针作为参数是无效的。</li>
+</ul>
+<p>下图表示在GPU上嵌套hello world，每个网格的第0号线程输出hello world。</p>
+<table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220228/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220228213943.1z5k28bd1se8.png"></th>
+<th><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220228/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220228214303.20t4lvy2suw0.png"></th>
+</tr>
+</thead>
+</table>
+<p>因为动态并行是由设备运行时库所支持的，所以函数必须在命令行使用 <strong>-lcudadevrt</strong>  进行明确链接。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc -<span class="built_in">arch</span>=sm_35 -rdc=<span class="literal">true</span> nestedHelloWorld.cu -o hestHelloWorld -lcudadevrt</span><br></pre></td></tr></table></figure>
+
+<p>当**-rdc** 标志为true，他强制生成可重定位的设备代码，这是动态并行的一个要求。</p>
+<h2 id="动态并行的限制条件"><a href="#动态并行的限制条件" class="headerlink" title="动态并行的限制条件"></a>动态并行的限制条件</h2><p>动态并行只有在计算能力为3.5或更高的设备上才能被支持。通过动态并行调用的内核不能在物理方面独立的设备上启动。动态并行的最大嵌套深度限制为24，但实际上，在每一个新的级别中大多数内核受限于设备运行时系统需要的内存数量。因为为了对每个嵌套层中的父网格和子网格之间进行同步管理，设备运行时需要保留额外的内存。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -130,7 +165,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text">动态并行</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C"><span class="toc-number">1.</span> <span class="toc-text">动态并行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text">嵌套执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C%E7%9A%84%E9%99%90%E5%88%B6%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">动态并行的限制条件</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
