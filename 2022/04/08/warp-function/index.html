@@ -27,7 +27,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-07T16:22:44.000Z">
-<meta property="article:modified_time" content="2022-04-07T16:24:16.901Z">
+<meta property="article:modified_time" content="2022-04-08T17:39:06.939Z">
 <meta property="article:author" content="upupwords">
 <meta property="article:tag" content="cuda">
 <meta property="article:tag" content="gpu">
@@ -212,10 +212,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-04-08 00:22:44 / 修改时间：00:24:16" itemprop="dateCreated datePublished" datetime="2022-04-08T00:22:44+08:00">2022-04-08</time>
+              <time title="创建时间：2022-04-08 00:22:44" itemprop="dateCreated datePublished" datetime="2022-04-08T00:22:44+08:00">2022-04-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-09 01:39:06" itemprop="dateModified" datetime="2022-04-09T01:39:06+08:00">2022-04-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -245,7 +251,54 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>以下是关于warp function的一些理解<br>主要参考资料是nVidia的官方文档</p>
+<h1 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h1><p>warp的概念不加赘述，且建议在<strong>capability 7.x以上且cuda9.0以上</strong>的GPU上测试，有些函数在例如 __any, __all, and __ballot等在cuda9.0上已经被移除。</p>
+<blockquote>
+<p>predicate表示线程的一种状况<br>以下所有的实例，使用一个block，block块的大小是32，所说的线程号就是laneID<br>mask中的第i个bit表示第i个线程</p>
+</blockquote>
+<h1 id="warp-vote-functions"><a href="#warp-vote-functions" class="headerlink" title="warp vote functions"></a>warp vote functions</h1><ul>
+<li>允许给定warp中的线程执行规约和广播操作</li>
+<li>所有线程的lane的mask必须一致</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __all_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br><span class="line"><span class="type">int</span> __any_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br><span class="line"><span class="type">unsigned</span> __ballot_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br><span class="line"><span class="type">unsigned</span> __activemask()</span><br></pre></td></tr></table></figure>
+<p><code>__all_sync</code> 评估<code>mask</code>中所有non-exited的线程（线程对应mask的位是1）的predicate，返回非零值当且仅当mask中对应线程的predicate都是非零的。</p>
+<p><code>__any_sync</code> 评估<code>mask</code>中所有non-exited的线程（线程对应mask的位是1）的predicate，返回非零值当且仅当mask中对应线程的predicate存在非零的。</p>
+<p><code>_ballot_sync</code>评估<code>mask</code>中所有non-exited线程的predicate，返回一个unsigned数，其第N位为1当且仅当<code>mask</code>中线程的predicate非零</p>
+<p><code>__activemask()</code> 返回unsigned数 <code>mask</code>，表示这个warp中所有的active状态的线程</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__global__ <span class="type">void</span> <span class="title function_">wall</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">int</span> laneId=threadIdx.x &amp; <span class="number">0x1f</span>;</span><br><span class="line">    <span class="type">int</span> predicate= laneId%<span class="number">2</span>;</span><br><span class="line">    <span class="type">unsigned</span> n;</span><br><span class="line">    n=__all_sync(<span class="number">0x55555555</span>,predicate);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Thread %d final n= %x\n&quot;</span>, threadIdx.x, n);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>0x55555555</code>表示所有偶数位是1，奇数位是0。<code>predicate</code>是所有的偶数线程是0，奇数线程是1。在<code>__all_sync</code>下，所有线程的n是0，因为其只统计mask中non-exited的线程，<code>0x55555555</code>使得<code>__all_sync</code>只检查偶数位的线程，结果偶数位线程的predicate都是0。其余函数同理。</p>
+<h1 id="warp-match-functions"><a href="#warp-match-functions" class="headerlink" title="warp match functions"></a>warp match functions</h1><ul>
+<li>执行warp内线程之间变量的广播和比较操作</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> __match_any_sync(<span class="type">unsigned</span> mask, T value);</span><br><span class="line"><span class="type">unsigned</span> <span class="type">int</span> __match_all_sync(<span class="type">unsigned</span>  mask, T value, <span class="type">int</span> *pred)</span><br><span class="line"><span class="comment">//T可以是int/unsigned int/long/unsigned long/long long/unsigned long long/float/double</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h1 id="warp-shuffle-function"><a href="#warp-shuffle-function" class="headerlink" title="warp shuffle function"></a>warp shuffle function</h1><ul>
+<li>交换warp内部的线程的值</li>
+<li>采用可选的width，必须是2的幂次，且不能大于warpsize</li>
+<li>mask的值没有影响，不管mask是什么，结果都一致<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T __shfl_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> srcLane, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_up_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_down_sync(<span class="type">unsigned</span> mask, T var, <span class="type">unsigned</span> <span class="type">int</span> delta, <span class="type">int</span> width=warpSize);</span><br><span class="line">T __shfl_xor_sync(<span class="type">unsigned</span> mask, T var, <span class="type">int</span> laneMask, <span class="type">int</span> width=warpSize);</span><br><span class="line"></span><br><span class="line"><span class="comment">//T can be int, unsigned int, long, unsigned long, long long, unsigned long long, float or double. With the cuda_fp16.h header included, T can also be __halfor __half2. Similarly, with the cuda_bf16.h header included, T can also be __nv_bfloat16 or __nv_bfloat162.</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<code>__shfl_sync() </code>返回srclane号线程的var，<code>width</code>将warpsize的线程数进行划分，每个子段长度为<code>width</code>。每个<code>width</code>中的线程得到<code>srclane</code>所指示的<code>var</code>，注意这里<code>srclane</code>都是<code>width</code>中的相对位置。<br>若是每个线程的<code>var</code>是它本身的线程值，那么<blockquote>
+<p><code>__shfl_sync(mask,threadIdx.x,0,4)</code>，得到的结果是4x0,4x4,4x8,4x12,4x16,4x20,4x24,4x28,4x32<br><code>__shfl_sync(mask,x,2,8)</code>, 得到的结果是2x8,10x8,18x8,26x8</p>
+</blockquote>
+</li>
+</ul>
+<p><code>_shfl_up_sync()</code> 返回向前偏移为 <code>delta</code> 的线程中的变量 <code>var</code> 的值，其余线程返回0。<code>width</code>将warpsize划分成warpsize&#x2F;width个部分，每个部分返回的是当前的线程-delta的线程的value，若是减法结果为-，那么结果就不会变。注意这里是相对值，记得上面这个减法必须是要一个分组内。</p>
+<blockquote>
+<p>例如<code>n=__shfl_up_sync(0xffffffff,value,15,16);</code><br>结果是0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 0 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 16</p>
+</blockquote>
+<p><code>__shfl_down_sync()</code> 线程返回向后偏移为 delta 的线程中的变量 var 的值，其余线程返回0 。</p>
+<blockquote>
+<p>调用 <code>__shfl_down_sync(mask, x, 2, 16)</code>; 则标号为 0-13 的线程分别获得标号为 2-15 的线程中变量 x 的值；标号为 16 -29 的线程分别获得标号为 18 - 31 的线程中变量 x 的值。</p>
+</blockquote>
+<p><code>__shfl_xor_sync()</code>通过对调用者的通道ID与<code>laneMask</code>进行按位异或（XOR）运算来计算源通道ID。返回值为计算所得源通道中的var值。此模式实现了蝶形寻址模式。如果<code>width</code>小于warpsize，那么对于异或的结果，若是处于前面的group，那么可以获取异或的结果，若是处于后面的group，则会返回本身的var</p>
+<blockquote>
+<p>例如<code>n=__shfl_xor_sync(0,threadIdx.x,3,4);</code>的结果是3 2 1 0 7 6 5 4 11 10 9 8 15 14 13 12 19 18 17 16 23 22 21 27 26 25 24 31 30 29 28<br>例如<code>n=__shfl_xor_sync(0,threadIdx.x,3,2);</code>的结果是0 1 1 0 4 5 5 4 8 9 9 8 12 13 13 12 16 17 17 16 20 21 21 20 24 25 25 24 28 29 29 28</p>
+</blockquote>
+
     </div>
 
     
@@ -326,6 +379,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E6%8F%90"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#warp-vote-functions"><span class="nav-number">2.</span> <span class="nav-text">warp vote functions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#warp-match-functions"><span class="nav-number">3.</span> <span class="nav-text">warp match functions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#warp-shuffle-function"><span class="nav-number">4.</span> <span class="nav-text">warp shuffle function</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
