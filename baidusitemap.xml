@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/</loc>
+    <lastmod>2022-04-10</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2022/04/08/warp-function/</loc>
     <lastmod>2022-04-08</lastmod>
   </url>
