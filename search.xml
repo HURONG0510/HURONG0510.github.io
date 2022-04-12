@@ -1,33 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>_非结构稀疏.md</title>
-    <url>/project/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/</url>
-    <content><![CDATA[<p>#Deep Neural Networks<br><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220409/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220409221424.7c2prqkmli80.png" alt="神经网络简单举例"></p>
-<p>ANN是一类执行分类、拟合和其它数据分析任务的模型。他们是由一系列的layer组成，每个layer在输入向量上执行线性或赋形变化，然后在生成的向量上应用非线性函数，称为激活函数。数据依次遍历这些层得到最终结果。执行其它功能的layer也可能出现在网络中，包含降低数据维度的pooling layer，提高网络对从未见过的数据性能的regularization layer。<br>神经网络中的数据和变化通常表示为tensor。网络在训练期间设置的值称为parameters或weights，将向网络呈现数据和更新参数的单一步骤称为一个training iteration。对所有训练数据集执行示例过程，直到网络得到充分训练，每次对整个训练数据集进行网络训练时，都被称为一个epoch。一个神经网络通常被训练上十或上百次。在训练过程中控制网络训练或操作但未被修改的值被称为hyperparameters.一旦网络被训练完成，参数就固定，模型可以用来分析新数据，这个过程称为inference。</p>
-<p>最简单的神经网络layer是dense或fully-connected layer。密集层输入长度为$N$的向量$x$,产生长度为$M$的向量$y$，其参数由权重矩阵$W\in R^{M\times N}$，他的实现函数为$$y&#x3D;f(Wx+b)$$其中$f()$是activation function。深度神经网络在输入和输出之间具有许多层，使它们能够学习非常复杂的函数，并减少或消除对特征提取的需求。与其他统计模型相比，DNN 具有非常多的参数，通常从数十万到数亿个参数不等。</p>
-<p>现代DNN在根据其训练数据进行评估时通常可以达到非常高的准确性，但在未知数据集上获得类似性能可能会很大难度。已经开发了很多方法来改善未知数据集的模型性能，有时以降低训练数据的性能为代价，这些方法称为regularization。它们包括对训练过程的修改、对优化器目标的修改以及神经网络中的其他层，例如 dropout和batch normalization层。 </p>
-<h1 id="Neural-Network-Pruning"><a href="#Neural-Network-Pruning" class="headerlink" title="Neural Network Pruning"></a>Neural Network Pruning</h1><p>DNN中的大量参数使他们在实践中难以应用。neural network pruning属于最后一类。修剪方法是用于训练神经网络或调整已经训练过的网络的技术，以便其大量参数变为零。这样做的方式是尽量减少修剪导致的推理准确性的降低。如果我们将每个参数视为表示线性变换中输入和输出之间的连接，则可以将修剪视为删除这些连接。如下所示，pruning fraction或pruning rate是图层或网络中被修剪的connected fraction。<br><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220409/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220409234507.1phl2u16wtuo.png"><br>使用修剪来加速推理时，一个重要的问题是，所讨论的硬件是否可以实际利用修剪的表示形式。通常需要强加某种结构来管理可以修剪哪些连接，以便看到显着的改进。例如，这可能意味着删除权重矩阵的整行，而不是矩阵的任意元素。以需要遵循特定结构的方式修剪称为结构化修剪，而没有结构要求的修剪称为非结构化修剪。 使用结构化而不是非结构化修剪会带来权衡。粗略地说，结构越严格，可以删除的连接就越少，而不会严重损害网络的准确性。这是因为非结构化修剪可以更自由地删除那些对网络性能损害最小的权重。在实践中，决定是否使用结构化修剪以及如果是，要施加什么结构要求取决于特定应用程序的要求以及用于推理的硬件。</p>
-<h1 id="GPU设计准则"><a href="#GPU设计准则" class="headerlink" title="GPU设计准则"></a>GPU设计准则</h1><p>参考了文章</p>
-<h2 id="latency-hiding-with-TLP-and-ILP"><a href="#latency-hiding-with-TLP-and-ILP" class="headerlink" title="latency hiding with TLP and ILP"></a>latency hiding with TLP and ILP</h2><p>如果 GPU 上驻留了足够的warp（如果我们有足够的 TLP），则在warp之间切换可以完全隐藏长延时操作的成本。我们将程序中的 TLP 数量量化为占用率occupancy，即可用（发出的）warp与 GPU 可支持的最大warp数之比。更高的占用率产生更好的延迟隐藏能力，这使我们能够实现充分利用。<br>另一种延迟隐藏策略是利用指令级并行性（ILP）及其利用单个线程中多个内存操作的延迟重叠的能力。由于 GPU 的内存系统是深度流水线的，因此线程在变为非活动状态之前可能会发出多个独立的长延迟操作，并且这些多个操作将共同产生与单个操作大致相同的延迟。虽然这产生了显著的性能优势，但它依赖于程序员向硬件公开独立的内存操作。我们可以通过将多个独立任务分配给同一线程（“线程粗化”）来实现此目标。</p>
-<p>GPU 具有固定数量的寄存器。TLP 需要许多驻留warp，每个warp都需要寄存器。ILP 会增加每个线程的工作，因此每个线程需要更多的寄存器。因此，TLP和ILP是对立的，要充分利用这两种技术，就需要仔细平衡这两种技术。虽然TLP通常用于所有GPU计算，但ILP是一个较少探索的领域。</p>
-<h2 id="load-balancing"><a href="#load-balancing" class="headerlink" title="load-balancing"></a>load-balancing</h2><p>我们现在转向的问题是，确保所有计算单元在每个周期上都做有用的工作，并且从这些warp访问的内存被合并以确保峰值内存性能。在SpMV和SpMM的content中，这种“负载平衡”问题有两个方面：</p>
-<ol>
-<li>warp之间的负载不均。某些 CTA(block) 或 warp 分配的工作量可能比其他 CTA 或 warp 少，这可能导致这些负载较少的计算单元处于空闲状态，而负载较多的计算单元继续执行有用的工作。在本文中，我们称之为“Type 1”负载不平衡。 </li>
-<li>warp内部的负载不均。在两个方面，我们统称为“Type 2”负载不平衡。<br>(a) 某些warp可能没有足够的work来占用warp中的所有32个线程。在这种情况下，线程单元处于空闲状态，我们会损失性能。<br>(b) 某些warp可能会将不同的任务分配给不同的线程。 在这种情况下，线程内的 SIMT 执行意味着某些线程处于空闲状态，而其他线程正在运行;此外，执行过程中的warp分化意味着整个warp中的内存访问不太可能合并。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>矩阵计算</category>
-      </categories>
-      <tags>
-        <tag>matrix</tag>
-        <tag>gpu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>warp function</title>
-    <url>/project/2022/04/08/warp-function/</url>
+    <url>/2022/04/08/warp-function/</url>
     <content><![CDATA[<p>以下是关于warp function的一些理解<br>主要参考资料是nVidia的官方文档</p>
 <h1 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h1><p>warp的概念不加赘述，且建议在<strong>capability 7.x以上且cuda9.0以上</strong>的GPU上测试，有些函数在例如 __any, __all, and __ballot等在cuda9.0上已经被移除。</p>
 <blockquote>
@@ -80,13 +55,13 @@
         <category>cuda基础学习</category>
       </categories>
       <tags>
-        <tag>gpu</tag>
         <tag>cuda</tag>
+        <tag>gpu</tag>
       </tags>
   </entry>
   <entry>
     <title>动态并行</title>
-    <url>/project/2022/02/28/%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C/</url>
+    <url>/2022/02/28/%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C/</url>
     <content><![CDATA[<h1 id="动态并行"><a href="#动态并行" class="headerlink" title="动态并行"></a>动态并行</h1><p>CUDA的动态并行允许在GPU端直接创建和同步新的GPU内核。在GPU端直接创建工作的能力可以减少在主机和设备之间传输执行控制和数据的需求，因为在设备上执行的线程可以在<strong>运行时</strong>决定启动配置。</p>
 <h2 id="嵌套执行"><a href="#嵌套执行" class="headerlink" title="嵌套执行"></a>嵌套执行</h2><p>在动态并行中，内核执行分为两种类型：父母和孩子。父线程、父线程块或父网格启动一个新的网格，即子网格。子线程、子线程块或子网格被父母启动。子网格必须在父线程、父线程块或父网格完成之前完成。只有在所有的子网格都完成之后，父母才会完成。</p>
 <p>下图说明了父网格和子网格的使用范围。主机线程配置和启动父网格，父网格配置和启动子网格。在线程创建的所有子网格都完成之后，父网格才会完成。如果调用的线程没有显式同步启动子网格，那么运行时保证父母和孩子之间的隐式同步。下图在父线程中设置了栅栏，从而可以与其子网格显式同步。</p>
@@ -127,13 +102,38 @@
         <category>cuda基础学习</category>
       </categories>
       <tags>
-        <tag>gpu</tag>
         <tag>cuda</tag>
+        <tag>gpu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>_非结构稀疏.md</title>
+    <url>/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/</url>
+    <content><![CDATA[<p>#Deep Neural Networks<br><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220409/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220409221424.7c2prqkmli80.png" alt="神经网络简单举例"></p>
+<p>ANN是一类执行分类、拟合和其它数据分析任务的模型。他们是由一系列的layer组成，每个layer在输入向量上执行线性或赋形变化，然后在生成的向量上应用非线性函数，称为激活函数。数据依次遍历这些层得到最终结果。执行其它功能的layer也可能出现在网络中，包含降低数据维度的pooling layer，提高网络对从未见过的数据性能的regularization layer。<br>神经网络中的数据和变化通常表示为tensor。网络在训练期间设置的值称为parameters或weights，将向网络呈现数据和更新参数的单一步骤称为一个training iteration。对所有训练数据集执行示例过程，直到网络得到充分训练，每次对整个训练数据集进行网络训练时，都被称为一个epoch。一个神经网络通常被训练上十或上百次。在训练过程中控制网络训练或操作但未被修改的值被称为hyperparameters.一旦网络被训练完成，参数就固定，模型可以用来分析新数据，这个过程称为inference。</p>
+<p>最简单的神经网络layer是dense或fully-connected layer。密集层输入长度为$N$的向量$x$,产生长度为$M$的向量$y$，其参数由权重矩阵$W\in R^{M\times N}$，他的实现函数为$$y&#x3D;f(Wx+b)$$其中$f()$是activation function。深度神经网络在输入和输出之间具有许多层，使它们能够学习非常复杂的函数，并减少或消除对特征提取的需求。与其他统计模型相比，DNN 具有非常多的参数，通常从数十万到数亿个参数不等。</p>
+<p>现代DNN在根据其训练数据进行评估时通常可以达到非常高的准确性，但在未知数据集上获得类似性能可能会很大难度。已经开发了很多方法来改善未知数据集的模型性能，有时以降低训练数据的性能为代价，这些方法称为regularization。它们包括对训练过程的修改、对优化器目标的修改以及神经网络中的其他层，例如 dropout和batch normalization层。 </p>
+<h1 id="Neural-Network-Pruning"><a href="#Neural-Network-Pruning" class="headerlink" title="Neural Network Pruning"></a>Neural Network Pruning</h1><p>DNN中的大量参数使他们在实践中难以应用。neural network pruning属于最后一类。修剪方法是用于训练神经网络或调整已经训练过的网络的技术，以便其大量参数变为零。这样做的方式是尽量减少修剪导致的推理准确性的降低。如果我们将每个参数视为表示线性变换中输入和输出之间的连接，则可以将修剪视为删除这些连接。如下所示，pruning fraction或pruning rate是图层或网络中被修剪的connected fraction。<br><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220409/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220409234507.1phl2u16wtuo.png"><br>使用修剪来加速推理时，一个重要的问题是，所讨论的硬件是否可以实际利用修剪的表示形式。通常需要强加某种结构来管理可以修剪哪些连接，以便看到显着的改进。例如，这可能意味着删除权重矩阵的整行，而不是矩阵的任意元素。以需要遵循特定结构的方式修剪称为结构化修剪，而没有结构要求的修剪称为非结构化修剪。 使用结构化而不是非结构化修剪会带来权衡。粗略地说，结构越严格，可以删除的连接就越少，而不会严重损害网络的准确性。这是因为非结构化修剪可以更自由地删除那些对网络性能损害最小的权重。在实践中，决定是否使用结构化修剪以及如果是，要施加什么结构要求取决于特定应用程序的要求以及用于推理的硬件。</p>
+<h1 id="GPU设计准则"><a href="#GPU设计准则" class="headerlink" title="GPU设计准则"></a>GPU设计准则</h1><p>参考了文章</p>
+<h2 id="latency-hiding-with-TLP-and-ILP"><a href="#latency-hiding-with-TLP-and-ILP" class="headerlink" title="latency hiding with TLP and ILP"></a>latency hiding with TLP and ILP</h2><p>如果 GPU 上驻留了足够的warp（如果我们有足够的 TLP），则在warp之间切换可以完全隐藏长延时操作的成本。我们将程序中的 TLP 数量量化为占用率occupancy，即可用（发出的）warp与 GPU 可支持的最大warp数之比。更高的占用率产生更好的延迟隐藏能力，这使我们能够实现充分利用。<br>另一种延迟隐藏策略是利用指令级并行性（ILP）及其利用单个线程中多个内存操作的延迟重叠的能力。由于 GPU 的内存系统是深度流水线的，因此线程在变为非活动状态之前可能会发出多个独立的长延迟操作，并且这些多个操作将共同产生与单个操作大致相同的延迟。虽然这产生了显著的性能优势，但它依赖于程序员向硬件公开独立的内存操作。我们可以通过将多个独立任务分配给同一线程（“线程粗化”）来实现此目标。</p>
+<p>GPU 具有固定数量的寄存器。TLP 需要许多驻留warp，每个warp都需要寄存器。ILP 会增加每个线程的工作，因此每个线程需要更多的寄存器。因此，TLP和ILP是对立的，要充分利用这两种技术，就需要仔细平衡这两种技术。虽然TLP通常用于所有GPU计算，但ILP是一个较少探索的领域。</p>
+<h2 id="load-balancing"><a href="#load-balancing" class="headerlink" title="load-balancing"></a>load-balancing</h2><p>我们现在转向的问题是，确保所有计算单元在每个周期上都做有用的工作，并且从这些warp访问的内存被合并以确保峰值内存性能。在SpMV和SpMM的content中，这种“负载平衡”问题有两个方面：</p>
+<ol>
+<li>warp之间的负载不均。某些 CTA(block) 或 warp 分配的工作量可能比其他 CTA 或 warp 少，这可能导致这些负载较少的计算单元处于空闲状态，而负载较多的计算单元继续执行有用的工作。在本文中，我们称之为“Type 1”负载不平衡。 </li>
+<li>warp内部的负载不均。在两个方面，我们统称为“Type 2”负载不平衡。<br>(a) 某些warp可能没有足够的work来占用warp中的所有32个线程。在这种情况下，线程单元处于空闲状态，我们会损失性能。<br>(b) 某些warp可能会将不同的任务分配给不同的线程。 在这种情况下，线程内的 SIMT 执行意味着某些线程处于空闲状态，而其他线程正在运行;此外，执行过程中的warp分化意味着整个warp中的内存访问不太可能合并。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>矩阵计算</category>
+      </categories>
+      <tags>
+        <tag>gpu</tag>
+        <tag>matrix</tag>
       </tags>
   </entry>
   <entry>
     <title>cuda的进阶学习</title>
-    <url>/project/2022/03/06/cuda%E7%9A%84%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/</url>
+    <url>/2022/03/06/cuda%E7%9A%84%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/441146275">[施工中] CUDA GEMM 理论性能分析与 kernel 优化</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/413145211">英伟达GPU架构演进近十年，从费米到安培</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/423992093">CUDA高性能计算经典问题（二）—— 前缀和（Prefix Sum）</a></p>
@@ -146,8 +146,8 @@
         <category>cuda基础学习</category>
       </categories>
       <tags>
-        <tag>gpu</tag>
         <tag>cuda</tag>
+        <tag>gpu</tag>
       </tags>
   </entry>
 </search>
