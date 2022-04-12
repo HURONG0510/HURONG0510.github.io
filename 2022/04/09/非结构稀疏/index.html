@@ -6,40 +6,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 6.0.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
-  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/project/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/project/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/project/images/pig16x16.png">
+  <link rel="mask-icon" href="/project/images/pig.svg" color="#222">
   <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
   <meta name="baidu-site-verification" content="code-sifk5Ru9M6">
 
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/project/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/project/lib/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/project/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="#Deep Neural Networks ANN是一类执行分类、拟合和其它数据分析任务的模型。他们是由一系列的layer组成，每个layer在输入向量上执行线性或赋形变化，然后在生成的向量上应用非线性函数，称为激活函数。数据依次遍历这些层得到最终结果。执行其它功能的layer也可能出现在网络中，包含降低数据维度的pooling layer，提高网络对从未见过的数据性能的regularizatio">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="article">
 <meta property="og:title" content="_非结构稀疏.md">
-<meta property="og:url" content="http://example.com/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/index.html">
+<meta property="og:url" content="https://hurong0510.github.io/project/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="#Deep Neural Networks ANN是一类执行分类、拟合和其它数据分析任务的模型。他们是由一系列的layer组成，每个layer在输入向量上执行线性或赋形变化，然后在生成的向量上应用非线性函数，称为激活函数。数据依次遍历这些层得到最终结果。执行其它功能的layer也可能出现在网络中，包含降低数据维度的pooling layer，提高网络对从未见过的数据性能的regularizatio">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220409/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220409221424.7c2prqkmli80.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220409/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220409234507.1phl2u16wtuo.png">
 <meta property="article:published_time" content="2022-04-09T13:45:05.000Z">
-<meta property="article:modified_time" content="2022-04-10T14:31:42.735Z">
+<meta property="article:modified_time" content="2022-04-12T04:47:26.982Z">
 <meta property="article:author" content="upupwords">
+<meta property="article:tag" content="gpu">
+<meta property="article:tag" content="matrix">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220409/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220409221424.7c2prqkmli80.png">
 
-<link rel="canonical" href="http://example.com/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/">
+<link rel="canonical" href="https://hurong0510.github.io/project/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/">
 
 
 <script id="page-configurations">
@@ -101,7 +101,7 @@
 
   <div class="site-meta">
 
-    <a href="/" class="brand" rel="start">
+    <a href="/project/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">Hexo</h1>
       <span class="logo-line-after"><i></i></span>
@@ -122,22 +122,22 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/project/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">2</span></a>
+    <a href="/project/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">1</span></a>
+    <a href="/project/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">4</span></a>
+    <a href="/project/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">4</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -196,10 +196,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/project/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="image" content="/project/images/pig.png">
       <meta itemprop="name" content="upupwords">
       <meta itemprop="description" content="">
     </span>
@@ -226,8 +226,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-10 22:31:42" itemprop="dateModified" datetime="2022-04-10T22:31:42+08:00">2022-04-10</time>
+                <time title="修改时间：2022-04-12 12:47:26" itemprop="dateModified" datetime="2022-04-12T12:47:26+08:00">2022-04-12</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/project/categories/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">矩阵计算</span></a>
+                </span>
+            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -237,6 +246,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">不规则稀疏的背景</div>
 
         </div>
       </header>
@@ -268,6 +278,10 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/project/tags/gpu/" rel="tag"># gpu</a>
+              <a href="/project/tags/matrix/" rel="tag"># matrix</a>
+          </div>
 
         
 
@@ -275,7 +289,7 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/08/warp-function/" rel="prev" title="warp function">
+    <a href="/project/2022/04/08/warp-function/" rel="prev" title="warp function">
       <i class="fa fa-chevron-left"></i> warp function
     </a></div>
       <div class="post-nav-item"></div>
@@ -344,29 +358,29 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="upupwords"
-      src="/images/pig.png">
+      src="/project/images/pig.png">
   <p class="site-author-name" itemprop="name">upupwords</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
+          <a href="/project/archives/">
         
           <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/categories/">
+            <a href="/project/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/tags/">
+            <a href="/project/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -441,24 +455,24 @@
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
+  <script src="/project/lib/anime.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/project/lib/velocity/velocity.min.js"></script>
+  <script src="/project/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/js/utils.js"></script>
+<script src="/project/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
+<script src="/project/js/motion.js"></script>
 
 
-<script src="/js/next-boot.js"></script>
+<script src="/project/js/schemes/pisces.js"></script>
 
-<script src="/js/bookmark.js"></script>
+
+<script src="/project/js/next-boot.js"></script>
+
+<script src="/project/js/bookmark.js"></script>
 
 
 
@@ -494,7 +508,7 @@
 
 
   
-<script src="/js/local-search.js"></script>
+<script src="/project/js/local-search.js"></script>
 
 
 

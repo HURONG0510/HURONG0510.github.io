@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/</loc>
+    <loc>https://hurong0510.github.io/project/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/</loc>
     
-    <lastmod>2022-04-10</lastmod>
+    <lastmod>2022-04-12</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://example.com/2022/04/08/warp-function/</loc>
+    <loc>https://hurong0510.github.io/project/2022/04/08/warp-function/</loc>
     
     <lastmod>2022-04-08</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/03/06/cuda%E7%9A%84%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://hurong0510.github.io/project/2022/03/06/cuda%E7%9A%84%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2022-04-07</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/02/28/%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C/</loc>
+    <loc>https://hurong0510.github.io/project/2022/02/28/%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C/</loc>
     
     <lastmod>2022-04-07</lastmod>
     
@@ -38,7 +38,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>https://hurong0510.github.io/project/categories/index.html</loc>
     
     <lastmod>2022-04-07</lastmod>
     
@@ -47,7 +47,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/index.html</loc>
+    <loc>https://hurong0510.github.io/project/tags/index.html</loc>
     
     <lastmod>2022-04-07</lastmod>
     
@@ -57,23 +57,30 @@
   
 
   <url>
-    <loc>http://example.com/</loc>
-    <lastmod>2022-04-10</lastmod>
+    <loc>https://hurong0510.github.io/project</loc>
+    <lastmod>2022-04-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>http://example.com/tags/cuda/</loc>
-    <lastmod>2022-04-10</lastmod>
+    <loc>https://hurong0510.github.io/project/tags/cuda/</loc>
+    <lastmod>2022-04-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/gpu/</loc>
-    <lastmod>2022-04-10</lastmod>
+    <loc>https://hurong0510.github.io/project/tags/gpu/</loc>
+    <lastmod>2022-04-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hurong0510.github.io/project/tags/matrix/</loc>
+    <lastmod>2022-04-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -81,8 +88,15 @@
 
   
   <url>
-    <loc>http://example.com/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2022-04-10</lastmod>
+    <loc>https://hurong0510.github.io/project/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2022-04-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hurong0510.github.io/project/categories/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97/</loc>
+    <lastmod>2022-04-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
