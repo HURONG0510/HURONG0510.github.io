@@ -65,7 +65,7 @@
 
   
   <url>
-    <loc>https://hurong0510.github.io/project/tags/cuda/</loc>
+    <loc>https://hurong0510.github.io/project/tags/matrix/</loc>
     <lastmod>2022-04-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -79,7 +79,7 @@
   </url>
   
   <url>
-    <loc>https://hurong0510.github.io/project/tags/matrix/</loc>
+    <loc>https://hurong0510.github.io/project/tags/cuda/</loc>
     <lastmod>2022-04-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -88,14 +88,14 @@
 
   
   <url>
-    <loc>https://hurong0510.github.io/project/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://hurong0510.github.io/project/categories/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2022-04-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://hurong0510.github.io/project/categories/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97/</loc>
+    <loc>https://hurong0510.github.io/project/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2022-04-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
