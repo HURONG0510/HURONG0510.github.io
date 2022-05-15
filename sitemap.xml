@@ -83,6 +83,20 @@
 
   
   <url>
+    <loc>https://hurong0510.github.io/tags/tensor/</loc>
+    <lastmod>2022-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hurong0510.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2022-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://hurong0510.github.io/tags/cuda/</loc>
     <lastmod>2022-05-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -111,6 +125,13 @@
   </url>
   
 
+  
+  <url>
+    <loc>https://hurong0510.github.io/categories/%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3/</loc>
+    <lastmod>2022-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
   
   <url>
     <loc>https://hurong0510.github.io/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</loc>
