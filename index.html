@@ -213,7 +213,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-05-15 20:50:49 / 修改时间：20:51:23" itemprop="dateCreated datePublished" datetime="2022-05-15T20:50:49+08:00">2022-05-15</time>
+              <time title="创建时间：2022-05-15 20:50:49 / 修改时间：23:36:55" itemprop="dateCreated datePublished" datetime="2022-05-15T20:50:49+08:00">2022-05-15</time>
             </span>
 
           
@@ -227,7 +227,67 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h1 id="类似知识"><a href="#类似知识" class="headerlink" title="类似知识"></a>类似知识</h1><h2 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h2><p>待写</p>
+<h2 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h2><p>待写</p>
+<h1 id="Tensor-Decomposition"><a href="#Tensor-Decomposition" class="headerlink" title="Tensor Decomposition"></a>Tensor Decomposition</h1><p>用于feature extraction、dimensionality reduction和knowledge discovery。随着时间的变化，张量的数据可能增加、减少或者修改在他任何的维度上。现实生活中最常用的动态张量就是随着时间变化的数据，而其它的维度保持不变。这种张量称为 online tensors, tensor streams incremental tensors.<br>在大规模的online tensor中，找到其分解结果是很困难的，他的难点主要是</p>
+<ul>
+<li>online tensors are growing with time,他的整体大小其实是没有限制的。TD 需要高效和可扩展，从时间和空间来看。</li>
+<li>高数据生成速率需要分解方法提供实时或接近实时的性能。</li>
+</ul>
+<h1 id="Notation-and-basic-operations"><a href="#Notation-and-basic-operations" class="headerlink" title="Notation and basic operations"></a>Notation and basic operations</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>symbol</th>
+<th>definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$A^{T}$</td>
+<td>转置 transpose</td>
+</tr>
+<tr>
+<td>$A^{-1}$</td>
+<td>逆 inverse</td>
+</tr>
+<tr>
+<td>$A^{\dagger}$</td>
+<td>Moore-Penrose pseudoinverse</td>
+</tr>
+<tr>
+<td>$\</td>
+<td>A\</td>
+<td>$</td>
+<td>frobenius norm</td>
+</tr>
+<tr>
+<td>$\odot$</td>
+<td>khatri-rao product</td>
+</tr>
+<tr>
+<td>$\otimes$</td>
+<td>hadamard product</td>
+</tr>
+<tr>
+<td>$X_{(n)}$</td>
+<td>张量的mode-n展开</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="预知识"><a href="#预知识" class="headerlink" title="预知识"></a>预知识</h1><h2 id="CP分解"><a href="#CP分解" class="headerlink" title="CP分解"></a>CP分解</h2><p>cp分解被广泛用于探索多维数据的潜在结构。给定一个N阶的张量$\mathcal{X}\in \mathbb{R}^{I_1\times \cdots \times I_N}$，CP分解近似这个张量通过N个loading 矩阵，因此</p>
+<script type="math/tex; mode=display">
+X_{(n)}\approx A^{(n)}(A^{(N)}\odot \cdots A^{(n+1)}\odot A^{(n-1)}\cdots A^{(1)})^T \\ =A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T\\=[A^{(1)},\cdots,A^{(N)}] \tag{1}</script><p>其中$[\cdot]$定义为cp分解符号。<br>为了找到CP分解的结果，目标函数是最小化估计误差 $\mathcal{L}$，定义为</p>
+<script type="math/tex; mode=display">
+\mathcal{L}=\frac{1}{2}\| X_{(n)}-A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T\|^2</script><p>但是直接最小化$\mathcal{L}$很困难，因为$\mathcal{L}$关于$A^{(1)},\cdots,A^{(N)}$是nonconvex的，因此常用的办法是使用ALS，通过固定n-th矩阵，交替最小化，此时$\mathcal{X}$关于$A^{(n)}$是convex的，此时</p>
+<script type="math/tex; mode=display">
+A^{(n)}\gets argmin_{A^{(n)}} \frac{1}{2}\| X_{(n)}-A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T\|^2 \tag{2}</script><h2 id="online-CP分解"><a href="#online-CP分解" class="headerlink" title="online CP分解"></a>online CP分解</h2><p>给出一个三维的online tensor$\mathcal{X}\in \mathbb{X}^{I\times J\times (t_{old}+t_{new})}$，这个$\mathcal{X}$是通过对$\mathcal{X}_{old}\in \mathbb{R}^{I\times J\times t_{old}}$的最后一个mode进行追加$\mathcal{X}_{new}\in \mathbb{R}^{I\times J\times t_{new}}$.通常追加的张量很小，因此假设$\mathcal{X}_{new}\ll \mathcal{X}_{old}$. $\mathcal{X}_{old}$的cp分解写作$[A_{old},B_{old},C_{old}]$.目标是找到$\mathcal{X}$的cp分解$[A,B,C]$.<br>下面介绍一个现有的online cp分解的方法<br><strong>SDT and RLST</strong>  这两种方法都是将online张量分解问题转换成增量矩阵分解问题，令$D=A\odot B$, 因此公式(1)可以被写成$X_{(3)}=CD^T$，问题就转变为如何去估计C和D。这两种方法不同之处在于计算C和D。</p>
+<ul>
+<li>SDT选择SVD来进行$ X_{old(3)}$, $U_{old}\sum_{old}$</li>
+</ul>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>[1]Zhou S, Vinh N X, Bailey J, et al. Accelerating Online CP Decompositions for Higher Order Tensors[A]. Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining[C]. New York, NY, USA: Association for Computing Machinery, 2016: 1375–1384.</p>
+
       
     </div>
 
