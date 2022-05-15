@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
+  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
+  <meta name="baidu-site-verification" content="code-DKAkrnpO9u">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="ptx的学习">
+<meta property="og:url" content="https://hurong0510.github.io/2022/04/14/ptx%E7%9A%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-14T14:46:23.000Z">
+<meta property="article:modified_time" content="2022-04-16T13:55:27.914Z">
+<meta property="article:author" content="upupwords">
+<meta property="article:tag" content="gpu">
+<meta property="article:tag" content="ptx">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hurong0510.github.io/2022/04/14/ptx%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ptx的学习 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">6</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2022/04/14/ptx%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ptx的学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-14 22:46:23" itemprop="dateCreated datePublished" datetime="2022-04-14T22:46:23+08:00">2022-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-16 21:55:27" itemprop="dateModified" datetime="2022-04-16T21:55:27+08:00">2022-04-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cuda%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">cuda进阶学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">ptx的简单学习</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="inline-ptx-assembly-in-CUDA"><a href="#inline-ptx-assembly-in-CUDA" class="headerlink" title="inline ptx assembly in CUDA"></a>inline ptx assembly in CUDA</h1><p>asm()提供了一种将PTX代码插入CUDA的一种方法，形式为</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;membar.gl;&quot;</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<h2 id="parameters"><a href="#parameters" class="headerlink" title="parameters"></a>parameters</h2><p>asm的基本语法为</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;template-string&quot;</span> : <span class="string">&quot;constraint&quot;</span>(<span class="name">output</span>) : <span class="string">&quot;constraint&quot;</span>(<span class="name">input</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>其中可以有多个’input’输入’output’输出，使用逗号隔开。’template-string’表示用于表明操作的PTX指令，多个ptx指令用分号隔开。</p>
+<blockquote>
+<p>通常一条指令包括两方面的内容： 操作码和操作数，操作码决定要完成的操作，操作数指参加运算的数据及其所在的单元地址。</p>
+</blockquote>
+<p>例如</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;add.s32 %0, %1, %2;&quot;</span> : <span class="string">&quot;=r&quot;</span>(<span class="name">i</span>):<span class="string">&quot;r&quot;</span>(<span class="name">j</span>),<span class="string">&quot;r&quot;</span>(<span class="name">k</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>template-string中的每个%n表示后面的操作数的顺序，%0是第一个操作数，%1是第二个操作数以此类推。输出操作数总是在输入操作数的前面。这个例子等价于</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add<span class="selector-class">.s32</span> <span class="selector-tag">i</span>,j,k</span><br></pre></td></tr></table></figure>
+<p>注意，string中的%n的顺序是可变的，上面的指令也可以写成</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;add.s32 %0, %2, %1;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">i</span>):<span class="string">&quot;r&quot;</span>(<span class="name">k</span>),<span class="string">&quot;r&quot;</span>(<span class="name">j</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>%n也可以重复</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;add.s32 %0,%1,%1;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">i</span>):<span class="string">&quot;r&quot;</span>(<span class="name">k</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>如果这里没有输入操作数，可以舍去最后的冒号</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;mov.s32 %0, 2;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">i</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>如果这里没有输出操作数，可以连接两个冒号</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;mov.s32 r1, %0;&quot;</span>::<span class="string">&quot;r&quot;</span>(<span class="name">i</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>如果想要在PTX中使用%，需要使用两个%来进行转义</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;mov.s32 %0, %%clock;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">x</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>操作数值通过约束指定的任何机制传递。这里的<code>r</code>constraint表示32bit的整型寄存器</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;add.s32 %0,%1,%2;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">i</span>):<span class="string">&quot;r&quot;</span>(<span class="name">j</span>),<span class="string">&quot;r&quot;</span>(<span class="name">k</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>会产生下列的代码（通过编译器生成）</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ld</span>.s32 <span class="built_in">r1</span>, [j]<span class="comment">;</span></span><br><span class="line"><span class="keyword">ld</span>.s32 <span class="built_in">r2</span>, [k]<span class="comment">;</span></span><br><span class="line"><span class="keyword">add</span>.s32 <span class="built_in">r3</span>, <span class="built_in">r1</span>, <span class="built_in">r2</span><span class="comment">;</span></span><br><span class="line"><span class="keyword">st</span>.s32 [i], <span class="built_in">r3</span></span><br></pre></td></tr></table></figure>
+<p>输入操作数在asm语句之前加载到寄存器中，然后将结果寄存器存储到输出操作数中。”&#x3D;r”中的”&#x3D;”修饰符指定写入寄存器，还有”+”修饰符modifier指定寄存器是读和写，例如</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;add.s32 %0, %0, %1;&quot;</span>:<span class="string">&quot;+r&quot;</span>(<span class="name">i</span>):<span class="string">&quot;r&quot;</span>(<span class="name">j</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>多个指令可以组合成一个asm（）语句;基本上，任何合法的东西都可以放入asm字符串中。通过使用 C&#x2F;C++ 的隐式string串联，可以将多个指令拆分到多行中。C++样式行末尾注释“&#x2F;&#x2F;”和经典的C样式注释“&#x2F;**&#x2F;”都可以穿插这些字符串用作注释。template-string要在 PTX 中间文件中生成可读输出，最佳做法是以”\n\t”终止每个指令字符串，但最后一个指令字符串除外。</p>
+<p>例如，一个例程可以为</p>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">__device__</span> int <span class="title function_">cube</span>(<span class="params">int</span> <span class="params">x</span>)</span><br><span class="line">&#123;</span><br><span class="line">    int <span class="variable">y</span>;</span><br><span class="line">    <span class="title function_">asm</span>(<span class="string">&quot;.reg .u32 t1;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span> <span class="comment">// temp reg t1</span></span><br><span class="line">        <span class="string">&quot;mul.lo.u32 t1, %1, %1;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span>    <span class="comment">//t1=x*x</span></span><br><span class="line">        <span class="string">&quot;mul.lo.u32 %0, t1, %1;&quot;</span>        <span class="comment">//y=t1*x</span></span><br><span class="line">        : <span class="string">&quot;=r&quot;</span>(<span class="variable">y</span>):<span class="string">&quot;r&quot;</span>(<span class="variable">x</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">y</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果输出操作数由 asm 指令有条件地更新，则应使用“+”修饰符。在这种情况下，输出操作数是隐式使用的。例如</p>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">__device__</span> int <span class="title function_">cond</span>(<span class="params">int</span> <span class="params">x</span>)</span><br><span class="line">&#123;</span><br><span class="line">    int <span class="variable">y</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line">    <span class="title function_">asm</span>(<span class="string">&quot;&#123;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span></span><br><span class="line">        <span class="string">&quot;.reg .pred %p;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span></span><br><span class="line">        <span class="string">&quot;setp.eq.s32 %p,%1,34;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span> <span class="comment">// x==34?</span></span><br><span class="line">        <span class="string">&quot;@%p mov.s32 %0, 1;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span>    <span class="comment">// set y to 1 if true</span></span><br><span class="line">        <span class="string">&quot;&#125;&quot;</span>                         <span class="comment">// conceptually y=(x==34)?1:y</span></span><br><span class="line">        :<span class="string">&quot;+r&quot;</span>(<span class="variable">y</span>):<span class="string">&quot;r&quot;</span>(<span class="variable">x</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="variable">y</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="constraint"><a href="#constraint" class="headerlink" title="constraint"></a>constraint</h2><p>每个 PTX 寄存器类型都有一个单独的约束符：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;h&quot;</span><span class="operator">=</span> .u16 reg</span><br><span class="line"><span class="string">&quot;r&quot;</span><span class="operator">=</span> .u32 reg</span><br><span class="line"><span class="string">&quot;l&quot;</span><span class="operator">=</span> .u64 reg</span><br><span class="line"><span class="string">&quot;f&quot;</span><span class="operator">=</span> .f32 reg</span><br><span class="line"><span class="string">&quot;d&quot;</span><span class="operator">=</span> .f64 reg</span><br></pre></td></tr></table></figure>
+<p>约束“n”可用于具有已知值的即时整数操作数。<br>例如</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;cvt.f32.s64 %0,%1;&quot;</span>:<span class="string">&quot;=f&quot;</span>(<span class="name">x</span>):<span class="string">&quot;l&quot;</span>(<span class="name">y</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>将会生成</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">ld.s64</span> rdl,[y]<span class="comment">;</span></span><br><span class="line"><span class="symbol">cvt.f32.s64</span> <span class="built_in">f1</span>,rd1<span class="comment">;</span></span><br><span class="line"><span class="symbol">st.f32</span> [x],<span class="built_in">f1</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="pitfalls"><a href="#pitfalls" class="headerlink" title="pitfalls"></a>pitfalls</h2><p>虽然 asm（） 语句非常灵活和强大，但你可能会遇到一些陷阱</p>
+<h3 id="namespace-conflicts"><a href="#namespace-conflicts" class="headerlink" title="namespace conflicts"></a>namespace conflicts</h3><p>如果在程序中多次调用并内联cube function，则会对临时寄存器t1的重复定义。为了避免这个，需要</p>
+<ul>
+<li>不要内联cube function</li>
+<li>在{}中使用’t1’，以便它对每个调用都有单独作用域，即<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">__device__</span> int <span class="title function_">cube</span>(<span class="params">int</span> <span class="params">x</span>)</span><br><span class="line">&#123;</span><br><span class="line">    int <span class="variable">y</span>;</span><br><span class="line">    <span class="title function_">asm</span>(<span class="string">&quot;&#123;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span>             <span class="comment">// use braces for scope</span></span><br><span class="line">        <span class="string">&quot;.reg .u32 t1;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span> <span class="comment">// temp reg t1</span></span><br><span class="line">        <span class="string">&quot;mul.lo.u32 t1, %1, %1;<span class="char escape_">\n</span><span class="char escape_">\t</span>&quot;</span>    <span class="comment">//t1=x*x</span></span><br><span class="line">        <span class="string">&quot;mul.lo.u32 %0, t1, %1;&quot;</span>        <span class="comment">//y=t1*x</span></span><br><span class="line">        <span class="string">&quot;&#125;&quot;</span></span><br><span class="line">        : <span class="string">&quot;=r&quot;</span>(<span class="variable">y</span>):<span class="string">&quot;r&quot;</span>(<span class="variable">x</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">y</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="memory-space-conflicts"><a href="#memory-space-conflicts" class="headerlink" title="memory space conflicts"></a>memory space conflicts</h3><p>由于 asm（） 语句无法知道寄存器所在的内存空间，因此用户必须确保使用适当的 PTX 指令。指向 asm（） 语句的任何指针参数都作为通用地址传递.</p>
+<h4 id="incorrect-optimization"><a href="#incorrect-optimization" class="headerlink" title="incorrect optimization"></a>incorrect optimization</h4><p>编译器假定asm语句除了更改输出操作数之外没有任何作用。要确保在生成PTX期间不会删除或移动asm，应使用volatile关键字.__volatile__用于告诉编译器，严禁将此处的汇编语句与其它的语句重组合优化。即：原原本本按原来的样子处理这这里的汇编。</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">asm</span> <span class="keyword">volatile</span>(<span class="string">&quot;mov.u32 %0, %%clock;&quot;</span>::<span class="string">&quot;=r&quot;</span>(<span class="keyword">x</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>通常，写入的任何内存都将被指定为 out 操作数，但如果对用户内存有隐藏的副作用（例如，通过操作数间接访问内存位置），或者如果要停止在生成 PTX 期间围绕 asm（）语句执行的任何内存优化，则可以在第 3 个冒号后添加“memory”clobbers 规范，memory 强制 gcc 编译器假设 RAM 所有内存单元均被汇编指令修改，这样 cpu 中的 registers 和 cache 中已缓存的内存单元中的数据将作废。cpu 将不得不在需要的时候重新读取内存中的数据。这就阻止了 cpu 又将 registers, cache 中的数据用于去优化指令，而避免去访问内存。</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">asm volatile(<span class="string">&quot;mov.u32 %0, %%clock;&quot;</span>: <span class="string">&quot;=r&quot;</span>(<span class="name">x</span>) :: <span class="string">&quot;memory&quot;</span>)<span class="comment">;</span></span><br><span class="line">asm (<span class="string">&quot;st.u32 [%0], %1;&quot;</span>: <span class="string">&quot;r&quot;</span>(<span class="name">p</span>), <span class="string">&quot;r&quot;</span>(<span class="name">x</span>) :: <span class="string">&quot;memory&quot;</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="incorrect-PTX"><a href="#incorrect-PTX" class="headerlink" title="incorrect PTX"></a>incorrect PTX</h3><p>编译器前端不解析asm语句模板字符串，也不知道他的含义甚至不确保ptx是否有效。例如</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;mov.u32 %0,%n1;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">n</span>):<span class="string">&quot;r&quot;</span>(<span class="number">1</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>“%n1”中的“n”修饰符不受支持，它将传递给 ptxas，其中它可能导致未定义的行为。</p>
+<h2 id="error-checking"><a href="#error-checking" class="headerlink" title="error checking"></a>error checking</h2><p>以下是编译器将在 inline PTX asm 上执行的一些错误检查</p>
+<ul>
+<li><p>不允许单个asm操作数只用多个constraint</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;add.s32 %0,%1,%2;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">i</span>):<span class="string">&quot;rf&quot;</span>(<span class="name">j</span>),<span class="string">&quot;r&quot;</span>(<span class="name">k</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>错误：asm 操作数可能只在__device__&#x2F;__global__函数中指定一个constraint字母</p>
+</li>
+<li><p>只允许标量变量作为asm操作数。特别是不允许使用struct类型变量</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int4 i4</span><br><span class="line">asm(<span class="string">&quot;add.s32 %0,%1,%2;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">i4</span>):<span class="string">&quot;r&quot;</span>(<span class="name">j</span>):<span class="string">&quot;r&quot;</span>(<span class="name">k</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>错误：asm操作数必须是标量</p>
+</li>
+</ul>
+<p>PTX中asm constraint所隐含的类型和大小必须与关联操作数的类型和大小匹配。例如其中ci是<code>char</code></p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;add.s32 %0,%1,%2;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">ci</span>):<span class="string">&quot;r&quot;</span>(<span class="name">j</span>):<span class="string">&quot;r&quot;</span>(<span class="name">k</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>错误：asm 操作数类型 size（1） 与约束 “r” 所暗示的类型&#x2F;大小不匹配<br>为了在上面的 asm 语句中使用 “char” 类型变量 “ci”、“cj” 和 “ck”，可以使用类似于以下内容的代码段</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">inttemp = ci<span class="comment">;</span></span><br><span class="line">asm(<span class="string">&quot;add.s32 %0,%1,%2;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">temp</span>):<span class="string">&quot;r&quot;</span>((<span class="name">int</span>)cj),<span class="string">&quot;r&quot;</span>((<span class="name">int</span>)ck))<span class="comment">;</span></span><br><span class="line">ci = temp<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>类型不匹配的另一个示例：对于“float”类型变量“fi”，</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asm(<span class="string">&quot;add.s32 %0,%1,%2;&quot;</span>:<span class="string">&quot;=r&quot;</span>(<span class="name">fi</span>):<span class="string">&quot;r&quot;</span>(<span class="name">j</span>),<span class="string">&quot;r&quot;</span>(<span class="name">k</span>))<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>错误：asm 操作数类型 size（4） 与约束 “r” 所隐含的类型&#x2F;大小不匹配</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gpu/" rel="tag"># gpu</a>
+              <a href="/tags/ptx/" rel="tag"># ptx</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/" rel="prev" title="非结构稀疏">
+      <i class="fa fa-chevron-left"></i> 非结构稀疏
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/15/online-CP-decomposition/" rel="next" title="online CP decomposition">
+      online CP decomposition <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#inline-ptx-assembly-in-CUDA"><span class="nav-number">1.</span> <span class="nav-text">inline ptx assembly in CUDA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#parameters"><span class="nav-number">1.1.</span> <span class="nav-text">parameters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#constraint"><span class="nav-number">1.2.</span> <span class="nav-text">constraint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pitfalls"><span class="nav-number">1.3.</span> <span class="nav-text">pitfalls</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#namespace-conflicts"><span class="nav-number">1.3.1.</span> <span class="nav-text">namespace conflicts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-space-conflicts"><span class="nav-number">1.3.2.</span> <span class="nav-text">memory space conflicts</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#incorrect-optimization"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">incorrect optimization</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#incorrect-PTX"><span class="nav-number">1.3.3.</span> <span class="nav-text">incorrect PTX</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#error-checking"><span class="nav-number">1.4.</span> <span class="nav-text">error checking</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text"></span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="upupwords"
+      src="/images/pig.png">
+  <p class="site-author-name" itemprop="name">upupwords</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:upupwords@hnu.edu.cn" title="E-Mail → mailto:upupwords@hnu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">upupwords</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

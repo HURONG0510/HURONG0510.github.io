@@ -2,9 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://hurong0510.github.io/2022/05/15/online-CP-decomposition/</loc>
+    
+    <lastmod>2022-05-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://hurong0510.github.io/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/</loc>
     
-    <lastmod>2022-04-12</lastmod>
+    <lastmod>2022-05-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hurong0510.github.io/2022/04/14/ptx%E7%9A%84%E5%AD%A6%E4%B9%A0/</loc>
+    
+    <lastmod>2022-04-16</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -58,7 +76,7 @@
 
   <url>
     <loc>https://hurong0510.github.io/</loc>
-    <lastmod>2022-04-14</lastmod>
+    <lastmod>2022-05-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -66,21 +84,28 @@
   
   <url>
     <loc>https://hurong0510.github.io/tags/cuda/</loc>
-    <lastmod>2022-04-14</lastmod>
+    <lastmod>2022-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hurong0510.github.io/tags/gpu/</loc>
-    <lastmod>2022-04-14</lastmod>
+    <lastmod>2022-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hurong0510.github.io/tags/ptx/</loc>
+    <lastmod>2022-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hurong0510.github.io/tags/matrix/</loc>
-    <lastmod>2022-04-14</lastmod>
+    <lastmod>2022-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -89,14 +114,21 @@
   
   <url>
     <loc>https://hurong0510.github.io/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2022-04-14</lastmod>
+    <lastmod>2022-05-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://hurong0510.github.io/categories/cuda%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2022-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://hurong0510.github.io/categories/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97/</loc>
-    <lastmod>2022-04-14</lastmod>
+    <lastmod>2022-05-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
