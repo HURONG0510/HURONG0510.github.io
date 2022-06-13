@@ -24,19 +24,19 @@
     var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="article">
-<meta property="og:title" content="online CP decomposition">
-<meta property="og:url" content="https://hurong0510.github.io/2022/05/15/online-CP-decomposition/index.html">
+  <meta name="description" content="结构化张量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络中的结构化张量">
+<meta property="og:url" content="https://hurong0510.github.io/2022/05/30/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%A0%E9%87%8F/index.html">
 <meta property="og:site_name" content="upupwords">
+<meta property="og:description" content="结构化张量">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-15T12:50:49.000Z">
-<meta property="article:modified_time" content="2022-05-17T09:13:56.719Z">
+<meta property="article:published_time" content="2022-05-30T11:51:41.000Z">
+<meta property="article:modified_time" content="2022-06-13T12:11:00.484Z">
 <meta property="article:author" content="upupwords">
-<meta property="article:tag" content="tensor">
-<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hurong0510.github.io/2022/05/15/online-CP-decomposition/">
+<link rel="canonical" href="https://hurong0510.github.io/2022/05/30/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%A0%E9%87%8F/">
 
 
 <script id="page-configurations">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>online CP decomposition | upupwords</title>
+  <title>神经网络中的结构化张量 | upupwords</title>
   
 
 
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2022/05/15/online-CP-decomposition/">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2022/05/30/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%A0%E9%87%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/pig.png">
@@ -206,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          online CP decomposition
+          神经网络中的结构化张量
         </h1>
 
         <div class="post-meta">
@@ -216,24 +216,15 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-05-15 20:50:49" itemprop="dateCreated datePublished" datetime="2022-05-15T20:50:49+08:00">2022-05-15</time>
+              <time title="创建时间：2022-05-30 19:51:41" itemprop="dateCreated datePublished" datetime="2022-05-30T19:51:41+08:00">2022-05-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-17 17:13:56" itemprop="dateModified" datetime="2022-05-17T17:13:56+08:00">2022-05-17</time>
+                <time title="修改时间：2022-06-13 20:11:00" itemprop="dateModified" datetime="2022-06-13T20:11:00+08:00">2022-06-13</time>
               </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">张量分解</span></a>
-                </span>
-            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -243,7 +234,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">online张量分解的串线讲解</div>
+            <div class="post-description">结构化张量</div>
 
         </div>
       </header>
@@ -254,125 +245,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="类似知识"><a href="#类似知识" class="headerlink" title="类似知识"></a>类似知识</h1><h2 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h2><p>待写</p>
-<h2 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h2><p>待写</p>
-<h1 id="Tensor-Decomposition"><a href="#Tensor-Decomposition" class="headerlink" title="Tensor Decomposition"></a>Tensor Decomposition</h1><p>用于feature extraction、dimensionality reduction和knowledge discovery。随着时间的变化，张量的数据可能增加、减少或者修改在他任何的维度上。现实生活中最常用的动态张量就是随着时间变化的数据，而其它的维度保持不变。这种张量称为 online tensors, tensor streams incremental tensors.<br>在大规模的online tensor中，找到其分解结果是很困难的，他的难点主要是</p>
-<ul>
-<li>online tensors are growing with time,他的整体大小其实是没有限制的。TD 需要高效和可扩展，从时间和空间来看。</li>
-<li>高数据生成速率需要分解方法提供实时或接近实时的性能。</li>
-</ul>
-<h1 id="Notation-and-basic-operations"><a href="#Notation-and-basic-operations" class="headerlink" title="Notation and basic operations"></a>Notation and basic operations</h1><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>symbol</th>
-<th>definition</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$A^{T}$</td>
-<td>转置 transpose</td>
-</tr>
-<tr>
-<td>$A^{-1}$</td>
-<td>逆 inverse</td>
-</tr>
-<tr>
-<td>$A^{\dagger}$</td>
-<td>Moore-Penrose pseudoinverse</td>
-</tr>
-<tr>
-<td>$\lVert A\rVert$</td>
-<td>frobenius norm</td>
-</tr>
-<tr>
-<td>$\odot$</td>
-<td>khatri-rao product</td>
-</tr>
-<tr>
-<td>$\otimes$</td>
-<td>hadamard product</td>
-</tr>
-<tr>
-<td>$X_{(n)}$</td>
-<td>张量的mode-n展开</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="预知识"><a href="#预知识" class="headerlink" title="预知识"></a>预知识</h1><h2 id="CP分解"><a href="#CP分解" class="headerlink" title="CP分解"></a>CP分解</h2><p>cp分解被广泛用于探索多维数据的潜在结构。给定一个N阶的张量$\mathcal{X}\in \mathbb{R}^{I_1\times \cdots \times I_N}$，CP分解近似这个张量通过N个loading 矩阵，因此</p>
-<script type="math/tex; mode=display">
-\begin{equation}
-X_{(n)}\approx A^{(n)}(A^{(N)}\odot \cdots A^{(n+1)}\odot A^{(n-1)}\cdots A^{(1)})^T  =A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T=[A^{(1)},\cdots,A^{(N)}] 
-\end{equation}</script><p>其中$[\cdot]$定义为cp分解符号。<br>为了找到CP分解的结果，目标函数是最小化估计误差 $\mathcal{L}$，定义为</p>
-<script type="math/tex; mode=display">
-\mathcal{L}=\frac{1}{2}\| X_{(n)}-A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T\|^2</script><p>但是直接最小化$\mathcal{L}$很困难，因为$\mathcal{L}$关于$A^{(1)},\cdots,A^{(N)}$是nonconvex的，因此常用的办法是使用ALS，通过固定n-th矩阵，交替最小化，此时$\mathcal{X}$关于$A^{(n)}$是convex的，此时</p>
-<script type="math/tex; mode=display">
-A^{(n)}\gets argmin_{A^{(n)}} \frac{1}{2}\| X_{(n)}-A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T\|^2</script><h2 id="online-CP分解"><a href="#online-CP分解" class="headerlink" title="online CP分解"></a>online CP分解</h2><p>给出一个三维的online tensor$\mathcal{X}\in \mathbb{X}^{I\times J\times (t_{old}+t_{new})}$，这个$\mathcal{X}$是通过对$\mathcal{X}_{old}\in \mathbb{R}^{I\times J\times t_{old}}$的最后一个mode进行追加$\mathcal{X}_{new}\in \mathbb{R}^{I\times J\times t_{new}}$.通常追加的张量很小，因此假设$\mathcal{X}_{new}\ll \mathcal{X}_{old}$. $\mathcal{X}_{old}$的cp分解写作$[A_{old},B_{old},C_{old}]$.目标是找到$\mathcal{X}$的cp分解$[A,B,C]$.<br>针对三阶张量</p>
-<script type="math/tex; mode=display">
-C\gets argmin_{C} \frac{1}{2}\| X_{(3)}-C(B\odot A)^T\|^2</script><blockquote id="fn__^">
-<sup>_^</sup>. 下面介绍一个现有的online cp分解的方法<a href="#reffn__^" title="Jump back to footnote [_^] in the text."> &#8617;</a>
-</blockquote>
-<p><strong>SDT and RLST</strong>  这两种方法都是将online张量分解问题转换成增量矩阵分解问题，令$D=A\odot B$, 因此公式(1)可以被写成$X_{(3)}=CD^T$，问题就转变为如何去估计C和D。这两种方法不同之处在于计算C和D。SDT选择SVD来进行$ X_{old(3)}=U_{old}\sum_{old}V^T_{old}$，这时总有一个矩阵$W_{old}$使得$C_{old}=U_{old}W^{-1}_{old}$, $D_{old}=V_{old}\sum_{old}W_{old}^T$.同理得到，可以找到一个矩阵$W$，使得$C=UW^{-1}$, $D=V\sum W^T$,其中$U\sum V^T$是$X_{(3)}$的SVD分解。作者假设$D$和$D_{old}$只有微小的区别，因此</p>
-<p>接下来介绍Zhou^[Zhou S, Vinh N X, Bailey J, et al. Accelerating Online CP Decompositions for Higher Order Tensors[A]. Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining[C]. New York, NY, USA: Association for Computing Machinery, 2016: 1375–1384.]的做法。</p>
-<h2 id="update-temporal-mode-C"><a href="#update-temporal-mode-C" class="headerlink" title="update temporal mode C"></a>update temporal mode C</h2><p>首先固定矩阵$A,B$,然后更新$C$，以此类推更新AB。</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-C &\gets argmin_{C} \frac{1}{2}\| X_{(3)}-C(B\odot A)^T\|^2 \\
-&=argmin_{C} \frac{1}{2}\left \lVert \left [ \begin{aligned}X_{old(3)}\\X_{new(3)}\\\end{aligned}\right]- \left [ \begin{aligned}C^{(1)}\\C^{(2)}\\\end{aligned}\right](B\odot A)^T\right\rVert^2\\
-&=argmin_{C} \frac{1}{2}\left \lVert \left [ \begin{aligned}X_{old(3)}-C^{(1)}(B\odot A)^T    \\X_{new(3)}-C^{(2)}(B\odot A)^T \\\end{aligned}\right]\right\rVert^2
-\end{aligned}</script><p>第一行通过固定$A_{old} B_{old}$得到$C_{old}$来最小化范数，即</p>
-<script type="math/tex; mode=display">
-C_{old}(C^{(1)})=X_{old(3)}((B_{old}\odot A_{old})^T)^\dagger</script><p>在关于t的online张量中，$C_{old}$是已经计算好的，$A$和$B$用$A_{old} B_{old}$。因此上面的最小化问题其实只要最小化第二行，整个问题变成计算</p>
-<script type="math/tex; mode=display">
-C_{new}(C^{(2)})=X_{new(3)}((B\odot A)^T)^\dagger</script><p>综合上述得到</p>
-<script type="math/tex; mode=display">
-C=
-\left [\begin{aligned}C_{old}  \\C_{new} \\\end{aligned}\right ]
-=\left [\begin{aligned}C_{old}&  \\X_{new(3)}((B\odot &A)^T)^\dagger\\\end{aligned}
-\right ]</script><h2 id="update-non-temporal-modes-A-and-B"><a href="#update-non-temporal-modes-A-and-B" class="headerlink" title="update non-temporal modes A and B"></a>update non-temporal modes A and B</h2><p>首先更新$A$。通过固定$B$和$C$，这个误差估计函数$\mathcal{L}$可以写成$\frac{1}{2}| X_{(1)}-A(C\odot B)^T|^2$，其导数为</p>
-<script type="math/tex; mode=display">
-\frac{\partial \mathcal{L}}{\partial A}=X_{(1)}(C\odot B)-A(C\odot B)^T(C\odot B)</script><p>设置导数为0，并令$P=X_{(1)}(C\odot B)$以及$Q=(C\odot B)^T(C\odot B)$可以得到</p>
-<script type="math/tex; mode=display">A=PQ^{-1}</script><p>直接去计算$P$和$Q$是很费时的，主要是因为$(C\odot B)$是一个huge矩阵。<br>为了提升效率，需要一种更快的方法。</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-P&=X_{(1)}(C\odot B)\\
- &=[X_{old(1)},X_{new(1)}]\left(\left[\begin{aligned}C_{old}  \\C_{new} \\\end{aligned}\right] \odot B  \right)\\
- &=[X_{old(1)},X_{new(1)}]\left[\begin{aligned}C_{old}\odot B   \\C_{new}\odot B  \\\end{aligned}\right]\\
- &=X_{old(1)}(C_{old}\odot B )+X_{new(1)}(C_{new}\odot B)
-\end{aligned}</script><p>注意到$B$可以固定为$B_{old}$,因此上式中的最后一行的第一部分其实是上次迭代的结果，因此上式可以写成</p>
-<script type="math/tex; mode=display">
-P=P_{old}+X_{new(1)}(C_{new}\odot B)</script><p>这意味着通过保存之前的$P$可以避免大量的计算，将P初始化为$\mathcal{X}$的一部分。这样无论何时新的数据进来，$P$都可以高效计算。<br>同样地，$Q$可以估计为</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-Q&=Q_{old}+(C_{new}\odot B)^T(C_{new}\odot B)\\
-&=Q_{old}+(C^T_{new}C_{new})\otimes (B^TB)
-\end{aligned}</script><p>结合上一次的ALS迭代结果，矩阵$A$的更新规则为</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-P&\gets P+X_{new(1)}(C_{new}\odot B)\\
-Q&\gets Q+(C^T_{new}C_{new})\otimes (B^TB)\\
-A&\gets PQ^{-1}\\
-\end{aligned}</script><p>同样地$B$的更新规则为</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-U&\gets U+X_{new(2)}(C_{new}\odot A)\\
-V&\gets V+(C^T_{new}C_{new})\otimes (A^TA)\\
-B&\gets UV^{-1}
-\end{aligned}</script><p><strong>总结</strong>对于随着时间增长的三阶张量，提出了称为OnlineCP的算法，分为以下两步</p>
-<ol>
-<li><strong>初始化</strong>：对于non-temporal 模态，矩阵$PQUV$使用$\mathcal{X}_{init}$和$[![A,B,C]!]$进行初始化，即<script type="math/tex; mode=display">
-\begin{aligned}
-P=X_{init(1)}(C\odot B),& Q=(C^TC)\otimes (B^TB)\\
-U=X_{init(2)}(C\odot A),& V=(C^TC)\otimes (A^TA)
-\end{aligned}</script></li>
-<li><strong>更新</strong>: 对每个新进的数据块$X_{new}$<br>a. 对于temporal mode 3, C的更新方式为<script type="math/tex; mode=display">
-C=
-\left [\begin{aligned}C_{old}  \\C_{new} \\\end{aligned}\right ]
-=\left [\begin{aligned}C_{old}&  \\X_{new(3)}((B\odot &A)^T)^\dagger\\\end{aligned}
-\right ]</script>b. 对于non-temporal mode 1 and 2, A的更新方式为<script type="math/tex; mode=display">\begin{aligned}P&\gets P+X_{new(1)}(C_{new}\odot B)\\Q&\gets Q+(C^T_{new}C_{new})\otimes (B^TB)\\A&\gets PQ^{-1}\end{aligned}</script>同理B的更新方式为<script type="math/tex; mode=display">\begin{aligned}U&\gets U+X_{new(2)}(C_{new}\odot A)\\V&\gets V+(C^T_{new}C_{new})\otimes (A^TA)\\B&\gets UV^{-1}\end{aligned}</script><h2 id="高阶张量的扩展"><a href="#高阶张量的扩展" class="headerlink" title="高阶张量的扩展"></a>高阶张量的扩展</h2>令$\mathcal{X}_{old}\in \mathbb{R}^{I_1 \times \cdots \times I_{N-1}\times t_{old}}$是$N$阶张量，他的CP分解是$[![A^{(1)}_{old}, \cdots,A^{(N-1)}_{old},A^{(N)}_{old} ]!]$, N-th mode表示时间。一个新的张量$\mathcal{X}_{new}\in \mathbb{R}^{I_1 \times \cdots \times I_{N-1}\times t_{old}}$添加到旧的张量中</li>
-</ol>
+        <p>CNN要求大量的参数去实现高准确度，造成大量的训练时间、长的inference时间和大量的内存。模型压缩作为一种常见的DNN中减少参数量的方式。例如 parameter quantization, knowledge distillation and network pruning。<br>为了能够从稀疏张量核心中受益，输入矩阵必须采用特定的2：4结构。我们将在本文后面描述2：4结构的特征。我们使用2：4修剪来参考修剪结果在2：4结构中的修剪方法。<br>filter pruning是一个标准的网络剪枝的方法。他评估filter的重要性并移除冗余的数据。因此选择一个合适的评估指标来删除冗余权重。这个想法是生成一个较小的模型，该模型可以通过首先进行filter pruning来加速sparse tensor core。然后，我们应用 2：4 修剪，以确保权重矩阵是 2：4 的结构，以利用sparse tensor core提供的性能。</p>
+<h1 id="related-work"><a href="#related-work" class="headerlink" title="related work"></a>related work</h1><h2 id="sparse-tensor-core"><a href="#sparse-tensor-core" class="headerlink" title="sparse tensor core"></a>sparse tensor core</h2><p>sparse tensor core要求输入矩阵必须采用 2:4 格式，以利用sparse tensor core硬件。<br>我们把矩阵的每行划分成四个元素的组，每个组至少有两个值为0的元素，则这个矩阵是2:4 format。</p>
+<h2 id="unstructured-pruning"><a href="#unstructured-pruning" class="headerlink" title="unstructured pruning"></a>unstructured pruning</h2><p>非结构化剪枝移除模型中不重要的权重来减少参数。需要将矩阵编码成特殊格式，以跳过零值来减少内存使用。这些格式是传统的CSR或者CSC。但是由于矩阵的稀疏性，需要特殊的硬件和软件支持，为密集计算的硬件和库在剪枝后无法给予稀疏矩阵提供高效的训练和高速的推理。</p>
+<h2 id="structed-pruning"><a href="#structed-pruning" class="headerlink" title="structed pruning"></a>structed pruning</h2><p>结构化剪枝使用结构化的方式来避免非结构化剪枝的问题。</p>
 
     </div>
 
@@ -381,10 +257,6 @@ C=
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/tensor/" rel="tag"># tensor</a>
-              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
-          </div>
 
         
 
@@ -392,13 +264,10 @@ C=
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/14/ptx%E7%9A%84%E5%AD%A6%E4%B9%A0/" rel="prev" title="ptx的学习">
-      <i class="fa fa-chevron-left"></i> ptx的学习
+    <a href="/2022/05/15/online-CP-decomposition/" rel="prev" title="online CP decomposition">
+      <i class="fa fa-chevron-left"></i> online CP decomposition
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/05/30/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%A0%E9%87%8F/" rel="next" title="神经网络中的结构化张量">
-      神经网络中的结构化张量 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -457,7 +326,7 @@ C=
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E4%BC%BC%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">类似知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PCA"><span class="nav-number">1.1.</span> <span class="nav-text">PCA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVD"><span class="nav-number">1.2.</span> <span class="nav-text">SVD</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tensor-Decomposition"><span class="nav-number">2.</span> <span class="nav-text">Tensor Decomposition</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Notation-and-basic-operations"><span class="nav-number">3.</span> <span class="nav-text">Notation and basic operations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%84%E7%9F%A5%E8%AF%86"><span class="nav-number">4.</span> <span class="nav-text">预知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CP%E5%88%86%E8%A7%A3"><span class="nav-number">4.1.</span> <span class="nav-text">CP分解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#online-CP%E5%88%86%E8%A7%A3"><span class="nav-number">4.2.</span> <span class="nav-text">online CP分解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update-temporal-mode-C"><span class="nav-number">4.3.</span> <span class="nav-text">update temporal mode C</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update-non-temporal-modes-A-and-B"><span class="nav-number">4.4.</span> <span class="nav-text">update non-temporal modes A and B</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E9%98%B6%E5%BC%A0%E9%87%8F%E7%9A%84%E6%89%A9%E5%B1%95"><span class="nav-number">4.5.</span> <span class="nav-text">高阶张量的扩展</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#related-work"><span class="nav-number">1.</span> <span class="nav-text">related work</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sparse-tensor-core"><span class="nav-number">1.1.</span> <span class="nav-text">sparse tensor core</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unstructured-pruning"><span class="nav-number">1.2.</span> <span class="nav-text">unstructured pruning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#structed-pruning"><span class="nav-number">1.3.</span> <span class="nav-text">structed pruning</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
