@@ -76,119 +76,7 @@
   </style>
 </noscript>
 
-<style>mjx-container[jax="SVG"] {
-  direction: ltr;
-}
-
-mjx-container[jax="SVG"] > svg {
-  overflow: visible;
-}
-
-mjx-container[jax="SVG"][display="true"] {
-  display: block;
-  text-align: center;
-  margin: 1em 0;
-}
-
-mjx-container[jax="SVG"][justify="left"] {
-  text-align: left;
-}
-
-mjx-container[jax="SVG"][justify="right"] {
-  text-align: right;
-}
-
-g[data-mml-node="merror"] > g {
-  fill: red;
-  stroke: red;
-}
-
-g[data-mml-node="merror"] > rect[data-background] {
-  fill: yellow;
-  stroke: none;
-}
-
-g[data-mml-node="mtable"] > line[data-line] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > rect[data-frame] {
-  stroke-width: 70px;
-  fill: none;
-}
-
-g[data-mml-node="mtable"] > .mjx-dashed {
-  stroke-dasharray: 140;
-}
-
-g[data-mml-node="mtable"] > .mjx-dotted {
-  stroke-linecap: round;
-  stroke-dasharray: 0,140;
-}
-
-g[data-mml-node="mtable"] > svg {
-  overflow: visible;
-}
-
-[jax="SVG"] mjx-tool {
-  display: inline-block;
-  position: relative;
-  width: 0;
-  height: 0;
-}
-
-[jax="SVG"] mjx-tool > mjx-tip {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-mjx-tool > mjx-tip {
-  display: inline-block;
-  padding: .2em;
-  border: 1px solid #888;
-  font-size: 70%;
-  background-color: #F8F8F8;
-  color: black;
-  box-shadow: 2px 2px 5px #AAAAAA;
-}
-
-g[data-mml-node="maction"][data-toggle] {
-  cursor: pointer;
-}
-
-mjx-status {
-  display: block;
-  position: fixed;
-  left: 1em;
-  bottom: 1em;
-  min-width: 25%;
-  padding: .2em .4em;
-  border: 1px solid #888;
-  font-size: 90%;
-  background-color: #F8F8F8;
-  color: black;
-}
-
-foreignObject[data-mjx-xml] {
-  font-family: initial;
-  line-height: normal;
-  overflow: visible;
-}
-
-.MathJax path {
-  stroke-width: 3;
-}
-
-mjx-container[display="true"] {
-  overflow: auto hidden;
-}
-
-mjx-container[display="true"] + br {
-  display: none;
-}
-</style></head>
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -242,7 +130,7 @@ mjx-container[display="true"] + br {
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">12</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">14</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -296,6 +184,390 @@ mjx-container[display="true"] + br {
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/01/18/Transformer%E7%90%86%E8%A7%A3%EF%BC%9ATransformers-Explained-Visually-Part-1-Overview-of-Functionality-by-Ketan-Doshi-Towards-Data-Science/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/01/18/Transformer%E7%90%86%E8%A7%A3%EF%BC%9ATransformers-Explained-Visually-Part-1-Overview-of-Functionality-by-Ketan-Doshi-Towards-Data-Science/" class="post-title-link" itemprop="url">Transformer理解：Transformers Explained Visually (Part 1): Overview of Functionality | by Ketan Doshi | Towards Data Science</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-01-18 15:42:22 / 修改时间：16:09:07" itemprop="dateCreated datePublished" datetime="2024-01-18T15:42:22+08:00">2024-01-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>本文由 <a target="_blank" rel="noopener" href="http://ksria.com/simpread/">简悦 SimpRead</a> 转码， 原文地址 <a target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-explained-visually-part-1-overview-of-functionality-95a6dd460452">towardsdatascience.com</a></p>
+<p>A Gentle Guide to Transformers for NLP, and why they are better than RNNs, in Plain English. How Atte……</p>
+</blockquote>
+<h2 id="INTUITIVE-TRANSFORMERS-SERIES-NLP"><a href="#INTUITIVE-TRANSFORMERS-SERIES-NLP" class="headerlink" title="INTUITIVE TRANSFORMERS SERIES NLP"></a>INTUITIVE TRANSFORMERS SERIES NLP</h2><h2 id="A-Gentle-Guide-to-Transformers-how-they-are-used-for-NLP-and-why-they-are-better-than-RNNs-in-Plain-English-How-Attention-helps-improve-performance"><a href="#A-Gentle-Guide-to-Transformers-how-they-are-used-for-NLP-and-why-they-are-better-than-RNNs-in-Plain-English-How-Attention-helps-improve-performance" class="headerlink" title="A Gentle Guide to Transformers, how they are used for NLP, and why they are better than RNNs, in Plain English. How Attention helps improve performance."></a>A Gentle Guide to Transformers, how they are used for NLP, and why they are better than RNNs, in Plain English. How Attention helps improve performance.</h2><p>[</p>
+<p><img src="https://miro.medium.com/v2/resize:fill:88:88/1*ZpFBF1tIJfdXWqSjIk1DKg.jpeg" alt=""></p>
+<p>](<a target="_blank" rel="noopener" href="https://ketanhdoshi.medium.com/?source=post_page-----95a6dd460452--------------------------------)[">https://ketanhdoshi.medium.com/?source=post_page-----95a6dd460452--------------------------------)[</a></p>
+<p><img src="https://miro.medium.com/v2/resize:fill:48:48/1*CJe3891yB1A1mzMdqemkdg.jpeg" alt=""></p>
+<p>](<a target="_blank" rel="noopener" href="https://towardsdatascience.com/?source=post_page-----95a6dd460452--------------------------------">https://towardsdatascience.com/?source=post_page-----95a6dd460452--------------------------------</a>)</p>
+<p>We’ve been hearing a lot about Transformers and with good reason. They have taken the world of NLP by storm in the last few years. The Transformer is an architecture that uses Attention to significantly improve the performance of deep learning NLP translation models. It was first introduced in the paper <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762">Attention is all you need</a> and was quickly established as the leading architecture for most text data applications.</p>
+<p>Since then, numerous projects including Google’s BERT and OpenAI’s GPT series have built on this foundation and published performance results that handily beat existing state-of-the-art benchmarks.</p>
+<p>Over a series of articles, I’ll go over the basics of Transformers, its architecture, and how it works internally. We will cover the Transformer functionality in a top-down manner. In later articles, we will look under the covers to understand the operation of the system in detail. We will also do a deep dive into the workings of the multi-head attention, which is the heart of the Transformer.</p>
+<p>Here’s a quick summary of the previous and following articles in the series. My goal throughout will be to understand not just how something works but why it works that way.</p>
+<ol>
+<li><strong>Overview of functionality — this article</strong> <em>(How Transformers are used, and why they are better than RNNs. Components of the architecture, and behavior during Training and Inference)</em></li>
+<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-explained-visually-part-2-how-it-works-step-by-step-b49fa4a64f34">How it works</a> <em>(Internal operation end-to-end. How data flows and what computations are performed, including matrix representations)</em></li>
+<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-explained-visually-part-3-multi-head-attention-deep-dive-1c1ff1024853">Multi-head Attention</a> <em>(Inner workings of the Attention module throughout the Transformer)</em></li>
+<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-explained-visually-not-just-how-but-why-they-work-so-well-d840bd61a9d3">Why Attention Boosts Performance</a> <em>(Not just what Attention does but why it works so well. How does Attention capture the relationships between words in a sentence)</em></li>
+</ol>
+<p>And if you’re interested in NLP applications in general, I have some other articles you might like.</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/foundations-of-nlp-explained-visually-beam-search-how-it-works-1586b9849a24">Beam Search</a> <em>(Algorithm commonly used by Speech-to-Text and NLP applications to enhance predictions)</em></li>
+<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/foundations-of-nlp-explained-bleu-score-and-wer-metrics-1a5ba06d812b">Bleu Score</a> (<em>Bleu Score and Word Error Rate are two essential metrics for NLP models</em>)</li>
+</ol>
+<p>The Transformer architecture excels at handling text data which is inherently sequential. They take a text sequence as input and produce another text sequence as output. eg. to translate an input English sentence to Spanish.</p>
+<blockquote>
+<p>Transformer 架构擅长处理本质上是顺序的文本数据。它们将一个文本序列作为输入，并生成另一个文本序列作为输出。</p>
+</blockquote>
+<p><img src="https://miro.medium.com/v2/resize:fit:656/1*XbPTo3Wi7q-HhwwhV4A9yA.png" alt="">(Image by Author)</p>
+<p>At its core, it contains a stack of Encoder layers and Decoder layers. To avoid confusion we will refer to the individual layer as an Encoder or a Decoder and will use Encoder stack or Decoder stack for a group of Encoder layers.</p>
+<p>The Encoder stack and the Decoder stack each have their corresponding Embedding layers for their respective inputs. Finally, there is an Output layer to generate the final output.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1040/1*XDtQ3C7XrtVuqTtrxr2UWQ.png" alt="">(Image by Author)</p>
+<p>All the Encoders are identical to one another. Similarly, all the Decoders are identical.</p>
+<blockquote>
+<p>所有Encoders彼此相同。同样，所有Decoders都是相同的。</p>
+</blockquote>
+<p><img src="https://miro.medium.com/v2/resize:fit:1098/1*F7JlVjpmv-XAEeE9IPyzHA.png" alt="">(Image by Author)</p>
+<ul>
+<li>The Encoder contains the all-important Self-attention layer that computes the relationship between different words in the sequence, as well as a Feed-forward layer.</li>
+<li><blockquote>
+<p>Encoder包含最重要的自注意力层Self-attention layer，用于计算序列中不同单词之间的关系，以及前馈层Feed-forward layer。</p>
+</blockquote>
+</li>
+<li>The Decoder contains the Self-attention layer and the Feed-forward layer, as well as a second Encoder-Decoder attention layer.</li>
+<li><blockquote>
+<p>Decoder包含Self-attention layer，Encoder-Decoder attention layer以及 Feed-forward layer</p>
+</blockquote>
+</li>
+<li>Each Encoder and Decoder has its own set of weights.</li>
+<li><blockquote>
+<p>每个Encoder and Decoder都有自己的权重</p>
+</blockquote>
+</li>
+</ul>
+<p>The Encoder is a reusable module that is the defining component of all Transformer architectures. In addition to the above two layers, it also has Residual skip connections around both layers along with two LayerNorm layers.</p>
+<blockquote>
+<p>Encoder是一个可重用的模块，是所有 Transformer 架构的定义组件。除了上述两层之外，它还在两层周围具有Residual skip connections以及两个 LayerNorm 层。</p>
+</blockquote>
+<p><img src="https://miro.medium.com/v2/resize:fit:490/1*THykpgtL058A9EpkstnUJQ.png" alt="">(Image by Author)</p>
+<p>There are many variations of the Transformer architecture. Some Transformer architectures have no Decoder at all and rely only on the Encoder.</p>
+<p>The key to the Transformer’s ground-breaking performance is its use of Attention.</p>
+<p>While processing a word, Attention enables the model to focus on other words in the input that are closely related to that word.</p>
+<p>eg. ‘Ball’ is closely related to ‘blue’ and ‘holding’. On the other hand, ‘blue’ is not related to ‘boy’.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:634/1*1ouB-xrMxPgqu721_zzsbA.png" alt=""></p>
+<p>The Transformer architecture uses self-attention by relating every word in the input sequence to every other word.</p>
+<p>eg. Consider two sentences:</p>
+<ul>
+<li>The <em>cat</em> drank the milk because <strong>it</strong> was hungry.</li>
+<li>The cat drank the <em>milk</em> because <strong>it</strong> was sweet.</li>
+</ul>
+<p>In the first sentence, the word ‘it’ refers to ‘cat’, while in the second it refers to ‘milk. When the model processes the word ‘it’, self-attention gives the model more information about its meaning so that it can associate ‘it’ with the correct word.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/1*pT0ZIWeoilLkz3e_1fVeYQ.png" alt="">Dark colors represent higher attention (Image by Author)</p>
+<p>To enable it to handle more nuances about the intent and semantics of the sentence, Transformers include multiple attention scores for each word.</p>
+<p>eg. While processing the word ‘it’, the first score highlights ‘cat’, while the second score highlights ‘hungry’. So when it decodes the word ‘it’, by translating it into a different language, for instance, it will incorporate some aspect of both ‘cat’ and ‘hungry’ into the translated word.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:984/1*s2hugsMP28aB2tJoYCq8uA.png" alt="">(Image by Author)</p>
+<p>The Transformer works slightly differently during Training and while doing Inference.</p>
+<p>Let’s first look at the flow of data during Training. Training data consists of two parts:</p>
+<ul>
+<li>The source or input sequence (eg. “You are welcome” in English, for a translation problem)</li>
+<li>The destination or target sequence (eg. “De nada” in Spanish)</li>
+</ul>
+<p>The Transformer’s goal is to learn how to output the target sequence, by using both the input and target sequence.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/1*0g4qdq7Rt6QvDalFFAkL5g.png" alt="">(Image by Author)</p>
+<p>The Transformer processes the data like this:</p>
+<ol>
+<li>The input sequence is converted into Embeddings (with Position Encoding) and fed to the Encoder.</li>
+<li>The stack of Encoders processes this and produces an encoded representation of the input sequence.</li>
+<li>The target sequence is prepended with a start-of-sentence token, converted into Embeddings (with Position Encoding), and fed to the Decoder.</li>
+<li>The stack of Decoders processes this along with the Encoder stack’s encoded representation to produce an encoded representation of the target sequence.</li>
+<li>The Output layer converts it into word probabilities and the final output sequence.</li>
+<li>The Transformer’s Loss function compares this output sequence with the target sequence from the training data. This loss is used to generate gradients to train the Transformer during back-propagation.</li>
+</ol>
+<p>During Inference, we have only the input sequence and don’t have the target sequence to pass as input to the Decoder. The goal of the Transformer is to produce the target sequence from the input sequence alone.</p>
+<p>So, like in a Seq2Seq model, we generate the output in a loop and feed the output sequence from the previous timestep to the Decoder in the next timestep until we come across an end-of-sentence token.</p>
+<p>The difference from the Seq2Seq model is that, at each timestep, we re-feed the entire output sequence generated thus far, rather than just the last word.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/1*-uvybwr8xULd3ug9ZwcSaQ.png" alt="">Inference flow, after first timestep (Image by Author)</p>
+<p>The flow of data during Inference is:</p>
+<ol>
+<li>The input sequence is converted into Embeddings (with Position Encoding) and fed to the Encoder.</li>
+<li>The stack of Encoders processes this and produces an encoded representation of the input sequence.</li>
+<li>Instead of the target sequence, we use an empty sequence with only a start-of-sentence token. This is converted into Embeddings (with Position Encoding) and fed to the Decoder.</li>
+<li>The stack of Decoders processes this along with the Encoder stack’s encoded representation to produce an encoded representation of the target sequence.</li>
+<li>The Output layer converts it into word probabilities and produces an output sequence.</li>
+<li>We take the last word of the output sequence as the predicted word. That word is now filled into the second position of our Decoder input sequence, which now contains a start-of-sentence token and the first word.</li>
+<li>Go back to step #3. As before, feed the new Decoder sequence into the model. Then take the second word of the output and append it to the Decoder sequence. Repeat this until it predicts an end-of-sentence token. Note that since the Encoder sequence does not change for each iteration, we do not have to repeat steps #1 and #2 each time (<em>Thanks to Michal Kučírka for pointing this out</em>).</li>
+</ol>
+<p>The approach of feeding the target sequence to the Decoder during training is known as Teacher Forcing. Why do we do this and what does that term mean?</p>
+<p>During training, we could have used the same approach that is used during inference. In other words, run the Transformer in a loop, take the last word from the output sequence, append it to the Decoder input and feed it to the Decoder for the next iteration. Finally, when the end-of-sentence token is predicted, the Loss function would compare the generated output sequence to the target sequence in order to train the network.</p>
+<p>Not only would this looping cause training to take much longer, but it also makes it harder to train the model. The model would have to predict the second word based on a potentially erroneous first predicted word, and so on.</p>
+<p>Instead, by feeding the target sequence to the Decoder, we are giving it a hint, so to speak, just like a Teacher would. Even though it predicted an erroneous first word, it can instead use the correct first word to predict the second word so that those errors don’t keep compounding.</p>
+<p>In addition, the Transformer is able to output all the words in parallel without looping, which greatly speeds up training.</p>
+<p>Transformers are very versatile and are used for most NLP tasks such as language models and text classification. They are frequently used in sequence-to-sequence models for applications such as Machine Translation, Text Summarization, Question-Answering, Named Entity Recognition, and Speech Recognition.</p>
+<p>There are different flavors of the Transformer architecture for different problems. The basic Encoder Layer is used as a common building block for these architectures, with different application-specific ‘heads’ depending on the problem being solved.</p>
+<h2 id="Transformer-Classification-architecture"><a href="#Transformer-Classification-architecture" class="headerlink" title="Transformer Classification architecture"></a>Transformer Classification architecture</h2><p>A Sentiment Analysis application, for instance, would take a text document as input. A Classification head takes the Transformer’s output and generates predictions of the class labels such as a positive or negative sentiment.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/1*tkqBjeTRZMRfOLiLqYV0TA.png" alt="">(Image by Author)</p>
+<h2 id="Transformer-Language-Model-architecture"><a href="#Transformer-Language-Model-architecture" class="headerlink" title="Transformer Language Model architecture"></a>Transformer Language Model architecture</h2><p>A Language Model architecture would take the initial part of an input sequence such as a text sentence as input, and generate new text by predicting sentences that would follow. A Language Model head takes the Transformer’s output and generates a probability for every word in the vocabulary. The highest probability word becomes the predicted output for the next word in the sentence.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/1*9HgXzK95-QTOQi5eyZ-S_Q.png" alt="">(Image by Author)</p>
+<p>RNNs and their cousins, LSTMs and GRUs, were the de facto architecture for all NLP applications until Transformers came along and dethroned them.</p>
+<p>RNN-based sequence-to-sequence models performed well, and when the Attention mechanism was first introduced, it was used to enhance their performance.</p>
+<p>However, they had two limitations:</p>
+<ul>
+<li>It was challenging to deal with long-range dependencies between words that were spread far apart in a long sentence.</li>
+<li>They process the input sequence sequentially one word at a time, which means that it cannot do the computation for time-step <em>t</em> until it has completed the computation for time-step <em>t — 1</em>. This slows down training and inference.</li>
+</ul>
+<p>As an aside, with CNNs, all of the outputs can be computed in parallel, which makes convolutions much faster. However, they also have limitations in dealing with long-range dependencies:</p>
+<ul>
+<li>In a convolutional layer, only parts of the image (or words if applied to text data) that are close enough to fit within the kernel size can interact with each other. For items that are further apart, you need a much deeper network with many layers.</li>
+</ul>
+<p>The Transformer architecture addresses both of these limitations. It got rid of RNNs altogether and relied exclusively on the benefits of Attention.</p>
+<ul>
+<li>They process all the words in the sequence in parallel, thus greatly speeding up computation.</li>
+</ul>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/1*Iygs9mQi4GbIJuc6fwBRKg.png" alt="">(Image by Author)</p>
+<ul>
+<li>The distance between words in the input sequence does not matter. It is equally good at computing dependencies between adjacent words and words that are far apart.</li>
+</ul>
+<p>Now that we have a high-level idea of what a Transformer is, we can go deeper into its internal functionality in the <a target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-explained-visually-part-2-how-it-works-step-by-step-b49fa4a64f34">next</a> article to understand the details of how it works.</p>
+<p>And finally, if you liked this article, you might also enjoy my other series on Audio Deep Learning, Geolocation Machine Learning, and Image Caption architectures.</p>
+<p>Let’s keep learning!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/01/18/Paper-Analysis-%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3%E4%B8%8ELLM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/01/18/Paper-Analysis-%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3%E4%B8%8ELLM/" class="post-title-link" itemprop="url">Paper Analysis: 张量分解与LLM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-01-18 14:49:36" itemprop="dateCreated datePublished" datetime="2024-01-18T14:49:36+08:00">2024-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-01-20 14:32:29" itemprop="dateModified" datetime="2024-01-20T14:32:29+08:00">2024-01-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ASVD-Activation-aware-Singular-Value-Decomposition-for-Compressing-Large-Language-Models"><a href="#ASVD-Activation-aware-Singular-Value-Decomposition-for-Compressing-Large-Language-Models" class="headerlink" title="ASVD: Activation-aware Singular Value Decomposition for Compressing Large Language Models"></a>ASVD: Activation-aware Singular Value Decomposition for Compressing Large Language Models</h1><h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>有大量的方法用来减少LLM的内存消耗。这些方法可以归类于两种</p>
+<ul>
+<li>neural network compression <ul>
+<li>weight quantization</li>
+<li>network pruning</li>
+<li>knowledge distillation</li>
+</ul>
+</li>
+<li>system optimizations<ul>
+<li>memory management with cache mechanisms<br>与这些方法不同的是，低秩分解的范式(paradigm)探索较少。该技术涉及使用较低秩的矩阵来逼近神经网络中的权重矩阵，它是一种相对未充分利用的LLM压缩方法。此外，低秩分解通过进一步压缩量化的或剪枝的模型来补充现有的 LLM 压缩技术，从而提高整体效率。</li>
+</ul>
+</li>
+</ul>
+<p>从网络压缩的角度来看，传统的低秩分解方法通常遵循一个简单的过程：首先训练原始模型，然后对分解模型进行微调。但这种方法需要整个训练数据集和大量的计算能力才能进行端到端的反向传播。但在LLMs上不现实。1. LLM的训练数据并不总是容易获得。2. 这些模型的训练过程在时间和计算方面都非常昂贵。基于这些限制，“training-free”压缩成为一种更可行的方法。包括 LLM post-training quantization and LLM post-training pruning, 这些方法都不需要再训练。</p>
+<p>为了实现 low-rank post-training decomposition in LLMs, 本文分析了现有的LLM分解方法。发现直接应用现有的低秩分解技术对于LLMs是无效的，分析这些失败的原因后，发现一个关键挑战， managing outliers in the activations, 这些异常值加剧了分解误差。</p>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li><p>引入activation-aware singular value decomposition. ASVD将the distribution of activations 合并到分解过程中。它通过根据在输入和输出的channel中观察到的distribution patterns，逐列缩放权重矩阵中的值来实现。事实证明这种调整对于具有异常activations的channels特别有益，允许ASVD将重点放在这些specific weights上。这种针对性的调整有助于更准确地重建weight matrix，因此最小化预测误差以及提升分解过程的效率。</p>
+</li>
+<li><p>进一步深入研究了不同LLM层对分解的不同敏感性。发现multi-head attention layers会比multi-layer perceptron layer更加适应分解。这种对于分解的灵敏度并非在所有层都是一致的，因此本文开发一种方法为每层分配最优的rank。且这个方法很高效，只需要有限的sample set来评估。</p>
+</li>
+<li>我们通过吸收分解后的奇异值来优化推理，从而实现计算高效的矩阵运算。我们的方法将奇异值均匀地分布到其他 U 和 V 矩阵中，通过减少量化误差来有利于权重量化</li>
+<li>应用ASVD到LLaMA和LLaMA-2上，实验表明，ASVD可以有效地将网络权重压缩约10%-20%，而在MMLU等基准测试中，精度仅略有1%的损失。</li>
+<li>这种压缩是通过免训练的方式实现的，例如 LLaMA-7b 的分解过程，在 Nvidia A6000 GPU 上仅需要 4 个小时。重要的是，我们对 ASVD 与 4/6/8 位量化的兼容性进行了初步验证。 ASVD 作为 LLM 压缩的正交范例出现，无缝集成为与现有 LLM 量化方法一致的即插即用技术。<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1></li>
+</ul>
+<h2 id="low-rank-decomposition"><a href="#low-rank-decomposition" class="headerlink" title="low-rank decomposition"></a>low-rank decomposition</h2><p>现有的针对neural network的低秩分解方法可以分成两类</p>
+<ul>
+<li>fixed low rank<ul>
+<li>通常使用SVD或者张量分解来分解预训练网络的权重矩阵，然后对分解网络进行微调</li>
+<li>它们还涉及约束权重矩阵以在训练期间保持固定的低秩</li>
+<li>或将层构建为具有不同rank的层的线性组合</li>
+<li>显着局限性是引入了矩阵分解秩作为需要微调的附加超参数</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>variable low rank<ul>
+<li>通过自动确定和调整低秩结构</li>
+<li>使用启发式搜索来预先确定分解的rank或者通过一个惩罚评估的矩阵的rank的损失函数来学习低秩权重</li>
+<li>消除了选择LLM超参数的需要,并突出了低秩分解作为模型压缩有效工具的潜力,为更高效、可扩展的大语言模型 (LLM) 铺平了道路</li>
+</ul>
+</li>
+</ul>
+<h2 id="difference-with-TensorGPT"><a href="#difference-with-TensorGPT" class="headerlink" title="difference with TensorGPT"></a>difference with TensorGPT</h2><p>在通过分解进行LLM压缩的方法中，最相关的工作的是并发的TensorGPT，其中embedding layer of LLMs使用tensor-train decomposition进行压缩来以低秩的张量格式来存储large embeddings，并伴随着fewer parameters。区别在与</p>
+<ul>
+<li>TensorGPT只关注于 token embedding matrix, ASVD关注于压缩LLMs的所有权重</li>
+<li>TensorGPT使用固定的rank，而本文使用rank-adaptive.</li>
+</ul>
+<h2 id="原始的SVD"><a href="#原始的SVD" class="headerlink" title="原始的SVD"></a>原始的SVD</h2><p>在LLM中，最为耗时的是multi-head attention and feed-forward layers中的linear weight matrices。<br>SVD对于weight matrix的压缩过程可以分为三类：</p>
+<ol>
+<li>decomposition：将权重矩阵W分解SVD</li>
+<li>truncation: 保留top的k个奇异值以及对应的right and left singular vectors，这称为$U_k\in\mathbb{R}^{m\times k}, \Sigma_k\in\mathbb{R}^{k\times k}, V^T_k\in\mathbb{R}^{k\times n}$. $k$的选择对于平衡compression ratio和压缩模型性能非常重要。</li>
+<li>Reconstruction：$W_k=U_k \Sigma_k V_k^T$</li>
+</ol>
+<p>在 SVD 上下文中影响模型性能的主要因素是截断误差。这种误差是由于截断的SVD的近似而产生的，这可以通过计算原始权重矩阵W和近似矩阵Wk之间的差值来测量$L<em>t=| W-W_k|_F=\sum^{min(m,n)}</em>{i=k+1}\delta^2_i$，这里$\delta_i$是被排除在$\Sigma_k$的奇异值。</p>
+<h2 id="使用SVD进行压缩LLMs的挑战"><a href="#使用SVD进行压缩LLMs的挑战" class="headerlink" title="使用SVD进行压缩LLMs的挑战"></a>使用SVD进行压缩LLMs的挑战</h2><p>需要在训练，这些方法的主要局限性在于它们依赖于训练数据和大量优化来重新调整分解的模型，这与我们以免训练方式压缩 LLM 的目标形成鲜明对比。这种post-training decomposition of LLMs的主要困难在于</p>
+<ul>
+<li><p><strong>challenge 1</strong> :sensitivity of weight variation<br>近期的论文都强调了考虑activations在压缩LLM的权重中的重要性，不仅考虑权重矩阵的截断误差，还考虑了activations。主要是因为activations中的outliers的重要性，因此对于effective LLM decompsition，目标优化变为</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+W^*_k= argmin_{W_k}L(W_k):=\|W_kX-WX\|
+\end{equation}</script><p>这里$X$表示input activations,从小型calibration set中缓存的。这个集合来源于预训练数据集来避免对于特定任务的过拟合。<br>相比于完成分解，本文更加关注于确保分解后的LLM的输出与原始LLM的输出非常相似（相比分解效率，更加注重分解的准确性？）。<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240120/image.3ork3740a6c0.png" alt=""><br>定义activations的variation为</p>
+<script type="math/tex; mode=display">
+\Delta Y=(W_k-W)X</script><p>上图是这个方差的可视化结果。可以发现即使$\Delta$相对较小，但是对应的activations中的variance会很大，这就是为什么直接的SVD分解的效率很低的主要原因。<br>尽管activation variance是从input activation(not weight variations)中得出，但是会导致整个模型发生巨大的变化从而破坏分解的有效性。</p>
+</li>
+<li><p><strong>challenge 2</strong> singular values variations among layers<br>矩阵中奇异值的分布表明了它的稀疏性，进而表明了它对某些类型信息的敏感性。在不同层之间奇异值有很大的差别。在一些层中，大的奇异值会比较机器，这表示他对weight variation相对不敏感，这些层往往很容易压缩。相对的，LLM 中的其他层显示较小奇异值的更均匀分布。这说明不同的层需要一种定制的方法来分解和维护LLM。为了解决以上的两个挑战，本文提出了两种策略。</p>
+</li>
+</ul>
+<h2 id="activation-aware-singualr-value-decomposition"><a href="#activation-aware-singualr-value-decomposition" class="headerlink" title="activation-aware singualr value decomposition"></a>activation-aware singualr value decomposition</h2><p>这个方法在考虑权重矩阵的同时还考虑input activation channels.分为以下三步。</p>
+<ol>
+<li>scaling the weight matrix.<br>使用对角线矩阵$S$来缩放权重矩阵$W$.$S$矩阵用来表示权重的input channels的重要性，本质上是用来调整$W$来更好地使用输入$X$的activation patterns。这个scaled weight matrix $WS$为<script type="math/tex; mode=display">
+W=WSS^{-1}=(WS)S^{-1}</script>因为它修改了权重矩阵以反映不同输入通道的不同意义，为更有效和更有针对性的分解过程奠定基础。</li>
+<li>applying svd to the scaled matrix:<br>对$WS$应用截断SVD，得到<script type="math/tex; mode=display">
+WS\approx U'_k\Sigma'_kV'^T_k</script>只保留最重要的前k个奇异值的信息。</li>
+<li>reconstructing the approximated weight matrix<script type="math/tex; mode=display">
+W\approx U'_k\Sigma'_k(V'^T_kS^{-1})\approx U'_k\Sigma'_kV''^T_k</script>我们的 ASVD 专注于channel-wise activation outliers，努力通过适当调整相应的权重来减轻这些异常值。通过这种方式，可以减轻活化变化，如图2所示。请注意，S 的对角线性质简化了其反演过程，<br>使 $S^{−1}$ 具有计算效率。随后的挑战是设计一种准确确定 S 的方法或标准，使其有效地与 LLM 中观察到的激活模式保持一致，确保缩放过程以最佳方式解决异常激活问题.</li>
+<li>scaling matrix S exploration<br>缩放矩阵 $S$ 中的每个对角线元素，特别是 $S<em>{ii}$，对于将输入激活调制为 $（WS）X$ 至关重要。$S</em>{ii}$ 的每个条目都专门缩放第 i 个输入通道的影响。这种缩放有助于调整每个激活通道在分解过程中如何影响权重矩阵。<br><em>Absolute Mean Value of Input Activation</em>: 该方法通过计算第 i 通道中激活的绝对平均值来计算 <script type="math/tex; mode=display">
+S_{ii}=(\frac{1}{n}\sum_{j=1}^n|X_{ij}|)^\alpha</script>其中 n 是第 i 个通道的激活总数，超参数α提供了调整缩放中包含的激活灵敏度水平的灵活性。该方法侧重于每个通道中激活的平均幅度，捕获激活信号的一般强度，而不管其正向或负向性质如何。<br><em>Absolute maximum value of input activation</em>: 与基于均值的方法不同，该方法将每个通道内的peak activation归零。在这种方法下，$S_{ii}$ 由在第 i 个通道的激活中观察到的最高绝对值决定。<script type="math/tex; mode=display">
+S_{ii}=(\max_j(|X_{ij}|))^\alpha</script>这种方法强调每个通道中最显着或最高峰的激活，将其作为通道整体影响和重要性的关键指标。通过关注峰值，这种方法强调了具有最明显激活响应的通道，</li>
+</ol>
+<h2 id="sensitivity-based-truncation-rank-searching"><a href="#sensitivity-based-truncation-rank-searching" class="headerlink" title="sensitivity-based truncation rank searching"></a>sensitivity-based truncation rank searching</h2><p>为了解决第二个挑战，即不同层LLM之间奇异值的变化，我们引入了基于灵敏度的截断秩搜索（STRS）方法。这一挑战源于这样一个事实，即LLM中的不同层对信息压缩表现出不同程度的敏感性，这反映在其奇异值的分布中。STRS旨在分析和利用这种特定于图层的灵敏度，特别是关于奇异值的截断如何影响预测准确性。</p>
+<p>我们首先收集一个小而有代表性的校准数据集。该数据集有助于评估图层对不同截断等级的响应能力。对于校准集，我们从维基文本中选择序。<br>在 NLP 领域，困惑度perplexity是评估语言模型预测标记序列的有效性的关键指标。在我们的分析范围内，“灵敏度”是指在模型分解后在校准数据集中观察到的困惑度的降低值。</p>
+<p>这个sensitivity evaluation本质上就是探索神经网络对于不同截断的反应。定义了一个潜在的截断率$R={0.1,0.2,0.3,\cdots,0.9}$，这些比率决定了截断SVD中为$m\times n$的权重矩阵保留的k秩的fraction，</p>
+<script type="math/tex; mode=display">
+r=\frac{km+kn}{mn}, r\in R</script><p>对LLM中的每个linear layer，迭代所有的ratio，对layer的权重矩阵进行截断SVD并替换为分解后的评估矩阵，对前面给出的calibration dataset评估其perplexity，这个迭代过程找到最优ratio来平衡模型压缩和评估误差下降。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240120/image.66zhp75kfo00.webp" alt=""><br>如图 3 所示，网络不同层之间的灵敏度存在明显差异。从这一分析中得出三个关键观察结果：</p>
+<ol>
+<li>相反比例关系：我们观察到困惑度与参数比率成反比。具体说来较低的参数比率往往会导致较高的困惑度分数。这一发现凸显了模型压缩和推理性能之间的关键权衡，表明仔细选择参数以保持平衡的重要性。</li>
+<li>MLP 层中的更高灵敏度：多层感知器 （MLP） 中的层与前馈模块相比，表现出更高的灵敏度。这种区别对于指导压缩策略至关重要，表明在哪些地方需要更谨慎的截断。</li>
+<li>可变灵敏度层：某些层表现出相对较低的灵敏度，表明有可能在不显著性能下降的情况下进行更激进的压缩。这种变化表明 LLM 中存在冗余，为更有效的压缩方法提供了机会。针对这些不太敏感的层可以产生既紧凑又计算高效的模型。</li>
+</ol>
+<p>评估敏感度后，编制了一个元组列表(layer, truncation rank, sensitivity),然后根据 sensitivity进行排序。设计了一个binary search algorithm，该算法旨在根据每层的灵敏度和对整体模型性能的贡献，来应对为每一层选择最有效截断等级的复杂性。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240120/image.l7ep1wkw3xs.webp" alt=""></p>
+<h2 id="absorbing-singular-values"><a href="#absorbing-singular-values" class="headerlink" title="absorbing singular values"></a>absorbing singular values</h2><p>将$\Sigma$这个对角线融入其他的两个奇异值向量</p>
+<script type="math/tex; mode=display">
+W\approx U_k\Sigma_kV^T_k=U_k\sqrt{\Sigma_k}\cdot \sqrt{\Sigma_k}V_k^T=A_k\cdot B_k</script><p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240120/image.16h2bcr1kb7g.webp" alt=""><br>这个图与仅将奇异值Σk融合到U或V矩阵中的方法相比，我们提出的融合技术在权重量化方面具有显着优势<br>这确保了 Ak 和 Bk 的分布更加均匀，从而减少了不同通道之间的差异并减少了量化误差</p>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h2 id="hyper-parameters-exploration"><a href="#hyper-parameters-exploration" class="headerlink" title="hyper-parameters exploration"></a>hyper-parameters exploration</h2><p>探索了前文提到的scaling matrix $S$的两种方法。</p>
+<p>工具：OPT-125m</p>
+<p>方法：在相对较小的网络OPT-125m上测试，测试$\alpha={0.1,0.25,0.5,1,2}$的影响。对于两种$S$的计算，将truncation ratio设置为0.9，使用binary search进行截断排名。将这两种指标进行两两组合计算在Wikitext2的测试集上的perplexity.</p>
+<p>结论：根据谁的perplexity的最小值，与标准SVD STRS相比，两种激活感知方法都显示出更好的性能，$\alpha$取中值0.5最合适，且绝对平均值优于绝对最大值</p>
+<h2 id="evaluation-of-asvd-on-LLaMA-models"><a href="#evaluation-of-asvd-on-LLaMA-models" class="headerlink" title="evaluation of asvd on LLaMA models"></a>evaluation of asvd on LLaMA models</h2><p>工具：LLaMA-7b  LLaMA-2-7b,每个都包含了7billion paramaters.对于每个模型，我们从维基文本数据集中选择了 32 个校准数据集，每个数据集包含 2048 个标记，以评估逐层灵敏度。</p>
+<p>方法：设置不同的阈值 binary searching process，使我们能够观察不同压缩级别对模型性能的影响。该方法产生了一系列压缩网络，每个网络都具有独特的压缩比。我们使用困惑度作为主要指标来评估这些压缩网络的性能，重点关注两个数据集：Wikitext-2和Penn Treebank（PTB）。</p>
+<p>结论：</p>
+<ul>
+<li>随着参数比率的降低，困惑度相应增加。压缩的参数越多，SVD 引入的误差就越大。这会降低网络的表示能力，从而导致更高的困惑度分数。</li>
+<li>当参数比值超过0.9时，观察到一个平台区域。在此范围内，ASVD 主要解压缩不太敏感的层，从而对预测准确性的影响最小。（</li>
+<li>参数比值低于0.85时，困惑度迅速增加，表示更敏感的层正在被解压缩到较低的截断等级，从而对模型的性能产生不利影响。</li>
+</ul>
+<h2 id="integration-ASVD-with-Quantization"><a href="#integration-ASVD-with-Quantization" class="headerlink" title="integration ASVD with Quantization"></a>integration ASVD with Quantization</h2><p>如何将 ASVD 与量化技术集成以压缩大型语言模型，作为初步步骤，我们研究了 ASVD 与简单量化方法 RoundTo-Nearest （RTN） 和 4 位 NormalFloat （NF4）之间的协同作用。</p>
+<p>方法：应用ASVD来分解网络，随后对分解的权重进行量化。我们采用每通道非对称量化，针对两个量化级别：8 位和 6 位。我们使用NF4来量化 4-bit。</p>
+<p>在LLaMA-7b和LLaMA-2-7b上进行实验<br>进行了以下观察： </p>
+<ul>
+<li>8 位量化：结果表明，8 位量化对原始网络和 ASVD压缩网络的模型性能影响可以忽略不计。</li>
+<li>6 位量化：使用 6 位量化时，预测精度略有下降。这种效应在具有较高压缩率（较低参数比）的网络中更为明显，表明压缩和较低位量化的复合影响。</li>
+<li>4 位量化：将网络量化为 NF4 后，观察到预测准确性进一步恶化。当参数比大于0.9时，量化导致的性能下降与非分解网络的性能下降基本一致。例如，在未分解的LLaMA-2-7b的情况下，NF4量化导致wiki PPL与FP16相比降低了0.18。同样，在参数比率0.95，NF4 定量产生的 PPL 与 FP16 相比降低了 0.19。</li>
+<li>总之，研究结果表明ASVD与权重量化技术兼容。</li>
+</ul>
+<h2 id="decomposed-network-analysis"><a href="#decomposed-network-analysis" class="headerlink" title="decomposed network analysis"></a>decomposed network analysis</h2><p>工具：在LLaMA-2-7a上使用ASVD压缩后，per-type parameters ratio and per-block parameters ratio随着params ratio的变化情况，</p>
+<p>结论：</p>
+<ul>
+<li>在MLP层中(gate projection, up projection and down projection)，参数有最好的压缩效果</li>
+<li>在MHA层中，V projection layer的压缩相对小勺，而q projection layer和k projection layer可以显著被压缩</li>
+<li>在per-block ratio中，第一层可以承受实质性的压缩。相比之下，除两个中间层外，其他层的压缩比，显示相似的压缩率。</li>
+</ul>
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><h2 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h2><h2 id="Background-and-Motivation-1"><a href="#Background-and-Motivation-1" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h2><h2 id="Main-Contributions-1"><a href="#Main-Contributions-1" class="headerlink" title="Main Contributions"></a>Main Contributions</h2><h2 id="Theoretical-Framework-Algorithm-1"><a href="#Theoretical-Framework-Algorithm-1" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h2><h2 id="Experimental-Design-and-Results-1"><a href="#Experimental-Design-and-Results-1" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h2><h2 id="Comparative-Analysis-1"><a href="#Comparative-Analysis-1" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h2><h2 id="Discussion-and-Limitations-1"><a href="#Discussion-and-Limitations-1" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h2><h2 id="Conclusion-1"><a href="#Conclusion-1" class="headerlink" title="Conclusion"></a>Conclusion</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1079,168 +1351,6 @@ V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s) \\= \sum_r\sum_i \s
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/pig.png">
-      <meta itemprop="name" content="upupwords">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="upupwords">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/" class="post-title-link" itemprop="url">DNN的入门</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-09 21:45:05" itemprop="dateCreated datePublished" datetime="2022-04-09T21:45:05+08:00">2022-04-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-30 19:52:04" itemprop="dateModified" datetime="2022-05-30T19:52:04+08:00">2022-05-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">矩阵计算</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>不规则稀疏的背景</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/09/%E9%9D%9E%E7%BB%93%E6%9E%84%E7%A8%80%E7%96%8F/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2022/04/08/warp-function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/pig.png">
-      <meta itemprop="name" content="upupwords">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="upupwords">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/08/warp-function/" class="post-title-link" itemprop="url">warp function</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-08 00:22:44" itemprop="dateCreated datePublished" datetime="2022-04-08T00:22:44+08:00">2022-04-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-09 01:43:10" itemprop="dateModified" datetime="2022-04-09T01:43:10+08:00">2022-04-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">cuda基础学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>warp-level 函数的结果测试</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/08/warp-function/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1312,7 +1422,7 @@ V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s) \\= \sum_r\sum_i \s
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
