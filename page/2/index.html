@@ -76,7 +76,119 @@
   </style>
 </noscript>
 
-</head>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -130,7 +242,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">13</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">15</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -188,7 +300,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2022/04/08/warp-function/">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/posts/83b070d6.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/pig.png">
@@ -202,7 +314,169 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/08/warp-function/" class="post-title-link" itemprop="url">warp function</a>
+            <a href="/posts/83b070d6.html" class="post-title-link" itemprop="url">ptx的学习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-14 22:46:23" itemprop="dateCreated datePublished" datetime="2022-04-14T22:46:23+08:00">2022-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-01-27 22:29:14" itemprop="dateModified" datetime="2024-01-27T22:29:14+08:00">2024-01-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/cuda%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">cuda进阶学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ptx的简单学习</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/83b070d6.html">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/posts/d5b7452c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/d5b7452c.html" class="post-title-link" itemprop="url">DNN的入门</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-09 21:45:05" itemprop="dateCreated datePublished" datetime="2022-04-09T21:45:05+08:00">2022-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-01-27 22:29:14" itemprop="dateModified" datetime="2024-01-27T22:29:14+08:00">2024-01-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">矩阵计算</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>不规则稀疏的背景</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/d5b7452c.html">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/posts/67e3964.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/67e3964.html" class="post-title-link" itemprop="url">warp function</a>
         </h2>
 
         <div class="post-meta">
@@ -219,7 +493,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-09 01:43:10" itemprop="dateModified" datetime="2022-04-09T01:43:10+08:00">2022-04-09</time>
+                <time title="修改时间：2024-01-27 22:29:14" itemprop="dateModified" datetime="2024-01-27T22:29:14+08:00">2024-01-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,7 +519,7 @@
           <p>warp-level 函数的结果测试</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/04/08/warp-function/">
+              <a class="btn" href="/posts/67e3964.html">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -269,7 +543,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2022/03/06/cuda%E7%9A%84%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/posts/11e987dd.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/pig.png">
@@ -283,7 +557,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/06/cuda%E7%9A%84%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">cuda的进阶学习</a>
+            <a href="/posts/11e987dd.html" class="post-title-link" itemprop="url">cuda的进阶学习</a>
         </h2>
 
         <div class="post-meta">
@@ -300,7 +574,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-08 00:26:58" itemprop="dateModified" datetime="2022-04-08T00:26:58+08:00">2022-04-08</time>
+                <time title="修改时间：2024-01-27 22:29:14" itemprop="dateModified" datetime="2024-01-27T22:29:14+08:00">2024-01-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -326,7 +600,7 @@
           <p>一些写的好的文章连接</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/03/06/cuda%E7%9A%84%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/">
+              <a class="btn" href="/posts/11e987dd.html">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -350,7 +624,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2022/02/28/%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C/">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/posts/27f03bfd.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/pig.png">
@@ -364,7 +638,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/28/%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C/" class="post-title-link" itemprop="url">动态并行</a>
+            <a href="/posts/27f03bfd.html" class="post-title-link" itemprop="url">动态并行</a>
         </h2>
 
         <div class="post-meta">
@@ -381,7 +655,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-08 00:03:18" itemprop="dateModified" datetime="2022-04-08T00:03:18+08:00">2022-04-08</time>
+                <time title="修改时间：2024-01-27 22:29:14" itemprop="dateModified" datetime="2024-01-27T22:29:14+08:00">2024-01-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -407,7 +681,7 @@
           <p>关于《CUDA C编程权威指南》第3.6节</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/02/28/%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C/">
+              <a class="btn" href="/posts/27f03bfd.html">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -498,7 +772,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
