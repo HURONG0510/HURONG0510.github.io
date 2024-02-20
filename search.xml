@@ -162,6 +162,9 @@
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1></li>
 </ol>
 ]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
   </entry>
   <entry>
     <title>Paper Analysis: ASVD: Activation-aware Singular Value Decomposition for Compressing Large Language Models</title>
@@ -321,7 +324,18 @@ W\approx U_k\Sigma_kV^T_k=U_k\sqrt{\Sigma_k}\cdot \sqrt{\Sigma_k}V_k^T=A_k\cdot 
 <li>总体而言，我们通过实验表明，与手动调整和启发式基线相比，我们的硬件感知分比式 BERT 变体将能量延迟积降低了 5.7× 的精度损失小于 1.1\%，并实现了更好的效率精度的Pareto frontier</li>
 <li>在这项工作中，我们探索了硬件高效张量分解的大设计空间，并提出了用于 Transformer 模型压缩的自动分解框架 HEAT。我们超越了传统的手动分解，只关注压缩比或计算。<br>我们在优化循环中考虑硬件成本，并有效地找到富有表现力和硬件效率的张量化形状。我们基于 SuperNet 的一次性排名搜索流程可以有效地生成优化的每张量分解排名设置。我们采用两级蒸馏流程来解决分解变压器的可训练性瓶颈，并显著提高其任务性能。<br>实验表明，HEAT在我们定制的加速器上减少了高达5.7×的能量延迟积，精度下降小于1.1%。与手动和启发式张量分解方法相比，<br>我们搜索的 HEAT 变体显示精度提高了 1-3%，硬件成本平均降低了 ∼30%。</li>
 </ul>
-<h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><h2 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h2><h2 id="Background-and-Motivation-1"><a href="#Background-and-Motivation-1" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h2><h2 id="Main-Contributions-1"><a href="#Main-Contributions-1" class="headerlink" title="Main Contributions"></a>Main Contributions</h2><h2 id="Theoretical-Framework-Algorithm-1"><a href="#Theoretical-Framework-Algorithm-1" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h2><h2 id="Experimental-Design-and-Results-1"><a href="#Experimental-Design-and-Results-1" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h2><h2 id="Comparative-Analysis-1"><a href="#Comparative-Analysis-1" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h2><h2 id="Discussion-and-Limitations-1"><a href="#Discussion-and-Limitations-1" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h2><h2 id="Conclusion-1"><a href="#Conclusion-1" class="headerlink" title="Conclusion"></a>Conclusion</h2>]]></content>
+<h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>% ## Title and Authors </p>
+<p>% ## Background and Motivation</p>
+<p>% ## Main Contributions</p>
+<p>% ## Theoretical Framework/Algorithm</p>
+<p>% ## Experimental Design and Results</p>
+<p>% ## Comparative Analysis</p>
+<p>% ## Discussion and Limitations</p>
+<p>% ## Conclusion</p>
+]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
   </entry>
   <entry>
     <title>cuda的进阶学习</title>
@@ -619,6 +633,7 @@ V(x,y,t) &= \sum_{r=1}^{R} K^t(t,r)\,  U^{syx}(x,y,r)\,, \tag{9}
       <tags>
         <tag>tensor decomposition</tag>
         <tag>model compression</tag>
+        <tag>论文分析</tag>
       </tags>
   </entry>
   <entry>
@@ -1129,5 +1144,100 @@ V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s) \\= \sum_r\sum_i \s
 </ul>
 <p>I think it’s interesting how common patterns in network design, pointwise and depthwise convolutions, naturally appear in these decompositions!</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>LLM的基础理解</title>
+    <url>/posts/462eb406.html</url>
+    <content><![CDATA[<h1 id="LLM的阶段划分"><a href="#LLM的阶段划分" class="headerlink" title="LLM的阶段划分"></a>LLM的阶段划分</h1><p>LLM可以分为四个训练阶段</p>
+<h2 id="预训练-Pre-training"><a href="#预训练-Pre-training" class="headerlink" title="预训练 Pre-training"></a>预训练 Pre-training</h2><p>这是LLM的初始阶段，模型在此阶段通过大规模的未标记文本数据进行自监督学习。</p>
+<ul>
+<li>目的：模型学会理解语言的语法、语义和上下文，以及构建词汇和语言知识。在预训练期间，模型学习使用各种自监督任务来提取文本数据的特征和结构。</li>
+<li>输入：large-scale unlabeled text dataset. 这可以是来自互联网、书籍、文章等多种来源的文本数据。</li>
+<li>输出：预训练的语言模型。这个模型具有学习到的语言知识和结构，通畅以模型参数的形式保存，如权重矩阵和词嵌入。</li>
+</ul>
+<h2 id="微调阶段-fine-tuning"><a href="#微调阶段-fine-tuning" class="headerlink" title="微调阶段 fine-tuning"></a>微调阶段 fine-tuning</h2><p>在预训练之后，模型可以通过在特定任务或领域上进行微调来适应特定的应用。</p>
+<ul>
+<li>目的：微调将预训练模型加载到特定任务的数据集上，并使用有监督学习方法调整模型的参数，以最大程度提高模型在该任务上的性能。微调可以使模型更好地适应特定领域或任务的特征和数据分布。</li>
+<li>输入：预训练的语言模型和特定任务或领域的标记数据集。标记数据集包含用于训练模型的带有标签的示例，例如情感分析中的文本评论和对应的情感标签。</li>
+</ul>
+<h2 id="量化阶段-quantization"><a href="#量化阶段-quantization" class="headerlink" title="量化阶段 quantization"></a>量化阶段 quantization</h2><p>在一些情况下，为了减少模型的存储空间和计算成本，可以对模型的参数进行量化。</p>
+<ul>
+<li>目的：量化阶段涉及将模型的浮点参数转换为固定位宽的整数表示，从而减少模型的存储需求和计算量，同时尽量保持模型的性能。</li>
+<li>输入：Fine-tuned language model。这是一个具有浮点参数的模型，通常具有较大的存储需求和计算成本。</li>
+<li>输出：Quantized language model. This is a model where parameters are represented as fixed-width integers, reducing the model’s storage requirements and computational costs while attempting to maintain its performance.</li>
+</ul>
+<h2 id="部署阶段-deployment"><a href="#部署阶段-deployment" class="headerlink" title="部署阶段 deployment"></a>部署阶段 deployment</h2><p>在完成微调和量化之后，模型可以部署到生产环境中用于实际应用。</p>
+<ul>
+<li>目的：部署阶段涉及将模型集成到应用程序或系统中，并确保模型能够有效地处理实际数据并产生准确的预测或输出。</li>
+<li>输入： Quantized language model and input data for the actual application. 输入数据可以是任意的文本或文本序列</li>
+<li>输出：部署的语言模型的预测或输出结果。这可以是模型对输入文本的情感分类、文本生成、问答等任务的预测结果。</li>
+</ul>
+<h1 id="LLM和一般的NLP的区别"><a href="#LLM和一般的NLP的区别" class="headerlink" title="LLM和一般的NLP的区别"></a>LLM和一般的NLP的区别</h1><p>大型语言模型（LLM）与一般的自然语言处理（NLP）任务有以下区别：</p>
+<ol>
+<li><p>重点任务不同：LLM主要用于语言理解和生成，它们旨在处理自然语言文本，并在各种语言任务上表现出色，如语言翻译、文本生成、问答系统等。而一般的NLP任务涵盖更广泛，包括词性标注、命名实体识别、句法分析等。</p>
+</li>
+<li><p>模型规模和复杂性：LLM通常比一般的NLP模型更大更复杂。它们可能具有数十亿或数万亿的参数，以便更好地捕获语言中的复杂关系和语义。</p>
+</li>
+<li><p>预训练和微调：LLM通常会进行预训练，然后在特定任务上进行微调。这种预训练使得模型能够学习通用的语言表示，从而可以适应各种任务。相比之下，一般的NLP模型可能会直接在任务特定的数据集上进行训练，不涉及预训练的过程。</p>
+</li>
+<li><p>模型用途：LLM主要用于生成文本、回答问题、进行对话等任务。而一般的NLP模型可能用于更多种类的任务，包括信息提取、情感分析、语音识别等。</p>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Paper-Analysis-TensorGPT: Efficient Compression of the Embedding Layer in LLMs based on the Tensor-Train Decomposition</title>
+    <url>/posts/d275d454.html</url>
+    <content><![CDATA[<h1 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h1><p>TensorGPT: Efficient Compression of the Embedding Layer in LLMs<br>  based on the Tensor-Train Decomposition</p>
+<h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>LLMs的大量参数使得其无法在轻量应用以及低端设备上发挥潜力。有一种关注于压缩embedding layer的解决方式，embedding layer占用了30%的参数量。因此对其进行有效的压缩可以减少space complexity和edge devices. embedding layer占据了整个模型参数的31.02\%.</p>
+<p>为了实现这个目的，本文使用tensor-train decomposition来压缩embedding layer of LLM以便使用low-rank张量格式来存储large embeddings。这种格式称为TT-format或Matrix Product State.<br>在许多应用中token vocabulary在不断变化，本文考虑的是每个单独的token embedding（token embedding matrix中的每行）而不是整个token embedding matrix。得益于tensor networks的super-compression特性，本文对每个token embedding进行张量化和分解，然后构建一个高效的embedding存储格式来进行分布式计算。</p>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li>第一个使用TT decomposition和matrix product state来分解GPT系列模型</li>
+<li>将每个token embedding 视为一个matrix product state，这种方法可以便于token embedding的插入或删除，也有助于分布式计算</li>
+<li>实验表明参数数量减少了2.31倍</li>
+</ul>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><h2 id="token-token-embeddings-and-embedding-layer-in-LLMs"><a href="#token-token-embeddings-and-embedding-layer-in-LLMs" class="headerlink" title="token, token embeddings and embedding layer in LLMs"></a>token, token embeddings and embedding layer in LLMs</h2><p><strong>token and tokenization</strong>  token表示文本的单元例如一个单词或者一个标点。tokenization将一段文本分解为若干个单元。GPT系列模型使用了Byte Pair Encoding BPEde tokenization方法。BPE将文本分解为不同长度的子词单元varying-length subword unit。</p>
+<p><strong>token embedding and embedding layer in LLMs</strong> “embedding”是指将离散的输入tokens转化为连续的向量表示。这种表示称为word embedding或者token embedding。在LLMs中，embedding layers根据sequential input tokens进行output token embeddings，该层将每个输入token映射到一个高维向量，这个向量捕获关于token的含义和上下文的语义和句法信息。embedding layer有一个大小为V的vocabulary${v}$，对于每个token $v$，对应的embedding $x_v$的长度为$D$，此时weights of embedding layer表示为$W\in\mathbb{R}^{V\times D}$. 如果令牌嵌入维度D过大，则会存在过多的参数复杂性，导致嵌入层的高存储成本，以及此后整个语言模型的高存储成本。</p>
+<blockquote>
+<p>嵌入权重矩阵W可以被看作查找表。基本嵌入生成找到与所有输入令牌相对应的令牌嵌入，并根据输入顺序对其进行堆叠。应该注意的是，在当前的LLM中，例如类似GPT和类似BERT的模型中，令牌的位置和掩码信息也被编码到嵌入中。在这些情况下，嵌入xv的令牌不仅仅是通过查找过程生成的。</p>
+</blockquote>
+<h2 id="tensor-train-decomposition-and-matrix-product-state"><a href="#tensor-train-decomposition-and-matrix-product-state" class="headerlink" title="tensor-train decomposition and matrix product state"></a>tensor-train decomposition and matrix product state</h2><p>Tensor-Train Decomposition最常见的形式是量子物理界引入的Matrix Product State（MPS或TT-MPS），它应用算法中描述的Tensor-Train Singular Value Decomposition（TT-SVD）算法来分解一个大阶-$N$张量$\mathcal{X} \in \mathbb{R}^{I<em>1 \times I_2 \times \cdots \times I_N}$, into $N$ smaller $2$-nd or $3$-rd order core tensors, $\mathcal{G}^{(n)} \in \mathbb{R}^{ R</em>{n-1} \times  I_n \times R_n }$ for $n=1, \dots, N$, such that </p>
+<script type="math/tex; mode=display">
+\begin{equation}\label{ttcp_eq:tt_def}
+\begin{aligned}
+    \mathcal{X} \approx \mathcal{G}^{(1)} \times_2^1 \mathcal{G}^{(2)} \times_3^1 \mathcal{G}^{(3)} \times_3^1 \cdots \times_3^1 \mathcal{G}^{(N)}
+\end{aligned}
+\end{equation}</script><blockquote>
+<p>A $(2, 1)$-tensor contraction between two order-$2$ tensors, $\textbf{A} \in \mathbb{R}^{I_1 \times I_2}$ and $\textbf{B} \in \mathbb{R}^{J_1 \times J_2}$, where $I_2 = J_1$, is equivalent to a standard matrix multiplication, $\textbf{C} = \textbf{A} \times_2^1 \textbf{B} = \textbf{A} \textbf{B} \in \mathbb{R}^{I_1 \times J_2}$</p>
+</blockquote>
+<p>The tensors $\mathcal{G}^{(1)}, \ldots, \mathcal{G}^{(N)}$ 被称为core tensors, while the set ${ R<em>0, \dots, R</em>{N} }$, where $R<em>0=R_N=1$, represents the TT-rank of the TT decomposition. By defining $\mathcal{G}^{(n)}</em>{:, i_n, :}$, $i_n = 1, \dots, I_N$ as the $i_n$-th horizontal slice of tensor $\mathcal{G}^{(n)}$, the MPS assumes the element-wise form as </p>
+<script type="math/tex; mode=display">
+\begin{equation}
+x_{i_1, i_2, \dots, i_N} = \mathcal{G}^{(1)}_{:, i_1, :}\cdots\mathcal{G}^{(N)}_{:, i_N, :}    
+\end{equation}</script><p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240214/image.4lfbegts7180.webp" alt="算法描述"></p>
+<h2 id="MPS-formatted-token-embedding"><a href="#MPS-formatted-token-embedding" class="headerlink" title="MPS formatted token embedding"></a>MPS formatted token embedding</h2><p>vocabulary发生变化时，如果分解的是整个embedding weight matrix， tensor decomposition就需要整个重新执行。此外，加载整个权重embedding matrix和分解都需要大量的内存和计算资源。本文不分解整个embedding weight matrix，而是分解每个token embedding。每个token embedding reshape为一个N阶张量，$\texttt{ten} \left( \textbf{x}<em>v \right) = \mathcal{X} \in \mathbb{R}^{I_1 \times \cdots \times I_N}$ such that $D =     \prod</em>{k=1}^{N} I_k$, 使用MPS form as $\mathcal{X} \approx \mathcal{G}^{(1)} \times_3^1 \cdots \times_3^1 \mathcal{G}^{(N)}$. </p>
+<p>不存储the entire token embedding $\text{x} \in \mathbb{R}^{D}$, 我们存储 corresponding MPS cores, $\mathcal{G}^{(n)} \in \mathbb{R}^{R_{n-1} \times I_n \times R_n}$, for $n=1,\ldots,N$.<br>优点如下：</p>
+<ul>
+<li>lower storage cost</li>
+<li>affordable computation (更利于单节点计算)</li>
+</ul>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><ul>
+<li>实验数据： general language understanding evalution (GLUE)和 microsoft rsearch paraphrase corpus的文本数据集，一共是11602个English 句子。 使用BPE tokenization</li>
+<li>language model : GPT-2, embedding weight matrix $W\in \mathbb{R}^{50257\times 768}$，其中 vacabulary的大小为50257， token embedding dimension为768.</li>
+<li>$\texttt{ten2} \left( \textbf{x}_v \right) = \mathcal{X} \in \mathbb{R}^{2\times2\times\cdots\times2}$. 这里使用了zero-padding</li>
+</ul>
+<h2 id="evaluation-metrics"><a href="#evaluation-metrics" class="headerlink" title="evaluation metrics"></a>evaluation metrics</h2><ul>
+<li>compression ratio</li>
+<li>distortion error<ul>
+<li>mae</li>
+<li>norm-mae</li>
+</ul>
+</li>
+<li>Compatibility with the subsequent GPT-2 network blocks</li>
+</ul>
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1>]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
   </entry>
 </search>

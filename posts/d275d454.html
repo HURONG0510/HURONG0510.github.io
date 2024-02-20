@@ -24,25 +24,22 @@
     var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="关于《CUDA C编程权威指南》第3.6节">
+  <meta name="description" content="Title and AuthorsTensorGPT: Efficient Compression of the Embedding Layer in LLMs  based on the Tensor-Train Decomposition Background and MotivationLLMs的大量参数使得其无法在轻量应用以及低端设备上发挥潜力。有一种关注于压缩embedding laye">
 <meta property="og:type" content="article">
-<meta property="og:title" content="动态并行">
-<meta property="og:url" content="https://hurong0510.github.io/posts/27f03bfd.html">
+<meta property="og:title" content="Paper-Analysis-TensorGPT: Efficient Compression of the Embedding Layer in LLMs based on the Tensor-Train Decomposition">
+<meta property="og:url" content="https://hurong0510.github.io/posts/d275d454.html">
 <meta property="og:site_name" content="upupwords">
-<meta property="og:description" content="关于《CUDA C编程权威指南》第3.6节">
+<meta property="og:description" content="Title and AuthorsTensorGPT: Efficient Compression of the Embedding Layer in LLMs  based on the Tensor-Train Decomposition Background and MotivationLLMs的大量参数使得其无法在轻量应用以及低端设备上发挥潜力。有一种关注于压缩embedding laye">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/blogpic@main/20220228/20220228120642.58dizq8tk7o0.webp">
-<meta property="og:image" content="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220228/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220228213943.1z5k28bd1se8.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220228/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220228214303.20t4lvy2suw0.png">
-<meta property="article:published_time" content="2022-02-28T02:45:17.000Z">
-<meta property="article:modified_time" content="2024-01-27T14:29:14.729Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240214/image.4lfbegts7180.webp">
+<meta property="article:published_time" content="2024-01-31T07:16:01.000Z">
+<meta property="article:modified_time" content="2024-02-20T13:31:22.557Z">
 <meta property="article:author" content="upupwords">
-<meta property="article:tag" content="cuda">
-<meta property="article:tag" content="gpu">
+<meta property="article:tag" content="论文分析">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/blogpic@main/20220228/20220228120642.58dizq8tk7o0.webp">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240214/image.4lfbegts7180.webp">
 
-<link rel="canonical" href="https://hurong0510.github.io/posts/27f03bfd.html">
+<link rel="canonical" href="https://hurong0510.github.io/posts/d275d454.html">
 
 
 <script id="page-configurations">
@@ -55,7 +52,7 @@
   };
 </script>
 
-  <title>动态并行 | upupwords</title>
+  <title>Paper-Analysis-TensorGPT: Efficient Compression of the Embedding Layer in LLMs based on the Tensor-Train Decomposition | upupwords</title>
   
 
 
@@ -199,7 +196,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/posts/27f03bfd.html">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/posts/d275d454.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/pig.png">
@@ -212,7 +209,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          动态并行
+          Paper-Analysis-TensorGPT: Efficient Compression of the Embedding Layer in LLMs based on the Tensor-Train Decomposition
         </h1>
 
         <div class="post-meta">
@@ -222,24 +219,15 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-02-28 10:45:17" itemprop="dateCreated datePublished" datetime="2022-02-28T10:45:17+08:00">2022-02-28</time>
+              <time title="创建时间：2024-01-31 15:16:01" itemprop="dateCreated datePublished" datetime="2024-01-31T15:16:01+08:00">2024-01-31</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-01-27 22:29:14" itemprop="dateModified" datetime="2024-01-27T22:29:14+08:00">2024-01-27</time>
+                <time title="修改时间：2024-02-20 21:31:22" itemprop="dateModified" datetime="2024-02-20T21:31:22+08:00">2024-02-20</time>
               </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">cuda基础学习</span></a>
-                </span>
-            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -249,7 +237,6 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">关于《CUDA C编程权威指南》第3.6节</div>
 
         </div>
       </header>
@@ -260,47 +247,54 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="动态并行"><a href="#动态并行" class="headerlink" title="动态并行"></a>动态并行</h1><p>CUDA的动态并行允许在GPU端直接创建和同步新的GPU内核。在GPU端直接创建工作的能力可以减少在主机和设备之间传输执行控制和数据的需求，因为在设备上执行的线程可以在<strong>运行时</strong>决定启动配置。</p>
-<h2 id="嵌套执行"><a href="#嵌套执行" class="headerlink" title="嵌套执行"></a>嵌套执行</h2><p>在动态并行中，内核执行分为两种类型：父母和孩子。父线程、父线程块或父网格启动一个新的网格，即子网格。子线程、子线程块或子网格被父母启动。子网格必须在父线程、父线程块或父网格完成之前完成。只有在所有的子网格都完成之后，父母才会完成。</p>
-<p>下图说明了父网格和子网格的使用范围。主机线程配置和启动父网格，父网格配置和启动子网格。在线程创建的所有子网格都完成之后，父网格才会完成。如果调用的线程没有显式同步启动子网格，那么运行时保证父母和孩子之间的隐式同步。下图在父线程中设置了栅栏，从而可以与其子网格显式同步。</p>
-<div  align="center">    
- <img src="https://cdn.jsdelivr.net/gh/HURONG0510/blogpic@main/20220228/20220228120642.58dizq8tk7o0.webp" width = "400" height = "200" />
-</div>
-
+        <h1 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h1><p>TensorGPT: Efficient Compression of the Embedding Layer in LLMs<br>  based on the Tensor-Train Decomposition</p>
+<h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>LLMs的大量参数使得其无法在轻量应用以及低端设备上发挥潜力。有一种关注于压缩embedding layer的解决方式，embedding layer占用了30%的参数量。因此对其进行有效的压缩可以减少space complexity和edge devices. embedding layer占据了整个模型参数的31.02\%.</p>
+<p>为了实现这个目的，本文使用tensor-train decomposition来压缩embedding layer of LLM以便使用low-rank张量格式来存储large embeddings。这种格式称为TT-format或Matrix Product State.<br>在许多应用中token vocabulary在不断变化，本文考虑的是每个单独的token embedding（token embedding matrix中的每行）而不是整个token embedding matrix。得益于tensor networks的super-compression特性，本文对每个token embedding进行张量化和分解，然后构建一个高效的embedding存储格式来进行分布式计算。</p>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li>第一个使用TT decomposition和matrix product state来分解GPT系列模型</li>
+<li>将每个token embedding 视为一个matrix product state，这种方法可以便于token embedding的插入或删除，也有助于分布式计算</li>
+<li>实验表明参数数量减少了2.31倍</li>
+</ul>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><h2 id="token-token-embeddings-and-embedding-layer-in-LLMs"><a href="#token-token-embeddings-and-embedding-layer-in-LLMs" class="headerlink" title="token, token embeddings and embedding layer in LLMs"></a>token, token embeddings and embedding layer in LLMs</h2><p><strong>token and tokenization</strong>  token表示文本的单元例如一个单词或者一个标点。tokenization将一段文本分解为若干个单元。GPT系列模型使用了Byte Pair Encoding BPEde tokenization方法。BPE将文本分解为不同长度的子词单元varying-length subword unit。</p>
+<p><strong>token embedding and embedding layer in LLMs</strong> “embedding”是指将离散的输入tokens转化为连续的向量表示。这种表示称为word embedding或者token embedding。在LLMs中，embedding layers根据sequential input tokens进行output token embeddings，该层将每个输入token映射到一个高维向量，这个向量捕获关于token的含义和上下文的语义和句法信息。embedding layer有一个大小为V的vocabulary${v}$，对于每个token $v$，对应的embedding $x_v$的长度为$D$，此时weights of embedding layer表示为$W\in\mathbb{R}^{V\times D}$. 如果令牌嵌入维度D过大，则会存在过多的参数复杂性，导致嵌入层的高存储成本，以及此后整个语言模型的高存储成本。</p>
 <blockquote>
-<p>设置栅栏，需要补充</p>
+<p>嵌入权重矩阵W可以被看作查找表。基本嵌入生成找到与所有输入令牌相对应的令牌嵌入，并根据输入顺序对其进行堆叠。应该注意的是，在当前的LLM中，例如类似GPT和类似BERT的模型中，令牌的位置和掩码信息也被编码到嵌入中。在这些情况下，嵌入xv的令牌不仅仅是通过查找过程生成的。</p>
 </blockquote>
+<h2 id="tensor-train-decomposition-and-matrix-product-state"><a href="#tensor-train-decomposition-and-matrix-product-state" class="headerlink" title="tensor-train decomposition and matrix product state"></a>tensor-train decomposition and matrix product state</h2><p>Tensor-Train Decomposition最常见的形式是量子物理界引入的Matrix Product State（MPS或TT-MPS），它应用算法中描述的Tensor-Train Singular Value Decomposition（TT-SVD）算法来分解一个大阶-$N$张量$\mathcal{X} \in \mathbb{R}^{I<em>1 \times I_2 \times \cdots \times I_N}$, into $N$ smaller $2$-nd or $3$-rd order core tensors, $\mathcal{G}^{(n)} \in \mathbb{R}^{ R</em>{n-1} \times  I_n \times R_n }$ for $n=1, \dots, N$, such that </p>
+<script type="math/tex; mode=display">
+\begin{equation}\label{ttcp_eq:tt_def}
+\begin{aligned}
+    \mathcal{X} \approx \mathcal{G}^{(1)} \times_2^1 \mathcal{G}^{(2)} \times_3^1 \mathcal{G}^{(3)} \times_3^1 \cdots \times_3^1 \mathcal{G}^{(N)}
+\end{aligned}
+\end{equation}</script><blockquote>
+<p>A $(2, 1)$-tensor contraction between two order-$2$ tensors, $\textbf{A} \in \mathbb{R}^{I_1 \times I_2}$ and $\textbf{B} \in \mathbb{R}^{J_1 \times J_2}$, where $I_2 = J_1$, is equivalent to a standard matrix multiplication, $\textbf{C} = \textbf{A} \times_2^1 \textbf{B} = \textbf{A} \textbf{B} \in \mathbb{R}^{I_1 \times J_2}$</p>
+</blockquote>
+<p>The tensors $\mathcal{G}^{(1)}, \ldots, \mathcal{G}^{(N)}$ 被称为core tensors, while the set ${ R<em>0, \dots, R</em>{N} }$, where $R<em>0=R_N=1$, represents the TT-rank of the TT decomposition. By defining $\mathcal{G}^{(n)}</em>{:, i_n, :}$, $i_n = 1, \dots, I_N$ as the $i_n$-th horizontal slice of tensor $\mathcal{G}^{(n)}$, the MPS assumes the element-wise form as </p>
+<script type="math/tex; mode=display">
+\begin{equation}
+x_{i_1, i_2, \dots, i_N} = \mathcal{G}^{(1)}_{:, i_1, :}\cdots\mathcal{G}^{(N)}_{:, i_N, :}    
+\end{equation}</script><p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240214/image.4lfbegts7180.webp" alt="算法描述"></p>
+<h2 id="MPS-formatted-token-embedding"><a href="#MPS-formatted-token-embedding" class="headerlink" title="MPS formatted token embedding"></a>MPS formatted token embedding</h2><p>vocabulary发生变化时，如果分解的是整个embedding weight matrix， tensor decomposition就需要整个重新执行。此外，加载整个权重embedding matrix和分解都需要大量的内存和计算资源。本文不分解整个embedding weight matrix，而是分解每个token embedding。每个token embedding reshape为一个N阶张量，$\texttt{ten} \left( \textbf{x}<em>v \right) = \mathcal{X} \in \mathbb{R}^{I_1 \times \cdots \times I_N}$ such that $D =     \prod</em>{k=1}^{N} I_k$, 使用MPS form as $\mathcal{X} \approx \mathcal{G}^{(1)} \times_3^1 \cdots \times_3^1 \mathcal{G}^{(N)}$. </p>
+<p>不存储the entire token embedding $\text{x} \in \mathbb{R}^{D}$, 我们存储 corresponding MPS cores, $\mathcal{G}^{(n)} \in \mathbb{R}^{R_{n-1} \times I_n \times R_n}$, for $n=1,\ldots,N$.<br>优点如下：</p>
 <ul>
-<li>设备线程中的网格启动，在线程块间是可见的。在线程块中，只有所有线程创建的子网格完成之后，线程块才结束。如果线程块中的线程在所有网格完成之前退出，那么在那些子网格上隐式同步会被触发。</li>
-<li>当父母启动一个子网格，父线程块与孩子显式同步之后，孩子才能开始执行。</li>
-<li>父网格和子网格共享相同的全局和常量内存存储，但他们有不同的局部内存和共享内存。</li>
-<li>父网格和子网格可以对全局内存并发存取。有两个时刻，子网格和他的父线程见到的内存完全相同：<ul>
-<li>子网格开始时</li>
-<li>子网格完成时</li>
+<li>lower storage cost</li>
+<li>affordable computation (更利于单节点计算)</li>
+</ul>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><ul>
+<li>实验数据： general language understanding evalution (GLUE)和 microsoft rsearch paraphrase corpus的文本数据集，一共是11602个English 句子。 使用BPE tokenization</li>
+<li>language model : GPT-2, embedding weight matrix $W\in \mathbb{R}^{50257\times 768}$，其中 vacabulary的大小为50257， token embedding dimension为768.</li>
+<li>$\texttt{ten2} \left( \textbf{x}_v \right) = \mathcal{X} \in \mathbb{R}^{2\times2\times\cdots\times2}$. 这里使用了zero-padding</li>
+</ul>
+<h2 id="evaluation-metrics"><a href="#evaluation-metrics" class="headerlink" title="evaluation metrics"></a>evaluation metrics</h2><ul>
+<li>compression ratio</li>
+<li>distortion error<ul>
+<li>mae</li>
+<li>norm-mae</li>
 </ul>
 </li>
-<li>共享内存和局部内存分别于线程块或线程来说是私有的，同时在父母和孩子之间不是可见或一致的。局部内存对线程来说是私有存储，并且对该线程外部不可见。当启动一个子网格时，向局部内存传递一个指针作为参数是无效的。</li>
+<li>Compatibility with the subsequent GPT-2 network blocks</li>
 </ul>
-<p>下图表示在GPU上嵌套hello world，每个网格的第0号线程输出hello world。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220228/微信截图_20220228213943.1z5k28bd1se8.png" alt=""></th>
-<th><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220228/微信截图_20220228214303.20t4lvy2suw0.png" alt=""></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>因为动态并行是由设备运行时库所支持的，所以函数必须在命令行使用 <strong>-lcudadevrt</strong>  进行明确链接。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc -<span class="built_in">arch</span>=sm_35 -rdc=<span class="literal">true</span> nestedHelloWorld.cu -o hestHelloWorld -lcudadevrt</span><br></pre></td></tr></table></figure></p>
-<p>当<strong>-rdc</strong> 标志为true，他强制生成可重定位的设备代码，这是动态并行的一个要求。</p>
-<h2 id="动态并行的限制条件"><a href="#动态并行的限制条件" class="headerlink" title="动态并行的限制条件"></a>动态并行的限制条件</h2><p>动态并行只有在计算能力为3.5或更高的设备上才能被支持。通过动态并行调用的内核不能在物理方面独立的设备上启动。动态并行的最大嵌套深度限制为24，但实际上，在每一个新的级别中大多数内核受限于设备运行时系统需要的内存数量。因为为了对每个嵌套层中的父网格和子网格之间进行同步管理，设备运行时需要保留额外的内存。</p>
-
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1>
     </div>
 
     
@@ -309,8 +303,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/cuda/" rel="tag"># cuda</a>
-              <a href="/tags/gpu/" rel="tag"># gpu</a>
+              <a href="/tags/%E8%AE%BA%E6%96%87%E5%88%86%E6%9E%90/" rel="tag"># 论文分析</a>
           </div>
 
         
@@ -318,10 +311,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/posts/11e987dd.html" rel="next" title="cuda的进阶学习">
-      cuda的进阶学习 <i class="fa fa-chevron-right"></i>
+    <a href="/posts/e86d18bd.html" rel="prev" title="Paper-Analysis-LQ-LoRA: Low-rank Plus Quantized Matrix Decomposition for Efficient Language Model Finetuning">
+      <i class="fa fa-chevron-left"></i> Paper-Analysis-LQ-LoRA: Low-rank Plus Quantized Matrix Decomposition for Efficient Language Model Finetuning
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/462eb406.html" rel="next" title="LLM的基础理解">
+      LLM的基础理解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -381,7 +377,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">动态并行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E6%89%A7%E8%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">嵌套执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C%E7%9A%84%E9%99%90%E5%88%B6%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">动态并行的限制条件</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Title-and-Authors"><span class="nav-number">1.</span> <span class="nav-text">Title and Authors</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Background-and-Motivation"><span class="nav-number">2.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Main-Contributions"><span class="nav-number">3.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Theoretical-Framework-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Theoretical Framework&#x2F;Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#token-token-embeddings-and-embedding-layer-in-LLMs"><span class="nav-number">4.1.</span> <span class="nav-text">token, token embeddings and embedding layer in LLMs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tensor-train-decomposition-and-matrix-product-state"><span class="nav-number">4.2.</span> <span class="nav-text">tensor-train decomposition and matrix product state</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MPS-formatted-token-embedding"><span class="nav-number">4.3.</span> <span class="nav-text">MPS formatted token embedding</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Experimental-Design-and-Results"><span class="nav-number">5.</span> <span class="nav-text">Experimental Design and Results</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#evaluation-metrics"><span class="nav-number">5.1.</span> <span class="nav-text">evaluation metrics</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Comparative-Analysis"><span class="nav-number">6.</span> <span class="nav-text">Comparative Analysis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Discussion-and-Limitations"><span class="nav-number">7.</span> <span class="nav-text">Discussion and Limitations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
