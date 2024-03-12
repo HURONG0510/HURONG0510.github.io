@@ -24,17 +24,19 @@
     var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="https://hurong0510.github.io/categories/index.html">
+  <meta name="description" content="研究重要性采样在sgd中的优化方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="importance sampling in stochastic gradient">
+<meta property="og:url" content="https://hurong0510.github.io/posts/fe72b5ed.html">
 <meta property="og:site_name" content="upupwords">
+<meta property="og:description" content="研究重要性采样在sgd中的优化方式">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-04-07T15:59:03.000Z">
-<meta property="article:modified_time" content="2022-04-07T16:01:14.000Z">
+<meta property="article:published_time" content="2024-03-02T07:15:28.000Z">
+<meta property="article:modified_time" content="2024-03-02T11:16:54.155Z">
 <meta property="article:author" content="upupwords">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://hurong0510.github.io/categories/">
+<link rel="canonical" href="https://hurong0510.github.io/posts/fe72b5ed.html">
 
 
 <script id="page-configurations">
@@ -42,13 +44,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>categories | upupwords
-</title>
+  <title>importance sampling in stochastic gradient | upupwords</title>
   
 
 
@@ -184,51 +185,126 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/posts/fe72b5ed.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          importance sampling in stochastic gradient
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">categories
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2024-03-02 15:15:28 / 修改时间：19:16:54" itemprop="dateCreated datePublished" datetime="2024-03-02T15:15:28+08:00">2024-03-02</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">研究重要性采样在sgd中的优化方式</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Adaptive-Importance-Sampling-for-Finite-Sum-Optimization-and-Sampling-with-Decreasing-Step-Sizes"><a href="#Adaptive-Importance-Sampling-for-Finite-Sum-Optimization-and-Sampling-with-Decreasing-Step-Sizes" class="headerlink" title="Adaptive Importance Sampling for Finite-Sum Optimization and Sampling with Decreasing Step-Sizes"></a>Adaptive Importance Sampling for Finite-Sum Optimization and Sampling with Decreasing Step-Sizes</h1><h2 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h2><p>functions $f$: $\mathbb{R^d}\rightarrow \mathbb{R}$ of the form $f(x)=\sum^N_{i=1}f_i(x)$. 当$N$很大时，偏向使用$f$的随机估计，使用SGD的变体或者stochastic gradient langevin dynamics：</p>
+<script type="math/tex; mode=display">
+X_{t+1}^{SGD}=X_{t}^{SGD} - \alpha_t N \nabla_{f_{I_t}}(X_{t}^{SGD})</script><script type="math/tex; mode=display">
+X_{t+1}^{SGLD}=X_{t}^{SGLD} - \alpha_t N \nabla_{f_{I_t}}(X_{t}^{SGLD})</script><p>${\alpha<em>t}</em>{t=1}^T$表示一系列的step-sizes，索引$I<em>t$从$[N]$从随机挑选，使得$N\nabla</em>{f_{I_t}}(x)$是$f$的梯度的无偏估计。众所周知，这些算法给出的答案的质量取决于梯度估计器的（迹）方差，并且已经做出了相当大的努力来设计减少这种方差的方法。</p>
+<p>本文关注于使用importance sampling来实现方差减少，在每次迭代，算法根据给定的$p^t$分布中选择$I<em>t$，估计方差为$\hat{g}^t:=\frac{1}{p^t</em>{I<em>t}\nabla f</em>{I_t}(x_t)}$. $\hat{g}^t$是$g^t:=\nabla f(x_t)$的无偏估计。只要选好了$p^t$,就可以显著地减少方差。但是计算方差减少的最优分布，需要计算每次迭代中的所有个体梯度$g^t_i:=\nabla f_i(x_t)$的euclidean范数，太expensive。</p>
+<p>本文关注于online problem with bandit feedback. 尝试设计一个带有sub-linear expected static regret, which is defined as</p>
+<script type="math/tex; mode=display">
+Regret_S(T):=\sum^T_{t=1}c_t(p^t)-min_{p\in \triangle}\sum_{t=1}^Tc_t(p)</script><p>其中$\triangle$是$\mathbb{R}^N$的probability simplex，$c_t(p)$是$\hat{g}^t$的协方差矩阵的迹</p>
+<script type="math/tex; mode=display">
+c_t(p):=\sum_{i=1}^N\frac{1}{p_i}\|g_i^t\|_2^2-\|g^t\|_2^2</script><p>注意，第二项在regret的定义中被取消，剩下的讨论中忽略了它。在这这个公式中，为了保证计算负载的可管理，只能使用$I^{th}_t$ gradient的范数形式的部分反馈，而不能使用完整的cost function。在一致有界梯度的假设下，[12]中提出了一种具有$\hat{\mathcal{O}}(T^{\frac{2}{3}})$静态regret算法。<br>更好用的是动态regret算法</p>
+<script type="math/tex; mode=display">
+Regret_D(T):=\sum^T_{t=1}c_t(p^t)-\sum_{t=1}^Tmin_{p\in \triangle}c_t(p)</script><h2 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h2><h2 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h2><h2 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h2><!-- % ## Title and Authors 
+
+% ## Background and Motivation
+
+
+
+% ## Main Contributions
+
+
+
+% ## Theoretical Framework/Algorithm
+
+
+
+
+% ## Experimental Design and Results
+
+
+
+
+
+% ## Comparative Analysis
+
+
+
+% ## Discussion and Limitations
+
+% ## Conclusion -->
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/462eb406.html" rel="prev" title="LLM的基础理解">
+      <i class="fa fa-chevron-left"></i> LLM的基础理解
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              目前共计 5 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cuda%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">cuda基础学习</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cuda%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/">cuda进阶学习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3/">张量分解</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97/">矩阵计算</a><span class="category-list-count">1</span></li></ul>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -279,6 +355,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Adaptive-Importance-Sampling-for-Finite-Sum-Optimization-and-Sampling-with-Decreasing-Step-Sizes"><span class="nav-number">1.</span> <span class="nav-text">Adaptive Importance Sampling for Finite-Sum Optimization and Sampling with Decreasing Step-Sizes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Background-and-Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-Contributions"><span class="nav-number">1.2.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Theoretical-Framework-Algorithm"><span class="nav-number">1.3.</span> <span class="nav-text">Theoretical Framework&#x2F;Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experimental-Design-and-Results"><span class="nav-number">1.4.</span> <span class="nav-text">Experimental Design and Results</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
