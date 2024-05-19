@@ -249,45 +249,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="llm的阶段划分">LLM的阶段划分</h1>
-<p>LLM可以分为四个训练阶段 ## 预训练 Pre-training
-这是LLM的初始阶段，模型在此阶段通过大规模的未标记文本数据进行自监督学习。
--
-目的：模型学会理解语言的语法、语义和上下文，以及构建词汇和语言知识。在预训练期间，模型学习使用各种自监督任务来提取文本数据的特征和结构。
-- 输入：large-scale unlabeled text dataset.
-这可以是来自互联网、书籍、文章等多种来源的文本数据。 -
-输出：预训练的语言模型。这个模型具有学习到的语言知识和结构，通畅以模型参数的形式保存，如权重矩阵和词嵌入。</p>
-<h2 id="微调阶段-fine-tuning">微调阶段 fine-tuning</h2>
-<p>在预训练之后，模型可以通过在特定任务或领域上进行微调来适应特定的应用。
--
-目的：微调将预训练模型加载到特定任务的数据集上，并使用有监督学习方法调整模型的参数，以最大程度提高模型在该任务上的性能。微调可以使模型更好地适应特定领域或任务的特征和数据分布。
--
-输入：预训练的语言模型和特定任务或领域的标记数据集。标记数据集包含用于训练模型的带有标签的示例，例如情感分析中的文本评论和对应的情感标签。
--
-输出：微调后的语言模型。这是一个在特定任务或领域上经过优化的模型，其参数经过微调以最大程度地提高在该任务上的性能。
-## 量化阶段 quantization
-在一些情况下，为了减少模型的存储空间和计算成本，可以对模型的参数进行量化。
--
-目的：量化阶段涉及将模型的浮点参数转换为固定位宽的整数表示，从而减少模型的存储需求和计算量，同时尽量保持模型的性能。
-- 输入：Fine-tuned language
-model。这是一个具有浮点参数的模型，通常具有较大的存储需求和计算成本。 -
-输出：Quantized language model. This is a model where parameters are
-represented as fixed-width integers, reducing the model's storage
-requirements and computational costs while attempting to maintain its
-performance.</p>
-<h2 id="部署阶段-deployment">部署阶段 deployment</h2>
-<p>在完成微调和量化之后，模型可以部署到生产环境中用于实际应用。 -
-目的：部署阶段涉及将模型集成到应用程序或系统中，并确保模型能够有效地处理实际数据并产生准确的预测或输出。
-- 输入： Quantized language model and input data for the actual
-application. 输入数据可以是任意的文本或文本序列 -
-输出：部署的语言模型的预测或输出结果。这可以是模型对输入文本的情感分类、文本生成、问答等任务的预测结果。</p>
-<h1 id="llm和一般的nlp的区别">LLM和一般的NLP的区别</h1>
-<p>大型语言模型（LLM）与一般的自然语言处理（NLP）任务有以下区别：</p>
-<ol type="1">
-<li><p>重点任务不同：LLM主要用于语言理解和生成，它们旨在处理自然语言文本，并在各种语言任务上表现出色，如语言翻译、文本生成、问答系统等。而一般的NLP任务涵盖更广泛，包括词性标注、命名实体识别、句法分析等。</p></li>
-<li><p>模型规模和复杂性：LLM通常比一般的NLP模型更大更复杂。它们可能具有数十亿或数万亿的参数，以便更好地捕获语言中的复杂关系和语义。</p></li>
-<li><p>预训练和微调：LLM通常会进行预训练，然后在特定任务上进行微调。这种预训练使得模型能够学习通用的语言表示，从而可以适应各种任务。相比之下，一般的NLP模型可能会直接在任务特定的数据集上进行训练，不涉及预训练的过程。</p></li>
-<li><p>模型用途：LLM主要用于生成文本、回答问题、进行对话等任务。而一般的NLP模型可能用于更多种类的任务，包括信息提取、情感分析、语音识别等。</p></li>
+        <h1 id="LLM的阶段划分"><a href="#LLM的阶段划分" class="headerlink" title="LLM的阶段划分"></a>LLM的阶段划分</h1><p>LLM可以分为四个训练阶段</p>
+<h2 id="预训练-Pre-training"><a href="#预训练-Pre-training" class="headerlink" title="预训练 Pre-training"></a>预训练 Pre-training</h2><p>这是LLM的初始阶段，模型在此阶段通过大规模的未标记文本数据进行自监督学习。</p>
+<ul>
+<li>目的：模型学会理解语言的语法、语义和上下文，以及构建词汇和语言知识。在预训练期间，模型学习使用各种自监督任务来提取文本数据的特征和结构。</li>
+<li>输入：large-scale unlabeled text dataset. 这可以是来自互联网、书籍、文章等多种来源的文本数据。</li>
+<li>输出：预训练的语言模型。这个模型具有学习到的语言知识和结构，通畅以模型参数的形式保存，如权重矩阵和词嵌入。</li>
+</ul>
+<h2 id="微调阶段-fine-tuning"><a href="#微调阶段-fine-tuning" class="headerlink" title="微调阶段 fine-tuning"></a>微调阶段 fine-tuning</h2><p>在预训练之后，模型可以通过在特定任务或领域上进行微调来适应特定的应用。</p>
+<ul>
+<li>目的：微调将预训练模型加载到特定任务的数据集上，并使用有监督学习方法调整模型的参数，以最大程度提高模型在该任务上的性能。微调可以使模型更好地适应特定领域或任务的特征和数据分布。</li>
+<li>输入：预训练的语言模型和特定任务或领域的标记数据集。标记数据集包含用于训练模型的带有标签的示例，例如情感分析中的文本评论和对应的情感标签。</li>
+<li>输出：微调后的语言模型。这是一个在特定任务或领域上经过优化的模型，其参数经过微调以最大程度地提高在该任务上的性能。<h2 id="量化阶段-quantization"><a href="#量化阶段-quantization" class="headerlink" title="量化阶段 quantization"></a>量化阶段 quantization</h2>在一些情况下，为了减少模型的存储空间和计算成本，可以对模型的参数进行量化。</li>
+<li>目的：量化阶段涉及将模型的浮点参数转换为固定位宽的整数表示，从而减少模型的存储需求和计算量，同时尽量保持模型的性能。</li>
+<li>输入：Fine-tuned language model。这是一个具有浮点参数的模型，通常具有较大的存储需求和计算成本。</li>
+<li>输出：Quantized language model. This is a model where parameters are represented as fixed-width integers, reducing the model’s storage requirements and computational costs while attempting to maintain its performance.</li>
+</ul>
+<h2 id="部署阶段-deployment"><a href="#部署阶段-deployment" class="headerlink" title="部署阶段 deployment"></a>部署阶段 deployment</h2><p>在完成微调和量化之后，模型可以部署到生产环境中用于实际应用。</p>
+<ul>
+<li>目的：部署阶段涉及将模型集成到应用程序或系统中，并确保模型能够有效地处理实际数据并产生准确的预测或输出。</li>
+<li>输入： Quantized language model and input data for the actual application. 输入数据可以是任意的文本或文本序列</li>
+<li>输出：部署的语言模型的预测或输出结果。这可以是模型对输入文本的情感分类、文本生成、问答等任务的预测结果。</li>
+</ul>
+<h1 id="LLM和一般的NLP的区别"><a href="#LLM和一般的NLP的区别" class="headerlink" title="LLM和一般的NLP的区别"></a>LLM和一般的NLP的区别</h1><p>大型语言模型（LLM）与一般的自然语言处理（NLP）任务有以下区别：</p>
+<ol>
+<li><p>重点任务不同：LLM主要用于语言理解和生成，它们旨在处理自然语言文本，并在各种语言任务上表现出色，如语言翻译、文本生成、问答系统等。而一般的NLP任务涵盖更广泛，包括词性标注、命名实体识别、句法分析等。</p>
+</li>
+<li><p>模型规模和复杂性：LLM通常比一般的NLP模型更大更复杂。它们可能具有数十亿或数万亿的参数，以便更好地捕获语言中的复杂关系和语义。</p>
+</li>
+<li><p>预训练和微调：LLM通常会进行预训练，然后在特定任务上进行微调。这种预训练使得模型能够学习通用的语言表示，从而可以适应各种任务。相比之下，一般的NLP模型可能会直接在任务特定的数据集上进行训练，不涉及预训练的过程。</p>
+</li>
+<li><p>模型用途：LLM主要用于生成文本、回答问题、进行对话等任务。而一般的NLP模型可能用于更多种类的任务，包括信息提取、情感分析、语音识别等。</p>
+</li>
 </ol>
 
     </div>
@@ -369,7 +362,7 @@ application. 输入数据可以是任意的文本或文本序列 -
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#llm%E7%9A%84%E9%98%B6%E6%AE%B5%E5%88%92%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">LLM的阶段划分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E8%B0%83%E9%98%B6%E6%AE%B5-fine-tuning"><span class="nav-number">1.1.</span> <span class="nav-text">微调阶段 fine-tuning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E9%98%B6%E6%AE%B5-deployment"><span class="nav-number">1.2.</span> <span class="nav-text">部署阶段 deployment</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#llm%E5%92%8C%E4%B8%80%E8%88%AC%E7%9A%84nlp%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">LLM和一般的NLP的区别</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LLM%E7%9A%84%E9%98%B6%E6%AE%B5%E5%88%92%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">LLM的阶段划分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E8%AE%AD%E7%BB%83-Pre-training"><span class="nav-number">1.1.</span> <span class="nav-text">预训练 Pre-training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E8%B0%83%E9%98%B6%E6%AE%B5-fine-tuning"><span class="nav-number">1.2.</span> <span class="nav-text">微调阶段 fine-tuning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E9%98%B6%E6%AE%B5-quantization"><span class="nav-number">1.3.</span> <span class="nav-text">量化阶段 quantization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E9%98%B6%E6%AE%B5-deployment"><span class="nav-number">1.4.</span> <span class="nav-text">部署阶段 deployment</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LLM%E5%92%8C%E4%B8%80%E8%88%AC%E7%9A%84NLP%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">LLM和一般的NLP的区别</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

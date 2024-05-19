@@ -249,24 +249,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>CNN要求大量的参数去实现高准确度，造成大量的训练时间、长的inference时间和大量的内存。模型压缩作为一种常见的DNN中减少参数量的方式。例如
-parameter quantization, knowledge distillation and network pruning。
-为了能够从稀疏张量核心中受益，输入矩阵必须采用特定的2：4结构。我们将在本文后面描述2：4结构的特征。我们使用2：4修剪来参考修剪结果在2：4结构中的修剪方法。
-filter
-pruning是一个标准的网络剪枝的方法。他评估filter的重要性并移除冗余的数据。因此选择一个合适的评估指标来删除冗余权重。这个想法是生成一个较小的模型，该模型可以通过首先进行filter
-pruning来加速sparse tensor core。然后，我们应用 2：4
-修剪，以确保权重矩阵是 2：4 的结构，以利用sparse tensor
-core提供的性能。</p>
-<h1 id="related-work">related work</h1>
-<h2 id="sparse-tensor-core">sparse tensor core</h2>
-<p>sparse tensor core要求输入矩阵必须采用 2:4 格式，以利用sparse tensor
-core硬件。
-我们把矩阵的每行划分成四个元素的组，每个组至少有两个值为0的元素，则这个矩阵是2:4
-format。</p>
-<h2 id="unstructured-pruning">unstructured pruning</h2>
-<p>非结构化剪枝移除模型中不重要的权重来减少参数。需要将矩阵编码成特殊格式，以跳过零值来减少内存使用。这些格式是传统的CSR或者CSC。但是由于矩阵的稀疏性，需要特殊的硬件和软件支持，为密集计算的硬件和库在剪枝后无法给予稀疏矩阵提供高效的训练和高速的推理。</p>
-<h2 id="structed-pruning">structed pruning</h2>
-<p>结构化剪枝使用结构化的方式来避免非结构化剪枝的问题。</p>
+        <p>CNN要求大量的参数去实现高准确度，造成大量的训练时间、长的inference时间和大量的内存。模型压缩作为一种常见的DNN中减少参数量的方式。例如 parameter quantization, knowledge distillation and network pruning。<br>为了能够从稀疏张量核心中受益，输入矩阵必须采用特定的2：4结构。我们将在本文后面描述2：4结构的特征。我们使用2：4修剪来参考修剪结果在2：4结构中的修剪方法。<br>filter pruning是一个标准的网络剪枝的方法。他评估filter的重要性并移除冗余的数据。因此选择一个合适的评估指标来删除冗余权重。这个想法是生成一个较小的模型，该模型可以通过首先进行filter pruning来加速sparse tensor core。然后，我们应用 2：4 修剪，以确保权重矩阵是 2：4 的结构，以利用sparse tensor core提供的性能。</p>
+<h1 id="related-work"><a href="#related-work" class="headerlink" title="related work"></a>related work</h1><h2 id="sparse-tensor-core"><a href="#sparse-tensor-core" class="headerlink" title="sparse tensor core"></a>sparse tensor core</h2><p>sparse tensor core要求输入矩阵必须采用 2:4 格式，以利用sparse tensor core硬件。<br>我们把矩阵的每行划分成四个元素的组，每个组至少有两个值为0的元素，则这个矩阵是2:4 format。</p>
+<h2 id="unstructured-pruning"><a href="#unstructured-pruning" class="headerlink" title="unstructured pruning"></a>unstructured pruning</h2><p>非结构化剪枝移除模型中不重要的权重来减少参数。需要将矩阵编码成特殊格式，以跳过零值来减少内存使用。这些格式是传统的CSR或者CSC。但是由于矩阵的稀疏性，需要特殊的硬件和软件支持，为密集计算的硬件和库在剪枝后无法给予稀疏矩阵提供高效的训练和高速的推理。</p>
+<h2 id="structed-pruning"><a href="#structed-pruning" class="headerlink" title="structed pruning"></a>structed pruning</h2><p>结构化剪枝使用结构化的方式来避免非结构化剪枝的问题。</p>
 
     </div>
 

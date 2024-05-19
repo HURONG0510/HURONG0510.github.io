@@ -29,11 +29,18 @@
 <meta property="og:url" content="https://hurong0510.github.io/posts/e5fb5ddc.html">
 <meta property="og:site_name" content="upupwords">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.99t5xhs5wk.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.67x9z57v2b.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.26lakrm59y.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvde6x21.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.8ad2n7xwiv.webp">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.6bgvwvsrix.webp">
 <meta property="article:published_time" content="2024-04-29T09:39:22.000Z">
 <meta property="article:modified_time" content="2024-05-19T10:36:15.443Z">
 <meta property="article:author" content="upupwords">
 <meta property="article:tag" content="论文分析">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.99t5xhs5wk.png">
 
 <link rel="canonical" href="https://hurong0510.github.io/posts/e5fb5ddc.html">
 
@@ -248,78 +255,27 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1
-id="svd-llm-truncation-aware-singular-value-decomposition-for-large-language-model-compression">SVD-LLM:
-Truncation-aware Singular Value Decomposition for Large Language Model
-Compression</h1>
-<h1 id="background-and-motivation">Background and Motivation</h1>
-<p>SVD作为一种模型压缩方法，不需要硬件依赖或者模型再训练。现有的一些SVD方法，如ASVD以及FWSVD被提出。但是这些方法当模型的压缩率高时，这些方法的性能会有很大的下降。主要原因是
-- imprecise data preposcessing.
-尽管ASVD考虑了activation的outliers,但是并没有简历奇异值和模型压缩损失的关系.
-- 忽视SVD截断之后的模型参数更新.
-为了补偿截断产生的额误差,需要更新剩余的参数。但是现在基于SVD的方法都没有考虑参数更新，当压缩率高时，并没有去处理准确度的问题。</p>
-<h1 id="main-contributions">Main Contributions</h1>
+        <h1 id="SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression"><a href="#SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression" class="headerlink" title="SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression"></a>SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression</h1><h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>SVD作为一种模型压缩方法，不需要硬件依赖或者模型再训练。现有的一些SVD方法，如ASVD以及FWSVD被提出。但是这些方法当模型的压缩率高时，这些方法的性能会有很大的下降。主要原因是</p>
 <ul>
-<li>truncation-aware data whitening技术. 通过理论证明，SVD-LLM
-可以将奇异值直接映射到模型压缩损失。这种技术可以识别哪些损失值被截断时，模型压缩的损失是最小的。</li>
-<li>layer-wise closed-form model parameter update.
-为了补偿高压缩率下的准确度降低，SVD-LLM可以逐层更新压缩的权重。</li>
+<li>imprecise data preposcessing. 尽管ASVD考虑了activation的outliers,但是并没有简历奇异值和模型压缩损失的关系.</li>
+<li>忽视SVD截断之后的模型参数更新. 为了补偿截断产生的额误差,需要更新剩余的参数。但是现在基于SVD的方法都没有考虑参数更新，当压缩率高时，并没有去处理准确度的问题。</li>
 </ul>
-<h1 id="theoretical-frameworkalgorithm">Theoretical
-Framework/Algorithm</h1>
-<p>SVD-LLM的流程为：使用sentence的随机集合作为校准集来生成activation，以实现truncation-aware
-whitening 以及 layer-wise closed-form update。SVD-LLM使用cholesky
-decomposition来洗白activation，对权重矩阵执行svd。</p>
-<h2 id="truncation-aware-data-whitening">truncation-aware data
-whitening</h2>
-<p>受制于input
-activation的高方差，使用原始SVD来进行LLM压缩会产生严重的accuracy
-degradation。为了解决这个问题，ASVD将LLM
-压缩问题转换成了如下的优化问题： <span class="math display">\[
-O=\min (L:=\|WX-W&#39;X\|_F)
-\]</span>
-其中W是LLM的原始权重，X是给定输入的W的激活值,L是压缩损失。ASVD从X中提取一个对角矩阵，将<span
-class="math inline">\(WX\)</span> 转换为 <span
-class="math inline">\((WS_0)S^{-1}_0X)\)</span>，ASVD对<span
-class="math inline">\(WS_0\)</span>执行截断SVD。尽管这种normalizing
-activation可以提高性能，ASVD并不能直接建立起奇异值和压缩损失的直接关系。如下是两个直接的例子来说明这样的关系。在图2(a)中，只截断一个奇异值时，若是最小的奇异值0.1被截断时，产生的loss为1.1.而截断第二最小的奇异值0.0时，产生的损失值为0.7。当截断两个奇异值时，截断最小的两个奇异值反而比截断2.4和0.1产生的损失值更大。因此截断最小的奇异值并不会产生最小的损失值。</p>
-<p><img
-src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.99t5xhs5wk.png" /></p>
-<p>SVD
-LLMis的关键思想是结合一种感知截断的数据白化技术，以确保奇异值和压缩损失之间的直接映射。
-为了实现这个技术，SVD-LLM将激活值转变为正交矩阵，激活值变为<span
-class="math inline">\(S^{-1}X\)</span>，此时<span
-class="math inline">\((S^{-1}X)(S^{-1}X)^T=I\)</span>。其中<span
-class="math inline">\(S\)</span>来自Cholesky分解。我们对<span
-class="math inline">\(WS\)</span>执行SVD来获取<span
-class="math inline">\(U,\Sigma,V\)</span>，最后对奇异值进行截断，得到<span
-class="math inline">\(W&#39;=U\times Trunc.(\Sigma)\times V^T\times
-S\)</span>.
-图2(b)展现了本文的效果。当只有一个奇异值被截断是，compression
-loss等于被截断的奇异值本身。截断多个奇异值的压缩损失等于它们的平方和的平方根。因此，在所提出的感知截断的数据白化技术下，截断最小的奇异值导致最小的压缩损失。</p>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li>truncation-aware data whitening技术. 通过理论证明，SVD-LLM 可以将奇异值直接映射到模型压缩损失。这种技术可以识别哪些损失值被截断时，模型压缩的损失是最小的。</li>
+<li>layer-wise closed-form model parameter update. 为了补偿高压缩率下的准确度降低，SVD-LLM可以逐层更新压缩的权重。</li>
+</ul>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><p>SVD-LLM的流程为：使用sentence的随机集合作为校准集来生成activation，以实现truncation-aware whitening 以及 layer-wise closed-form update。SVD-LLM使用cholesky decomposition来洗白activation，对权重矩阵执行svd。</p>
+<h2 id="truncation-aware-data-whitening"><a href="#truncation-aware-data-whitening" class="headerlink" title="truncation-aware data whitening"></a>truncation-aware data whitening</h2><p>受制于input activation的高方差，使用原始SVD来进行LLM压缩会产生严重的accuracy degradation。为了解决这个问题，ASVD将LLM 压缩问题转换成了如下的优化问题：</p>
+<script type="math/tex; mode=display">
+O=\min (L:=\|WX-W'X\|_F)</script><p>其中W是LLM的原始权重，X是给定输入的W的激活值,L是压缩损失。ASVD从X中提取一个对角矩阵，将$WX$ 转换为 $(WS_0)S^{-1}_0X)$，ASVD对$WS_0$执行截断SVD。尽管这种normalizing activation可以提高性能，ASVD并不能直接建立起奇异值和压缩损失的直接关系。如下是两个直接的例子来说明这样的关系。在图2(a)中，只截断一个奇异值时，若是最小的奇异值0.1被截断时，产生的loss为1.1.而截断第二最小的奇异值0.0时，产生的损失值为0.7。当截断两个奇异值时，截断最小的两个奇异值反而比截断2.4和0.1产生的损失值更大。因此截断最小的奇异值并不会产生最小的损失值。</p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.99t5xhs5wk.png" alt=""></p>
+<p>SVD LLMis的关键思想是结合一种感知截断的数据白化技术，以确保奇异值和压缩损失之间的直接映射。<br>为了实现这个技术，SVD-LLM将激活值转变为正交矩阵，激活值变为$S^{-1}X$，此时$(S^{-1}X)(S^{-1}X)^T=I$。其中$S$来自Cholesky分解。我们对$WS$执行SVD来获取$U,\Sigma,V$，最后对奇异值进行截断，得到$W’=U\times Trunc.(\Sigma)\times V^T\times S$. 图2(b)展现了本文的效果。当只有一个奇异值被截断是，compression loss等于被截断的奇异值本身。截断多个奇异值的压缩损失等于它们的平方和的平方根。因此，在所提出的感知截断的数据白化技术下，截断最小的奇异值导致最小的压缩损失。</p>
 <p>以下是通过理论证明为什么这种技术可以在奇异值和压缩损失之间建立一个直接的关系。</p>
-<p><img
-src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.67x9z57v2b.png" />
-根据Lemma 3.1，当截断<span class="math inline">\(S^{-1}X\)</span>的<span
-class="math inline">\(i-th\)</span>奇异值获得压缩损失<span
-class="math inline">\(L_i\)</span> <img
-src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.26lakrm59y.png" /></p>
-<p><img
-src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvde6x21.png" /></p>
-<p><img
-src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.8ad2n7xwiv.webp" />
-<img
-src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.6bgvwvsrix.webp" /></p>
-<h2 id="layer-wise-closed-form-update">layer-wise closed-form
-update</h2>
-<p>随着压缩率的提高，<span
-class="math inline">\(W\)</span>需要截断更多的奇异值</p>
-<h1 id="experimental-design-and-results">Experimental Design and
-Results</h1>
-<h1 id="comparative-analysis">Comparative Analysis</h1>
-<h1 id="discussion-and-limitations">Discussion and Limitations</h1>
-<h1 id="conclusion">Conclusion</h1>
-
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.67x9z57v2b.png" alt=""><br>根据Lemma 3.1，当截断$S^{-1}X$的$i-th$奇异值获得压缩损失$L_i$<br><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.26lakrm59y.png" alt=""></p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvde6x21.png" alt=""></p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.8ad2n7xwiv.webp" alt=""><br><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.6bgvwvsrix.webp" alt=""></p>
+<h2 id="layer-wise-closed-form-update"><a href="#layer-wise-closed-form-update" class="headerlink" title="layer-wise closed-form update"></a>layer-wise closed-form update</h2><p>随着压缩率的提高，$W$需要截断更多的奇异值</p>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1>
     </div>
 
     
@@ -402,13 +358,7 @@ Results</h1>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#svd-llm-truncation-aware-singular-value-decomposition-for-large-language-model-compression"><span class="nav-number">1.</span> <span class="nav-text">SVD-LLM:
-Truncation-aware Singular Value Decomposition for Large Language Model
-Compression</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#background-and-motivation"><span class="nav-number">2.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#main-contributions"><span class="nav-number">3.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#theoretical-frameworkalgorithm"><span class="nav-number">4.</span> <span class="nav-text">Theoretical
-Framework&#x2F;Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#truncation-aware-data-whitening"><span class="nav-number">4.1.</span> <span class="nav-text">truncation-aware data
-whitening</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layer-wise-closed-form-update"><span class="nav-number">4.2.</span> <span class="nav-text">layer-wise closed-form
-update</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#experimental-design-and-results"><span class="nav-number">5.</span> <span class="nav-text">Experimental Design and
-Results</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#comparative-analysis"><span class="nav-number">6.</span> <span class="nav-text">Comparative Analysis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#discussion-and-limitations"><span class="nav-number">7.</span> <span class="nav-text">Discussion and Limitations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression"><span class="nav-number">1.</span> <span class="nav-text">SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Background-and-Motivation"><span class="nav-number">2.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Main-Contributions"><span class="nav-number">3.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Theoretical-Framework-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Theoretical Framework&#x2F;Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#truncation-aware-data-whitening"><span class="nav-number">4.1.</span> <span class="nav-text">truncation-aware data whitening</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layer-wise-closed-form-update"><span class="nav-number">4.2.</span> <span class="nav-text">layer-wise closed-form update</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Experimental-Design-and-Results"><span class="nav-number">5.</span> <span class="nav-text">Experimental Design and Results</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Comparative-Analysis"><span class="nav-number">6.</span> <span class="nav-text">Comparative Analysis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Discussion-and-Limitations"><span class="nav-number">7.</span> <span class="nav-text">Discussion and Limitations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

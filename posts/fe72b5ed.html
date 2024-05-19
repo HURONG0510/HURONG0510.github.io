@@ -249,63 +249,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1
-id="adaptive-importance-sampling-for-finite-sum-optimization-and-sampling-with-decreasing-step-sizes">Adaptive
-Importance Sampling for Finite-Sum Optimization and Sampling with
-Decreasing Step-Sizes</h1>
-<h2 id="background-and-motivation">Background and Motivation</h2>
-<p>functions <span class="math inline">\(f\)</span>: <span
-class="math inline">\(\mathbb{R^d}\rightarrow \mathbb{R}\)</span> of the
-form <span class="math inline">\(f(x)=\sum^N_{i=1}f_i(x)\)</span>.
-当<span class="math inline">\(N\)</span>很大时，偏向使用<span
-class="math inline">\(f\)</span>的随机估计，使用SGD的变体或者stochastic
-gradient langevin dynamics： <span class="math display">\[
-X_{t+1}^{SGD}=X_{t}^{SGD} - \alpha_t N \nabla_{f_{I_t}}(X_{t}^{SGD})
-\]</span> <span class="math display">\[
-X_{t+1}^{SGLD}=X_{t}^{SGLD} - \alpha_t N \nabla_{f_{I_t}}(X_{t}^{SGLD})
-\]</span> <span
-class="math inline">\(\{\alpha_t\}_{t=1}^T\)</span>表示一系列的step-sizes，索引<span
-class="math inline">\(I_t\)</span>从<span
-class="math inline">\([N]\)</span>从随机挑选，使得<span
-class="math inline">\(N\nabla_{f_{I_t}}(x)\)</span>是<span
-class="math inline">\(f\)</span>的梯度的无偏估计。众所周知，这些算法给出的答案的质量取决于梯度估计器的（迹）方差，并且已经做出了相当大的努力来设计减少这种方差的方法。</p>
-<p>本文关注于使用importance
-sampling来实现方差减少，在每次迭代，算法根据给定的<span
-class="math inline">\(p^t\)</span>分布中选择<span
-class="math inline">\(I_t\)</span>，估计方差为<span
-class="math inline">\(\hat{g}^t:=\frac{1}{p^t_{I_t}\nabla
-f_{I_t}(x_t)}\)</span>. <span
-class="math inline">\(\hat{g}^t\)</span>是<span
-class="math inline">\(g^t:=\nabla
-f(x_t)\)</span>的无偏估计。只要选好了<span
-class="math inline">\(p^t\)</span>,就可以显著地减少方差。但是计算方差减少的最优分布，需要计算每次迭代中的所有个体梯度<span
-class="math inline">\(g^t_i:=\nabla
-f_i(x_t)\)</span>的euclidean范数，太expensive。</p>
-<p>本文关注于online problem with bandit feedback.
-尝试设计一个带有sub-linear expected static regret, which is defined as
-<span class="math display">\[
-Regret_S(T):=\sum^T_{t=1}c_t(p^t)-min_{p\in \triangle}\sum_{t=1}^Tc_t(p)
-\]</span> 其中<span class="math inline">\(\triangle\)</span>是<span
-class="math inline">\(\mathbb{R}^N\)</span>的probability simplex，<span
-class="math inline">\(c_t(p)\)</span>是<span
-class="math inline">\(\hat{g}^t\)</span>的协方差矩阵的迹 <span
-class="math display">\[
-c_t(p):=\sum_{i=1}^N\frac{1}{p_i}\|g_i^t\|_2^2-\|g^t\|_2^2
-\]</span>
-注意，第二项在regret的定义中被取消，剩下的讨论中忽略了它。在这这个公式中，为了保证计算负载的可管理，只能使用<span
-class="math inline">\(I^{th}_t\)</span>
-gradient的范数形式的部分反馈，而不能使用完整的cost
-function。在一致有界梯度的假设下，[12]中提出了一种具有<span
-class="math inline">\(\hat{\mathcal{O}}(T^{\frac{2}{3}})\)</span>静态regret算法。
-更好用的是动态regret算法 <span class="math display">\[
-Regret_D(T):=\sum^T_{t=1}c_t(p^t)-\sum_{t=1}^Tmin_{p\in \triangle}c_t(p)
-\]</span></p>
-<h2 id="main-contributions">Main Contributions</h2>
-<h2 id="theoretical-frameworkalgorithm">Theoretical
-Framework/Algorithm</h2>
-<h2 id="experimental-design-and-results">Experimental Design and
-Results</h2>
-<!-- % ## Title and Authors 
+        <h1 id="Adaptive-Importance-Sampling-for-Finite-Sum-Optimization-and-Sampling-with-Decreasing-Step-Sizes"><a href="#Adaptive-Importance-Sampling-for-Finite-Sum-Optimization-and-Sampling-with-Decreasing-Step-Sizes" class="headerlink" title="Adaptive Importance Sampling for Finite-Sum Optimization and Sampling with Decreasing Step-Sizes"></a>Adaptive Importance Sampling for Finite-Sum Optimization and Sampling with Decreasing Step-Sizes</h1><h2 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h2><p>functions $f$: $\mathbb{R^d}\rightarrow \mathbb{R}$ of the form $f(x)=\sum^N_{i=1}f_i(x)$. 当$N$很大时，偏向使用$f$的随机估计，使用SGD的变体或者stochastic gradient langevin dynamics：</p>
+<script type="math/tex; mode=display">
+X_{t+1}^{SGD}=X_{t}^{SGD} - \alpha_t N \nabla_{f_{I_t}}(X_{t}^{SGD})</script><script type="math/tex; mode=display">
+X_{t+1}^{SGLD}=X_{t}^{SGLD} - \alpha_t N \nabla_{f_{I_t}}(X_{t}^{SGLD})</script><p>${\alpha<em>t}</em>{t=1}^T$表示一系列的step-sizes，索引$I<em>t$从$[N]$从随机挑选，使得$N\nabla</em>{f_{I_t}}(x)$是$f$的梯度的无偏估计。众所周知，这些算法给出的答案的质量取决于梯度估计器的（迹）方差，并且已经做出了相当大的努力来设计减少这种方差的方法。</p>
+<p>本文关注于使用importance sampling来实现方差减少，在每次迭代，算法根据给定的$p^t$分布中选择$I<em>t$，估计方差为$\hat{g}^t:=\frac{1}{p^t</em>{I<em>t}\nabla f</em>{I_t}(x_t)}$. $\hat{g}^t$是$g^t:=\nabla f(x_t)$的无偏估计。只要选好了$p^t$,就可以显著地减少方差。但是计算方差减少的最优分布，需要计算每次迭代中的所有个体梯度$g^t_i:=\nabla f_i(x_t)$的euclidean范数，太expensive。</p>
+<p>本文关注于online problem with bandit feedback. 尝试设计一个带有sub-linear expected static regret, which is defined as</p>
+<script type="math/tex; mode=display">
+Regret_S(T):=\sum^T_{t=1}c_t(p^t)-min_{p\in \triangle}\sum_{t=1}^Tc_t(p)</script><p>其中$\triangle$是$\mathbb{R}^N$的probability simplex，$c_t(p)$是$\hat{g}^t$的协方差矩阵的迹</p>
+<script type="math/tex; mode=display">
+c_t(p):=\sum_{i=1}^N\frac{1}{p_i}\|g_i^t\|_2^2-\|g^t\|_2^2</script><p>注意，第二项在regret的定义中被取消，剩下的讨论中忽略了它。在这这个公式中，为了保证计算负载的可管理，只能使用$I^{th}_t$ gradient的范数形式的部分反馈，而不能使用完整的cost function。在一致有界梯度的假设下，[12]中提出了一种具有$\hat{\mathcal{O}}(T^{\frac{2}{3}})$静态regret算法。<br>更好用的是动态regret算法</p>
+<script type="math/tex; mode=display">
+Regret_D(T):=\sum^T_{t=1}c_t(p^t)-\sum_{t=1}^Tmin_{p\in \triangle}c_t(p)</script><h2 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h2><h2 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h2><h2 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h2><!-- % ## Title and Authors 
 
 % ## Background and Motivation
 
@@ -413,11 +368,7 @@ Results</h2>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#adaptive-importance-sampling-for-finite-sum-optimization-and-sampling-with-decreasing-step-sizes"><span class="nav-number">1.</span> <span class="nav-text">Adaptive
-Importance Sampling for Finite-Sum Optimization and Sampling with
-Decreasing Step-Sizes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#background-and-motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#main-contributions"><span class="nav-number">1.2.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#theoretical-frameworkalgorithm"><span class="nav-number">1.3.</span> <span class="nav-text">Theoretical
-Framework&#x2F;Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experimental-design-and-results"><span class="nav-number">1.4.</span> <span class="nav-text">Experimental Design and
-Results</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Adaptive-Importance-Sampling-for-Finite-Sum-Optimization-and-Sampling-with-Decreasing-Step-Sizes"><span class="nav-number">1.</span> <span class="nav-text">Adaptive Importance Sampling for Finite-Sum Optimization and Sampling with Decreasing Step-Sizes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Background-and-Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-Contributions"><span class="nav-number">1.2.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Theoretical-Framework-Algorithm"><span class="nav-number">1.3.</span> <span class="nav-text">Theoretical Framework&#x2F;Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experimental-Design-and-Results"><span class="nav-number">1.4.</span> <span class="nav-text">Experimental Design and Results</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
