@@ -30,7 +30,7 @@
 <meta property="og:site_name" content="upupwords">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-02-19T08:54:49.000Z">
-<meta property="article:modified_time" content="2024-05-19T11:56:11.181Z">
+<meta property="article:modified_time" content="2024-05-19T11:57:54.896Z">
 <meta property="article:author" content="upupwords">
 <meta property="article:tag" content="论文分析">
 <meta name="twitter:card" content="summary">
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-19 19:56:11" itemprop="dateModified" datetime="2024-05-19T19:56:11+08:00">2024-05-19</time>
+                <time title="修改时间：2024-05-19 19:57:54" itemprop="dateModified" datetime="2024-05-19T19:57:54+08:00">2024-05-19</time>
               </span>
 
           
@@ -359,17 +359,17 @@ class="math display">\[
 \]</span>
 对于L层的transformers而言，其权重矩阵可以堆叠为三阶张量大小为<span
 class="math inline">\(12L\times D\times D\)</span>, The original
-non-decomposed weights is called Ⅰ: $W^{Ⅰ} = { W^{(j)} }_{j=1}^{L}
-<sup>{12LD</sup>2} $. Each weight matrix in <span
-class="math inline">\(W^{Ⅰ}\)</span> is <span
-class="math inline">\(W_i^{Ⅰ} = W_i  \in  \mathbb{R}^{D \times
+non-decomposed weights is called Ⅰ: <span class="math inline">\(W^{Ⅰ} =
+\{W^{(j)}\}_{j=1}^{L} \in \mathbb{R}^{12LD^2}\)</span>. Each weight
+matrix in <span class="math inline">\(W^{Ⅰ}\)</span> is <span
+class="math inline">\(W_i^{Ⅰ} = W_i \in\mathbb{R}^{D \times
 D}\)</span>.</p>
 <p><strong>Ⅱ matrix decomposition</strong>. 受intra-matrix
 redundancy的启发，可以采用矩阵分解将矩阵分解/近似为一些较小的矩阵。一种典型的方法就是SVD，called
 Ⅱ-<span class="math inline">\(\alpha\)</span>, for each <span
 class="math inline">\(D\times D\)</span> matrix $W_iW^Ⅰ <span
 class="math inline">\(,\)</span>$ <span
-class="math display">\[\begin{equation}\label{eq:mf}
+class="math display">\[\begin{equation}
 W_i \approx  W_i^{Ⅱ}  =   U_i _i
 V_i  \in  \mathbb{R}^{D \times D}
 \end{equation}\]</span> $$ One can also drop the diagonal <span
