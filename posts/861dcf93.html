@@ -258,125 +258,252 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="类似知识"><a href="#类似知识" class="headerlink" title="类似知识"></a>类似知识</h1><h2 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h2><p>待写</p>
-<h2 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h2><p>待写</p>
-<h1 id="Tensor-Decomposition"><a href="#Tensor-Decomposition" class="headerlink" title="Tensor Decomposition"></a>Tensor Decomposition</h1><p>用于feature extraction、dimensionality reduction和knowledge discovery。随着时间的变化，张量的数据可能增加、减少或者修改在他任何的维度上。现实生活中最常用的动态张量就是随着时间变化的数据，而其它的维度保持不变。这种张量称为 online tensors, tensor streams incremental tensors.<br>在大规模的online tensor中，找到其分解结果是很困难的，他的难点主要是</p>
-<ul>
-<li>online tensors are growing with time,他的整体大小其实是没有限制的。TD 需要高效和可扩展，从时间和空间来看。</li>
-<li>高数据生成速率需要分解方法提供实时或接近实时的性能。</li>
-</ul>
-<h1 id="Notation-and-basic-operations"><a href="#Notation-and-basic-operations" class="headerlink" title="Notation and basic operations"></a>Notation and basic operations</h1><div class="table-container">
+        <h1 id="类似知识">类似知识</h1>
+<h2 id="pca">PCA</h2>
+<p>待写 ## SVD 待写</p>
+<h1 id="tensor-decomposition">Tensor Decomposition</h1>
+<p>用于feature extraction、dimensionality reduction和knowledge
+discovery。随着时间的变化，张量的数据可能增加、减少或者修改在他任何的维度上。现实生活中最常用的动态张量就是随着时间变化的数据，而其它的维度保持不变。这种张量称为
+online tensors, tensor streams incremental tensors. 在大规模的online
+tensor中，找到其分解结果是很困难的，他的难点主要是 * online tensors are
+growing with time,他的整体大小其实是没有限制的。TD
+需要高效和可扩展，从时间和空间来看。 *
+高数据生成速率需要分解方法提供实时或接近实时的性能。</p>
+<h1 id="notation-and-basic-operations">Notation and basic
+operations</h1>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>symbol</th>
 <th>definition</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>$A^{T}$</td>
+<tr class="odd">
+<td><span class="math inline">\(A^{T}\)</span></td>
 <td>转置 transpose</td>
 </tr>
-<tr>
-<td>$A^{-1}$</td>
+<tr class="even">
+<td><span class="math inline">\(A^{-1}\)</span></td>
 <td>逆 inverse</td>
 </tr>
-<tr>
-<td>$A^{\dagger}$</td>
+<tr class="odd">
+<td><span class="math inline">\(A^{\dagger}\)</span></td>
 <td>Moore-Penrose pseudoinverse</td>
 </tr>
-<tr>
-<td>$\lVert A\rVert$</td>
+<tr class="even">
+<td><span class="math inline">\(\lVert A\rVert\)</span></td>
 <td>frobenius norm</td>
 </tr>
-<tr>
-<td>$\odot$</td>
+<tr class="odd">
+<td><span class="math inline">\(\odot\)</span></td>
 <td>khatri-rao product</td>
 </tr>
-<tr>
-<td>$\otimes$</td>
+<tr class="even">
+<td><span class="math inline">\(\otimes\)</span></td>
 <td>hadamard product</td>
 </tr>
-<tr>
-<td>$X_{(n)}$</td>
+<tr class="odd">
+<td><span class="math inline">\(X_{(n)}\)</span></td>
 <td>张量的mode-n展开</td>
 </tr>
 </tbody>
 </table>
-</div>
-<h1 id="预知识"><a href="#预知识" class="headerlink" title="预知识"></a>预知识</h1><h2 id="CP分解"><a href="#CP分解" class="headerlink" title="CP分解"></a>CP分解</h2><p>cp分解被广泛用于探索多维数据的潜在结构。给定一个N阶的张量$\mathcal{X}\in \mathbb{R}^{I_1\times \cdots \times I_N}$，CP分解近似这个张量通过N个loading 矩阵，因此</p>
-<script type="math/tex; mode=display">
+<h1 id="预知识">预知识</h1>
+<h2 id="cp分解">CP分解</h2>
+<p>cp分解被广泛用于探索多维数据的潜在结构。给定一个N阶的张量<span
+class="math inline">\(\mathcal{X}\in \mathbb{R}^{I_1\times \cdots \times
+I_N}\)</span>，CP分解近似这个张量通过N个loading 矩阵，因此 <span
+class="math display">\[
 \begin{equation}
-X_{(n)}\approx A^{(n)}(A^{(N)}\odot \cdots A^{(n+1)}\odot A^{(n-1)}\cdots A^{(1)})^T  =A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T=[A^{(1)},\cdots,A^{(N)}] 
-\end{equation}</script><p>其中$[\cdot]$定义为cp分解符号。<br>为了找到CP分解的结果，目标函数是最小化估计误差 $\mathcal{L}$，定义为</p>
-<script type="math/tex; mode=display">
-\mathcal{L}=\frac{1}{2}\| X_{(n)}-A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T\|^2</script><p>但是直接最小化$\mathcal{L}$很困难，因为$\mathcal{L}$关于$A^{(1)},\cdots,A^{(N)}$是nonconvex的，因此常用的办法是使用ALS，通过固定n-th矩阵，交替最小化，此时$\mathcal{X}$关于$A^{(n)}$是convex的，此时</p>
-<script type="math/tex; mode=display">
-A^{(n)}\gets argmin_{A^{(n)}} \frac{1}{2}\| X_{(n)}-A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T\|^2</script><h2 id="online-CP分解"><a href="#online-CP分解" class="headerlink" title="online CP分解"></a>online CP分解</h2><p>给出一个三维的online tensor$\mathcal{X}\in \mathbb{X}^{I\times J\times (t<em>{old}+t</em>{new})}$，这个$\mathcal{X}$是通过对$\mathcal{X}<em>{old}\in \mathbb{R}^{I\times J\times t</em>{old}}$的最后一个mode进行追加$\mathcal{X}<em>{new}\in \mathbb{R}^{I\times J\times t</em>{new}}$.通常追加的张量很小，因此假设$\mathcal{X}<em>{new}\ll \mathcal{X}</em>{old}$. $\mathcal{X}<em>{old}$的cp分解写作$[A</em>{old},B<em>{old},C</em>{old}]$.目标是找到$\mathcal{X}$的cp分解$[A,B,C]$.<br>针对三阶张量</p>
-<script type="math/tex; mode=display">
-C\gets argmin_{C} \frac{1}{2}\| X_{(3)}-C(B\odot A)^T\|^2</script><blockquote id="fn__^">
-<sup>_^</sup>. 下面介绍一个现有的online cp分解的方法<a href="#reffn__^" title="Jump back to footnote [_^] in the text."> &#8617;</a>
-</blockquote>
-<p><strong>SDT and RLST</strong>  这两种方法都是将online张量分解问题转换成增量矩阵分解问题，令$D=A\odot B$, 因此公式(1)可以被写成$X<em>{(3)}=CD^T$，问题就转变为如何去估计C和D。这两种方法不同之处在于计算C和D。SDT选择SVD来进行$ X</em>{old(3)}=U<em>{old}\sum</em>{old}V^T<em>{old}$，这时总有一个矩阵$W</em>{old}$使得$C<em>{old}=U</em>{old}W^{-1}<em>{old}$, $D</em>{old}=V<em>{old}\sum</em>{old}W<em>{old}^T$.同理得到，可以找到一个矩阵$W$，使得$C=UW^{-1}$, $D=V\sum W^T$,其中$U\sum V^T$是$X</em>{(3)}$的SVD分解。作者假设$D$和$D_{old}$只有微小的区别，因此</p>
-<p>接下来介绍Zhou^[Zhou S, Vinh N X, Bailey J, et al. Accelerating Online CP Decompositions for Higher Order Tensors[A]. Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining[C]. New York, NY, USA: Association for Computing Machinery, 2016: 1375–1384.]的做法。</p>
-<h2 id="update-temporal-mode-C"><a href="#update-temporal-mode-C" class="headerlink" title="update temporal mode C"></a>update temporal mode C</h2><p>首先固定矩阵$A,B$,然后更新$C$，以此类推更新AB。</p>
-<script type="math/tex; mode=display">
+X_{(n)}\approx A^{(n)}(A^{(N)}\odot \cdots A^{(n+1)}\odot
+A^{(n-1)}\cdots A^{(1)})^T  =A^{(n)}(\odot^N_{i\neq
+n}A^{(i)})^T=[A^{(1)},\cdots,A^{(N)}]
+\end{equation}
+\]</span> 其中<span
+class="math inline">\([\cdot]\)</span>定义为cp分解符号。
+为了找到CP分解的结果，目标函数是最小化估计误差 <span
+class="math inline">\(\mathcal{L}\)</span>，定义为 <span
+class="math display">\[
+\mathcal{L}=\frac{1}{2}\| X_{(n)}-A^{(n)}(\odot^N_{i\neq
+n}A^{(i)})^T\|^2
+\]</span> 但是直接最小化<span
+class="math inline">\(\mathcal{L}\)</span>很困难，因为<span
+class="math inline">\(\mathcal{L}\)</span>关于<span
+class="math inline">\(A^{(1)},\cdots,A^{(N)}\)</span>是nonconvex的，因此常用的办法是使用ALS，通过固定n-th矩阵，交替最小化，此时<span
+class="math inline">\(\mathcal{X}\)</span>关于<span
+class="math inline">\(A^{(n)}\)</span>是convex的，此时 <span
+class="math display">\[
+A^{(n)}\gets argmin_{A^{(n)}} \frac{1}{2}\|
+X_{(n)}-A^{(n)}(\odot^N_{i\neq n}A^{(i)})^T\|^2
+\]</span></p>
+<h2 id="online-cp分解">online CP分解</h2>
+<p>给出一个三维的online tensor<span class="math inline">\(\mathcal{X}\in
+\mathbb{X}^{I\times J\times (t_{old}+t_{new})}\)</span>，这个<span
+class="math inline">\(\mathcal{X}\)</span>是通过对<span
+class="math inline">\(\mathcal{X}_{old}\in \mathbb{R}^{I\times J\times
+t_{old}}\)</span>的最后一个mode进行追加<span
+class="math inline">\(\mathcal{X}_{new}\in \mathbb{R}^{I\times J\times
+t_{new}}\)</span>.通常追加的张量很小，因此假设<span
+class="math inline">\(\mathcal{X}_{new}\ll \mathcal{X}_{old}\)</span>.
+<span class="math inline">\(\mathcal{X}_{old}\)</span>的cp分解写作<span
+class="math inline">\([A_{old},B_{old},C_{old}]\)</span>.目标是找到<span
+class="math inline">\(\mathcal{X}\)</span>的cp分解<span
+class="math inline">\([A,B,C]\)</span>. 针对三阶张量 <span
+class="math display">\[
+C\gets argmin_{C} \frac{1}{2}\| X_{(3)}-C(B\odot A)^T\|^2
+\]</span></p>
+<p><strong>SDT and RLST</strong>
+这两种方法都是将online张量分解问题转换成增量矩阵分解问题，令<span
+class="math inline">\(D=A\odot B\)</span>, 因此公式(1)可以被写成<span
+class="math inline">\(X_{(3)}=CD^T\)</span>，问题就转变为如何去估计C和D。这两种方法不同之处在于计算C和D。SDT选择SVD来进行$
+X_{old(3)}=U_{old}<em>{old}V<sup>T_{old}<span
+class="math inline">\(，这时总有一个矩阵\)</span>W_{old}<span
+class="math inline">\(使得\)</span>C_{old}=U_{old}W</sup>{-1}</em>{old}$,
+<span
+class="math inline">\(D_{old}=V_{old}\sum_{old}W_{old}^T\)</span>.同理得到，可以找到一个矩阵<span
+class="math inline">\(W\)</span>，使得<span
+class="math inline">\(C=UW^{-1}\)</span>, <span
+class="math inline">\(D=V\sum W^T\)</span>,其中<span
+class="math inline">\(U\sum V^T\)</span>是<span
+class="math inline">\(X_{(3)}\)</span>的SVD分解。作者假设<span
+class="math inline">\(D\)</span>和<span
+class="math inline">\(D_{old}\)</span>只有微小的区别，因此</p>
+<p>接下来介绍Zhou<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>的做法。 ## update temporal mode C
+首先固定矩阵<span class="math inline">\(A,B\)</span>,然后更新<span
+class="math inline">\(C\)</span>，以此类推更新AB。 <span
+class="math display">\[
 \begin{aligned}
-C &\gets argmin_{C} \frac{1}{2}\| X_{(3)}-C(B\odot A)^T\|^2 \\
-&=argmin_{C} \frac{1}{2}\left \lVert \left [ \begin{aligned}X_{old(3)}\\X_{new(3)}\\\end{aligned}\right]- \left [ \begin{aligned}C^{(1)}\\C^{(2)}\\\end{aligned}\right](B\odot A)^T\right\rVert^2\\
-&=argmin_{C} \frac{1}{2}\left \lVert \left [ \begin{aligned}X_{old(3)}-C^{(1)}(B\odot A)^T    \\X_{new(3)}-C^{(2)}(B\odot A)^T \\\end{aligned}\right]\right\rVert^2
-\end{aligned}</script><p>第一行通过固定$A<em>{old} B</em>{old}$得到$C_{old}$来最小化范数，即</p>
-<script type="math/tex; mode=display">
-C_{old}(C^{(1)})=X_{old(3)}((B_{old}\odot A_{old})^T)^\dagger</script><p>在关于t的online张量中，$C<em>{old}$是已经计算好的，$A$和$B$用$A</em>{old} B_{old}$。因此上面的最小化问题其实只要最小化第二行，整个问题变成计算</p>
-<script type="math/tex; mode=display">
-C_{new}(C^{(2)})=X_{new(3)}((B\odot A)^T)^\dagger</script><p>综合上述得到</p>
-<script type="math/tex; mode=display">
+C &amp;\gets argmin_{C} \frac{1}{2}\| X_{(3)}-C(B\odot A)^T\|^2 \\
+&amp;=argmin_{C} \frac{1}{2}\left \lVert \left [
+\begin{aligned}X_{old(3)}\\X_{new(3)}\\\end{aligned}\right]- \left [
+\begin{aligned}C^{(1)}\\C^{(2)}\\\end{aligned}\right](B\odot
+A)^T\right\rVert^2\\
+&amp;=argmin_{C} \frac{1}{2}\left \lVert \left [
+\begin{aligned}X_{old(3)}-C^{(1)}(B\odot
+A)^T    \\X_{new(3)}-C^{(2)}(B\odot A)^T
+\\\end{aligned}\right]\right\rVert^2
+\end{aligned}
+\]</span> 第一行通过固定<span class="math inline">\(A_{old}
+B_{old}\)</span>得到<span
+class="math inline">\(C_{old}\)</span>来最小化范数，即 <span
+class="math display">\[
+C_{old}(C^{(1)})=X_{old(3)}((B_{old}\odot A_{old})^T)^\dagger
+\]</span> 在关于t的online张量中，<span
+class="math inline">\(C_{old}\)</span>是已经计算好的，<span
+class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>用<span class="math inline">\(A_{old}
+B_{old}\)</span>。因此上面的最小化问题其实只要最小化第二行，整个问题变成计算
+<span class="math display">\[
+C_{new}(C^{(2)})=X_{new(3)}((B\odot A)^T)^\dagger
+\]</span> 综合上述得到 <span class="math display">\[
 C=
 \left [\begin{aligned}C_{old}  \\C_{new} \\\end{aligned}\right ]
-=\left [\begin{aligned}C_{old}&  \\X_{new(3)}((B\odot &A)^T)^\dagger\\\end{aligned}
-\right ]</script><h2 id="update-non-temporal-modes-A-and-B"><a href="#update-non-temporal-modes-A-and-B" class="headerlink" title="update non-temporal modes A and B"></a>update non-temporal modes A and B</h2><p>首先更新$A$。通过固定$B$和$C$，这个误差估计函数$\mathcal{L}$可以写成$\frac{1}{2}| X_{(1)}-A(C\odot B)^T|^2$，其导数为</p>
-<script type="math/tex; mode=display">
-\frac{\partial \mathcal{L}}{\partial A}=X_{(1)}(C\odot B)-A(C\odot B)^T(C\odot B)</script><p>设置导数为0，并令$P=X_{(1)}(C\odot B)$以及$Q=(C\odot B)^T(C\odot B)$可以得到</p>
-<script type="math/tex; mode=display">A=PQ^{-1}</script><p>直接去计算$P$和$Q$是很费时的，主要是因为$(C\odot B)$是一个huge矩阵。<br>为了提升效率，需要一种更快的方法。</p>
-<script type="math/tex; mode=display">
+=\left [\begin{aligned}C_{old}&amp;  \\X_{new(3)}((B\odot
+&amp;A)^T)^\dagger\\\end{aligned}
+\right ]
+\]</span></p>
+<h2 id="update-non-temporal-modes-a-and-b">update non-temporal modes A
+and B</h2>
+<p>首先更新<span class="math inline">\(A\)</span>。通过固定<span
+class="math inline">\(B\)</span>和<span
+class="math inline">\(C\)</span>，这个误差估计函数<span
+class="math inline">\(\mathcal{L}\)</span>可以写成<span
+class="math inline">\(\frac{1}{2}\| X_{(1)}-A(C\odot
+B)^T\|^2\)</span>，其导数为 <span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial A}=X_{(1)}(C\odot B)-A(C\odot
+B)^T(C\odot B)
+\]</span> 设置导数为0，并令<span class="math inline">\(P=X_{(1)}(C\odot
+B)\)</span>以及<span class="math inline">\(Q=(C\odot B)^T(C\odot
+B)\)</span>可以得到 <span class="math display">\[A=PQ^{-1}\]</span>
+直接去计算<span class="math inline">\(P\)</span>和<span
+class="math inline">\(Q\)</span>是很费时的，主要是因为<span
+class="math inline">\((C\odot B)\)</span>是一个huge矩阵。
+为了提升效率，需要一种更快的方法。 <span class="math display">\[
 \begin{aligned}
-P&=X_{(1)}(C\odot B)\\
- &=[X_{old(1)},X_{new(1)}]\left(\left[\begin{aligned}C_{old}  \\C_{new} \\\end{aligned}\right] \odot B  \right)\\
- &=[X_{old(1)},X_{new(1)}]\left[\begin{aligned}C_{old}\odot B   \\C_{new}\odot B  \\\end{aligned}\right]\\
- &=X_{old(1)}(C_{old}\odot B )+X_{new(1)}(C_{new}\odot B)
-\end{aligned}</script><p>注意到$B$可以固定为$B_{old}$,因此上式中的最后一行的第一部分其实是上次迭代的结果，因此上式可以写成</p>
-<script type="math/tex; mode=display">
-P=P_{old}+X_{new(1)}(C_{new}\odot B)</script><p>这意味着通过保存之前的$P$可以避免大量的计算，将P初始化为$\mathcal{X}$的一部分。这样无论何时新的数据进来，$P$都可以高效计算。<br>同样地，$Q$可以估计为</p>
-<script type="math/tex; mode=display">
+P&amp;=X_{(1)}(C\odot B)\\
+&amp;=[X_{old(1)},X_{new(1)}]\left(\left[\begin{aligned}C_{old}  \\C_{new}
+\\\end{aligned}\right] \odot B  \right)\\
+&amp;=[X_{old(1)},X_{new(1)}]\left[\begin{aligned}C_{old}\odot
+B   \\C_{new}\odot B  \\\end{aligned}\right]\\
+&amp;=X_{old(1)}(C_{old}\odot B )+X_{new(1)}(C_{new}\odot B)
+\end{aligned}
+\]</span> 注意到<span class="math inline">\(B\)</span>可以固定为<span
+class="math inline">\(B_{old}\)</span>,因此上式中的最后一行的第一部分其实是上次迭代的结果，因此上式可以写成
+<span class="math display">\[
+P=P_{old}+X_{new(1)}(C_{new}\odot B)
+\]</span> 这意味着通过保存之前的<span
+class="math inline">\(P\)</span>可以避免大量的计算，将P初始化为<span
+class="math inline">\(\mathcal{X}\)</span>的一部分。这样无论何时新的数据进来，<span
+class="math inline">\(P\)</span>都可以高效计算。 同样地，<span
+class="math inline">\(Q\)</span>可以估计为 <span class="math display">\[
 \begin{aligned}
-Q&=Q_{old}+(C_{new}\odot B)^T(C_{new}\odot B)\\
-&=Q_{old}+(C^T_{new}C_{new})\otimes (B^TB)
-\end{aligned}</script><p>结合上一次的ALS迭代结果，矩阵$A$的更新规则为</p>
-<script type="math/tex; mode=display">
+Q&amp;=Q_{old}+(C_{new}\odot B)^T(C_{new}\odot B)\\
+&amp;=Q_{old}+(C^T_{new}C_{new})\otimes (B^TB)
+\end{aligned}
+\]</span> 结合上一次的ALS迭代结果，矩阵<span
+class="math inline">\(A\)</span>的更新规则为 <span
+class="math display">\[
 \begin{aligned}
-P&\gets P+X_{new(1)}(C_{new}\odot B)\\
-Q&\gets Q+(C^T_{new}C_{new})\otimes (B^TB)\\
-A&\gets PQ^{-1}\\
-\end{aligned}</script><p>同样地$B$的更新规则为</p>
-<script type="math/tex; mode=display">
+P&amp;\gets P+X_{new(1)}(C_{new}\odot B)\\
+Q&amp;\gets Q+(C^T_{new}C_{new})\otimes (B^TB)\\
+A&amp;\gets PQ^{-1}\\
+\end{aligned}
+\]</span></p>
+<p>同样地<span class="math inline">\(B\)</span>的更新规则为 <span
+class="math display">\[
 \begin{aligned}
-U&\gets U+X_{new(2)}(C_{new}\odot A)\\
-V&\gets V+(C^T_{new}C_{new})\otimes (A^TA)\\
-B&\gets UV^{-1}
-\end{aligned}</script><p><strong>总结</strong>对于随着时间增长的三阶张量，提出了称为OnlineCP的算法，分为以下两步</p>
+U&amp;\gets U+X_{new(2)}(C_{new}\odot A)\\
+V&amp;\gets V+(C^T_{new}C_{new})\otimes (A^TA)\\
+B&amp;\gets UV^{-1}
+\end{aligned}
+\]</span>
+<strong>总结</strong>对于随着时间增长的三阶张量，提出了称为OnlineCP的算法，分为以下两步
+1. <strong>初始化</strong>：对于non-temporal 模态，矩阵<span
+class="math inline">\(PQUV\)</span>使用<span
+class="math inline">\(\mathcal{X}_{init}\)</span>和<span
+class="math inline">\([\![A,B,C]\!]\)</span>进行初始化，即 <span
+class="math display">\[
+\begin{aligned}
+P=X_{init(1)}(C\odot B),&amp; Q=(C^TC)\otimes (B^TB)\\
+U=X_{init(2)}(C\odot A),&amp; V=(C^TC)\otimes (A^TA)
+\end{aligned}
+\]</span> 2. <strong>更新</strong>: 对每个新进的数据块<span
+class="math inline">\(X_{new}\)</span> a. 对于temporal mode 3,
+C的更新方式为 <span class="math display">\[
+C=
+\left [\begin{aligned}C_{old}  \\C_{new} \\\end{aligned}\right ]
+=\left [\begin{aligned}C_{old}&amp;  \\X_{new(3)}((B\odot
+&amp;A)^T)^\dagger\\\end{aligned}
+\right ]
+\]</span> b. 对于non-temporal mode 1 and 2, A的更新方式为 <span
+class="math display">\[\begin{aligned}P&amp;\gets
+P+X_{new(1)}(C_{new}\odot B)\\Q&amp;\gets Q+(C^T_{new}C_{new})\otimes
+(B^TB)\\A&amp;\gets PQ^{-1}\end{aligned}\]</span> 同理B的更新方式为
+<span class="math display">\[\begin{aligned}U&amp;\gets
+U+X_{new(2)}(C_{new}\odot A)\\V&amp;\gets V+(C^T_{new}C_{new})\otimes
+(A^TA)\\B&amp;\gets UV^{-1}\end{aligned}\]</span> ## 高阶张量的扩展
+令<span class="math inline">\(\mathcal{X}_{old}\in \mathbb{R}^{I_1
+\times \cdots \times I_{N-1}\times t_{old}}\)</span>是<span
+class="math inline">\(N\)</span>阶张量，他的CP分解是<span
+class="math inline">\([\![A^{(1)}_{old},
+\cdots,A^{(N-1)}_{old},A^{(N)}_{old} ]\!]\)</span>, N-th
+mode表示时间。一个新的张量<span
+class="math inline">\(\mathcal{X}_{new}\in \mathbb{R}^{I_1 \times \cdots
+\times I_{N-1}\times t_{old}}\)</span>添加到旧的张量中</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
 <ol>
-<li><strong>初始化</strong>：对于non-temporal 模态，矩阵$PQUV$使用$\mathcal{X}_{init}$和$[![A,B,C]!]$进行初始化，即<script type="math/tex; mode=display">
-\begin{aligned}
-P=X_{init(1)}(C\odot B),& Q=(C^TC)\otimes (B^TB)\\
-U=X_{init(2)}(C\odot A),& V=(C^TC)\otimes (A^TA)
-\end{aligned}</script></li>
-<li><strong>更新</strong>: 对每个新进的数据块$X_{new}$<br>a. 对于temporal mode 3, C的更新方式为<script type="math/tex; mode=display">
-C=
-\left [\begin{aligned}C_{old}  \\C_{new} \\\end{aligned}\right ]
-=\left [\begin{aligned}C_{old}&  \\X_{new(3)}((B\odot &A)^T)^\dagger\\\end{aligned}
-\right ]</script>b. 对于non-temporal mode 1 and 2, A的更新方式为<script type="math/tex; mode=display">\begin{aligned}P&\gets P+X_{new(1)}(C_{new}\odot B)\\Q&\gets Q+(C^T_{new}C_{new})\otimes (B^TB)\\A&\gets PQ^{-1}\end{aligned}</script>同理B的更新方式为<script type="math/tex; mode=display">\begin{aligned}U&\gets U+X_{new(2)}(C_{new}\odot A)\\V&\gets V+(C^T_{new}C_{new})\otimes (A^TA)\\B&\gets UV^{-1}\end{aligned}</script><h2 id="高阶张量的扩展"><a href="#高阶张量的扩展" class="headerlink" title="高阶张量的扩展"></a>高阶张量的扩展</h2>令$\mathcal{X}<em>{old}\in \mathbb{R}^{I_1 \times \cdots \times I</em>{N-1}\times t<em>{old}}$是$N$阶张量，他的CP分解是$[![A^{(1)}</em>{old}, \cdots,A^{(N-1)}<em>{old},A^{(N)}</em>{old} ]!]$, N-th mode表示时间。一个新的张量$\mathcal{X}<em>{new}\in \mathbb{R}^{I_1 \times \cdots \times I</em>{N-1}\times t_{old}}$添加到旧的张量中</li>
+<li id="fn1"><p>Zhou S, Vinh N X, Bailey J, et al. Accelerating Online
+CP Decompositions for Higher Order Tensors[A]. Proceedings of the 22nd
+ACM SIGKDD International Conference on Knowledge Discovery and Data
+Mining[C]. New York, NY, USA: Association for Computing Machinery, 2016:
+1375–1384.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
 </ol>
+</section>
 
     </div>
 
@@ -461,7 +588,9 @@ C=
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E4%BC%BC%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">类似知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PCA"><span class="nav-number">1.1.</span> <span class="nav-text">PCA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVD"><span class="nav-number">1.2.</span> <span class="nav-text">SVD</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tensor-Decomposition"><span class="nav-number">2.</span> <span class="nav-text">Tensor Decomposition</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Notation-and-basic-operations"><span class="nav-number">3.</span> <span class="nav-text">Notation and basic operations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%84%E7%9F%A5%E8%AF%86"><span class="nav-number">4.</span> <span class="nav-text">预知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CP%E5%88%86%E8%A7%A3"><span class="nav-number">4.1.</span> <span class="nav-text">CP分解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#online-CP%E5%88%86%E8%A7%A3"><span class="nav-number">4.2.</span> <span class="nav-text">online CP分解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update-temporal-mode-C"><span class="nav-number">4.3.</span> <span class="nav-text">update temporal mode C</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update-non-temporal-modes-A-and-B"><span class="nav-number">4.4.</span> <span class="nav-text">update non-temporal modes A and B</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E9%98%B6%E5%BC%A0%E9%87%8F%E7%9A%84%E6%89%A9%E5%B1%95"><span class="nav-number">4.5.</span> <span class="nav-text">高阶张量的扩展</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E4%BC%BC%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">类似知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pca"><span class="nav-number">1.1.</span> <span class="nav-text">PCA</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tensor-decomposition"><span class="nav-number">2.</span> <span class="nav-text">Tensor Decomposition</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#notation-and-basic-operations"><span class="nav-number">3.</span> <span class="nav-text">Notation and basic
+operations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%84%E7%9F%A5%E8%AF%86"><span class="nav-number">4.</span> <span class="nav-text">预知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cp%E5%88%86%E8%A7%A3"><span class="nav-number">4.1.</span> <span class="nav-text">CP分解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#online-cp%E5%88%86%E8%A7%A3"><span class="nav-number">4.2.</span> <span class="nav-text">online CP分解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update-non-temporal-modes-a-and-b"><span class="nav-number">4.3.</span> <span class="nav-text">update non-temporal modes A
+and B</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
