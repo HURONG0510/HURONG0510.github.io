@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.12nszye6ti9s.webp">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.5im6dxh1prw0.webp">
 <meta property="article:published_time" content="2024-02-19T08:54:49.000Z">
-<meta property="article:modified_time" content="2024-05-19T10:58:15.957Z">
+<meta property="article:modified_time" content="2024-05-19T11:48:43.521Z">
 <meta property="article:author" content="upupwords">
 <meta property="article:tag" content="论文分析">
 <meta name="twitter:card" content="summary">
@@ -232,7 +232,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-19 18:58:15" itemprop="dateModified" datetime="2024-05-19T18:58:15+08:00">2024-05-19</time>
+                <time title="修改时间：2024-05-19 19:48:43" itemprop="dateModified" datetime="2024-05-19T19:48:43+08:00">2024-05-19</time>
               </span>
 
           
@@ -303,22 +303,18 @@
 \end{equation}</script><p>FFN也作为一种类似于SAN的键值机制运行：可以将FFN的输入视为查询向量，将两个线性层的FFN分别视为键值。可能存在一些可能引入冗余的类似键值对。</p>
 <h2 id="expoloration-of-a-pre-trained-transformer"><a href="#expoloration-of-a-pre-trained-transformer" class="headerlink" title="expoloration of a pre-trained transformer"></a>expoloration of a pre-trained transformer</h2><p>Transformer的主要权重矩阵${W^Q,W^K,W^V,W^O, W^{In},  W^{Out}}$，（FFN能以a multi-head fashion来分别计算的，我们将其分组为${ W^{In} }$ and ${ W^{Out} }$ into four groups like ${  W^{In}_h  }^{h=4} $ and  ${  W^{Out}_h  }^{h=4} $ respectively.）。<br>这样操作后，所有的权重矩阵reshape为$D\times D$，此时得到了12个$D\times D$矩阵（4个来自SAN，8个来自FFN）</p>
 <p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240219/image.2lwoh7cbgug0.png" alt=""><br>如上可以发现 intra-matrix and inter-matrix redundancy。<br>图1a看到只需要half dimensions的PCA就可以得到80%的方差， 还通过进行在两个任意配对的权重矩阵之间的级联矩阵上的PCA。见图1b，半维可以捕获近80%的方差，这表明压缩矩阵间冗余的可能性。这种矩阵间冗余可能是双重的：<br>（1）子FFN是可分解的；<br>（2）不同层中的计算（例如注意力图）可以是相似的。</p>
-<h2 id="exploring-parameter-compression"><a href="#exploring-parameter-compression" class="headerlink" title="exploring parameter compression"></a>exploring parameter compression</h2><p>我们将不同layer的SAN以及FFN中的权重矩阵堆叠在一起，第$j<br>$-th transfomer的weight matrices为</p>
+<h2 id="exploring-parameter-compression"><a href="#exploring-parameter-compression" class="headerlink" title="exploring parameter compression"></a>exploring parameter compression</h2><p>我们将不同layer的SAN以及FFN中的权重矩阵堆叠在一起，第$j$-th transfomer的weight matrices为</p>
 <script type="math/tex; mode=display">
 \begin{equation}
     W^{(j)} = \left[ \{W^Q,W^K,W^V,W^O\}
     \oplus    \{  W^{In}_h  \}^{h=4} \oplus \{  W^{Out}_h  \}^{h=4} \right]_j \in \mathbb{R}^{12 \times D \times D}.
-\end{equation}</script><p>对于L层的transformers而言，其权重矩阵可以堆叠为三阶张量大小为$12L\times D\times D$, The original non-decomposed weights is called  Ⅰ:  $W ^{Ⅰ} = {  W^{(j)} }_{j=1}^{L} \in \mathbb{R}^{12LD^2} $.  Each weight matrix in  $W^{Ⅰ}$ is  $W_i^{Ⅰ} = W_i  \in  \mathbb{R}^{D \times D}$.</p>
-<p><strong>Ⅱ matrix decomposition</strong>. 受intra-matrix redundancy的启发，可以采用矩阵分解将矩阵分解/近似为一些较小的矩阵。一种典型的方法就是SVD，called Ⅱ-$\alpha$, for each $D\times D$ matrix $W_i \in W^Ⅰ $, </p>
+\end{equation}</script><p>对于L层的transformers而言，其权重矩阵可以堆叠为三阶张量大小为$12L\times D\times D$, The original non-decomposed weights is called  Ⅰ: $W^{Ⅰ} = {  W^{(j)} }_{j=1}^{L} \in \mathbb{R}^{12LD^2} $.  Each weight matrix in  $W^{Ⅰ}$ is $W_i^{Ⅰ} = W_i  \in  \mathbb{R}^{D \times D}$.</p>
+<p><strong>Ⅱ matrix decomposition</strong>. 受intra-matrix redundancy的启发，可以采用矩阵分解将矩阵分解/近似为一些较小的矩阵。一种典型的方法就是SVD，called Ⅱ-$\alpha$, for each $D\times D$ matrix $W_i\in W^Ⅰ $, </p>
 <script type="math/tex; mode=display">
 \begin{equation}\label{eq:mf}
 W_i \approx  W_i^{Ⅱ}  =   U_i _i V_i  \in  \mathbb{R}^{D \times D}
 \end{equation}</script><p>One can also drop the diagonal ${\Sigma_i}$ by decomposing it into two parts that are  multiplied to $U_i$ and $V_i$,  namely $W_i   \approx  U_i  V_i$, denoted as `Ⅱ-$\beta$’.   $U_i \in \mathbb{R}^{D \times d} $ and $V_i \in \mathbb{R}^{d \times D}$ and usually $d&lt; D$. Since the compression ratio is $\frac{D^2}{2Dd}$ with reducing the rank from $ D$ to $d$, 近似矩阵的保留秩随着压缩率线性地减小。</p>
-<p><strong>Ⅲ tensor train decomposition</strong>. 受inter-matrix redundancy的启发，可以在矩阵之间共享参数。<br>在SVD中最大的矩阵是$  U_i $和$  V_i<br>$ 因为${ {\Sigma_i} }$ 相对其他矩阵参数量少。我们可以共享矩阵间的分解结果中的$ { U_i }$和$ { V_i }$,对于每个权重矩阵</p>
-<script type="math/tex; mode=display">
-\begin{equation}\label{eq:tt}
-W_i \approx W_i ^{Ⅲ}  =  U  V \in  \mathbb{R}^{D \times D}
-\end{equation}</script><p>Here,  ${ {\Sigma_i} }$ 不一定是对角线的。 This results in a tensor-train(TT) decomposition. </p>
+<p><strong>Ⅲ tensor train decomposition</strong>. 受inter-matrix redundancy的启发，可以在矩阵之间共享参数。<br>在SVD中最大的矩阵是$  U_i $和$  V_i<br>$ 因为${ {\Sigma_i} }$ 相对其他矩阵参数量少。我们可以共享矩阵间的分解结果中的$ { U_i }$和$ { V_i }$,对于每个权重矩阵<br>$<br>\begin{equation}\label{eq:tt}<br>W_i \approx W_i ^{Ⅲ}  =  U  V \in  \mathbb{R}^{D \times D}<br>\end{equation}<br>$<br>Here,  ${ {\Sigma_i} }$ 不一定是对角线的。 This results in a tensor-train(TT) decomposition. </p>
 <blockquote>
 <p>A tensor-train decomposition  is to approximate a high-order tensor with a product of many smaller three-order tensors — except for the first and last ones being matrices. Here, for a three-order tensor $W \in \mathbb{R}^{12L \times D \times D}$, it is approximated by $W \approx  U G V$ and shape transpose, where $U \in \mathbb{R}^{D \times r<em>1}$, $G \in \mathbb{R}^{r_1 \times 12L \times r_2}$, and $V \in  \mathbb{R}^{r_2 \times D}$.  For a specific slice of $W$,  $W_i \approx  U G</em>{\cdot,i,\cdot} V$. $r_1$ and $r_2$ are the `TT ranks’.</p>
 </blockquote>
@@ -336,7 +332,7 @@ W_i \approx  W_i ^{Ⅳ} =  U (P _i C  ) V \in  \mathbb{R}^{D \times D}
 \begin{equation} 
     f_{W^{Ⅰ}} (x)  \approx  f_{W^{Ⅳ} } (x)
 \end{equation}</script><p>$f<em>{W ^ {Ⅰ}}$是原始BERT模型，$f</em>{W^{Ⅳ}}$是压缩模型。我们认为，预测中的近似（如方程7中的知识提取）比权重中的近似更重要。这种压缩中的损失感知策略可以在量化中找到。</p>
-<h3 id="reconstruction-protocol"><a href="#reconstruction-protocol" class="headerlink" title="reconstruction protocol"></a>reconstruction protocol</h3><p>$D \times D$ 参数块的一个切片表示为矩阵乘积，$W<em>i ^{Ⅳ}  \approx  U (P _i C  ) V \in \mathbb{R}^{D \times D} $.<br>对于输入$ X \in \mathbb{R}^ {b \times n \times D}$，其中b是批大小，n是序列长度，X和D×D参数块之间的线性变换的输出将是$    Y = X  {W}</em>{i;;} = X   U (P _i C  )  V $.由于矩阵乘法是满足分配律，不同的乘法分配不会影响最终结果，但它们的计算复杂度可能不同。可以在表3中看到乘法阶的计算复杂性。在实践中，批量大小b将设置得尽可能大，以增加数据吞吐量并使训练更加稳定，我们可以得出结论，IV-3比IV-2更有效。<br>当$D&gt;2d$, IV-3比IV-1更有效。；在实践中D通常比d大得多并且$D&gt;2d$。总之，在这种情况下，设置IV-3是最有效的。</p>
+<h3 id="reconstruction-protocol"><a href="#reconstruction-protocol" class="headerlink" title="reconstruction protocol"></a>reconstruction protocol</h3><p>$D \times D$ 参数块的一个切片表示为矩阵乘积，$W<em>i^{Ⅳ}\approx U(P_i C)V\in\mathbb{R}^{D \times D} $.<br>对于输入$ X \in \mathbb{R}^{b \times n \times D}$，其中b是批大小，n是序列长度，X和D×D参数块之间的线性变换的输出将是$ Y = X{W}</em>{i;;} = XU(P_i C)V$.由于矩阵乘法是满足分配律，不同的乘法分配不会影响最终结果，但它们的计算复杂度可能不同。可以在表3中看到乘法阶的计算复杂性。在实践中，批量大小b将设置得尽可能大，以增加数据吞吐量并使训练更加稳定，我们可以得出结论，IV-3比IV-2更有效。<br>当$D&gt;2d$, IV-3比IV-1更有效。；在实践中D通常比d大得多并且$D&gt;2d$。总之，在这种情况下，设置IV-3是最有效的。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.12nszye6ti9s.webp" alt=""></p>
 <h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h2 id="settings"><a href="#settings" class="headerlink" title="settings"></a>settings</h2><p><strong>decomposition</strong>. 对于BERT-base($L=12, D=768$),权重矩阵为$W^Ⅰ \in \mathbb{R}^{144 D^2}$被分解为三种因子矩阵<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.5im6dxh1prw0.webp" alt=""></p>
 <p><strong>Knowledge distillation</strong>. 对于压缩模型，我们使用两阶段知识提取。在普通蒸馏（GD）阶段，<br>我们采用知识蒸馏（KD）作为压缩模型来模拟通用教师模型（BERT库）的最后一层隐藏状态和最后一层注意力图。在第二阶段，<br>我们采用任务特定蒸馏（TD）来模拟任务特定BERT模型的logits（例如。fine-tuned on MNLI任务）。在GD中，压缩模型用两个时期进行训练。在TD中，我们还通过使用Glove根据词向量相似性或掩蔽目标词时BERT的预测物流，用相似词随机替换随机词来扩充训练数据，</p>
