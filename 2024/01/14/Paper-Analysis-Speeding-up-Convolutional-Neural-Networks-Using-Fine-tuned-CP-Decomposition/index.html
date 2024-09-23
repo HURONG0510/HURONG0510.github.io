@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
+  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
+  <meta name="baidu-site-verification" content="code-DKAkrnpO9u">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Paper Analysis: Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition">
+<meta property="og:url" content="https://hurong0510.github.io/2024/01/14/Paper-Analysis-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition/index.html">
+<meta property="og:site_name" content="upupwords">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.6juv2simz6g0.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.b7861p9c53k.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.2l4wvbttsho0.webp">
+<meta property="article:published_time" content="2024-01-14T18:03:31.000Z">
+<meta property="article:modified_time" content="2024-02-20T13:31:20.000Z">
+<meta property="article:author" content="upupwords">
+<meta property="article:tag" content="论文分析">
+<meta property="article:tag" content="tensor decomposition">
+<meta property="article:tag" content="model compression">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.6juv2simz6g0.png">
+
+<link rel="canonical" href="https://hurong0510.github.io/2024/01/14/Paper-Analysis-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Paper Analysis: Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition | upupwords</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">upupwords</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/01/14/Paper-Analysis-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Paper Analysis: Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-01-14 19:03:31" itemprop="dateCreated datePublished" datetime="2024-01-14T19:03:31+01:00">2024-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-02-20 14:31:20" itemprop="dateModified" datetime="2024-02-20T14:31:20+01:00">2024-02-20</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">相关论文</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h2><ul>
+<li>Title : Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition</li>
+<li>Year: 2015</li>
+<li>Publication: ICLR</li>
+</ul>
+<h2 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h2><p>对于low-end architecture和real-time操作而言，减少CNN计算开销是必要的。而CNN中耗时最大的就是卷积层，提高卷积操作的效率是本文的目标。张量分解作为一种常见的加速卷积层的操作很常见。CNN中的典型卷积是将一个输入的3d张量（two spatial dimensions and one input image maps dimension）经过卷积计算得到一个相似结构的输出3d张量。而卷积核convolution kernel本身是一个4d张量（two spatial dimensions, one input image maps and output image maps dimension）.</p>
+<h2 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h2><ul>
+<li>易于分解实现。CP分解具有很好理解的性质和成熟的实现</li>
+<li>易于实现CNN。CP分解通过具有小的矩阵序列来近似4d核张量的卷积操作。所有的这些低维卷积都代表标准的CNN层，很容易使用现有的CNN包插入CNN中。</li>
+<li>易于微调。一旦卷积层被替换为小矩阵序列，就可以直接使用反向传播对训练数据进行微调整个网络。</li>
+<li>效率。与之前的方法相比the full kernel CPD和global 微调的简单组合可以为近似网络带来对于速度和准确度之间更好的均衡。</li>
+</ul>
+<h2 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h2><p>方法可以总结为两步</p>
+<ol>
+<li>对卷积层中的卷积核使用张量分解。</li>
+<li>使用反向传播微调整个网络。</li>
+</ol>
+<p>本文使用tenorlab中的non-linear least squares method来最小化估计残差的L2范数，使用Gauss-Newton优化。</p>
+<p>现有generalized convolution，将input tensor $U(\cdot,\cdot,\cdot)\in\mathbb{R}^{X\times Y\times S}$映射到output tensor $V(\cdot,\cdot,\cdot)\in\mathbb{R}^{(X-d+1)\times (Y-d+1)\times T}$</p>
+<script type="math/tex; mode=display">
+V(x,y,t)=\sum_{i=x-\delta}^{x+\delta}\sum_{j=y-\delta}^{y+\delta}\sum_{s=1}^{S}K(i-x+\delta, j-y+\delta,s,t)U(i,j,s)</script><p>这里$K(\cdot,\cdot,\cdot,\cdot)$是一个4d核张量大小为$d{\times}d{\times}S{\times}T$ （the first two dimensions corresponding to the spatial dimensions, the third dimension corresponding to different input channels, the fourth dimension corresponding to different output channels.） The spatial width and height of the kernel are denoted as $d$, while $\delta$ denotes ``half-width’’ $(d-1)/2$ (for simplicity we assume square shaped kernels and even $d$). </p>
+<p>The rank-$R$ CP-decomposition of the 4D kernel tensor has the form:</p>
+<script type="math/tex; mode=display">
+K(i,j,s,t) = \sum_{r=1}^R  K^x(i-x+\delta,r)  K^y(j-y+\delta,r)\\ K^s(s,r)   K^t(t,r)</script><p>where $K^x(\cdot,\cdot)$, $K^y(\cdot,\cdot)$, $K^s(\cdot,\cdot)$, $K^t(\cdot,\cdot)$ are the four components of the composition representing 2D tensors (matrices) of sizes $d{\times}R$, $d{\times}R$, $S{\times}R$, and $T{\times}R$ respectively.</p>
+<p>将上面两个公式结合，得到</p>
+<script type="math/tex; mode=display">
+V(x,y,t) = \sum_{r=1}^{R} K^t(t,r) 
+\left(\sum_{i=x-\delta}^{x+\delta} K^x(i-x+\delta,r)
+\left(\sum_{j=y-\delta}^{y+\delta} K^y(j-y+\delta,r)
+\left(\sum_{s=1}^S \, K^s(s,r) \, U(i,j,s)\right)\right)\right)</script><p>此时，输出张量$V$可以通过4次使用更小的卷积核来进行卷积计算得到</p>
+<script type="math/tex; mode=display">
+\begin{align}
+U^s(i,j,r) &=\, \sum_{s=1}^S K^s(s,r)\, U(i,j,s) \tag{6}\\
+U^{sy}(i,y,r) &= \sum_{j=y-\delta}^{y+\delta} K^y(j-y+\delta,r) \, U^s(i,j,r) \tag{7}\\ 
+U^{syx}(x,y,r) &= \sum_{i=x-\delta}^{x+\delta} K^x(i-x+\delta,r) \, U^{sy}(i,y,r) \tag{8}\\ 
+V(x,y,t) &= \sum_{r=1}^{R} K^t(t,r)\,  U^{syx}(x,y,r)\,, \tag{9}
+\end{align}</script><p>其中 $U^s(\cdot,\cdot,\cdot)$, $U^{sy}(\cdot,\cdot,\cdot)$, and $U^{syx}(\cdot,\cdot,\cdot)$ are intermediate tensors (map stacks).  </p>
+<ul>
+<li>根据$U(\cdot,\cdot,\cdot)$计算 $U^s(\cdot,\cdot,\cdot)$（ Eq.$(6)$ ）以及根据 $U^{syx}(\cdot,\cdot,\cdot)$ 计算 $V(\cdot,\cdot,\cdot)$ ( Eq.$(9)$ )被称为 $1{\times}1$ convolutions。</li>
+<li>根据$U^s(\cdot,\cdot,\cdot)$计算 $U^{sy}(\cdot,\cdot,\cdot)$ （ Eq.$(7)$ ）以及根据 $U^{sy}(\cdot,\cdot,\cdot)$ 计算 $U^{syx}(\cdot,\cdot,\cdot)$ （ Eq.$(8)$ ）是使用更小卷积核的标准卷积。</li>
+<li>通过对训练数据进行标准反向传播（带动量）对生成的架构进行微调。所有网络层，包括近似层上方的层、近似层下方的层以及插入的四个卷积层都参与微调。然而，我们发现插入层内的梯度容易出现梯度爆炸，因此应该小心保持较低的学习率，或者修复部分或全部插入的层，同时仍然对上方和下方的层进行微调。</li>
+</ul>
+<blockquote>
+<ol>
+<li><strong>点卷积（pointwise convolution）</strong><br>点卷积是一种特殊的卷积运算，他的卷积大小是$1 \times 1$。其作用主要是改变输入数据的通道数channels，在深度学习中用于将高维空间映射到地位空间，而不改变数据的空间维度（宽度和高度）</li>
+</ol>
+</blockquote>
+<h2 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h2><p>本文在两个network architecture上进行实验。</p>
+<h3 id="character-classification-CNN"><a href="#character-classification-CNN" class="headerlink" title="character-classification CNN"></a>character-classification CNN</h3><p>network由4个卷积层with maxout nonlinearities 以及 a softmax output，用来分类$24\times 24$ image patches为36 classes。我们只考虑第二层和第三层的卷积层，这两层占比时间超过90%。Layer 2有48 input 和 128 output channels以及大小为$9\times 9$，Layer 3有64 input 和 512 output channels以及大小为 $8\times 8$.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.6juv2simz6g0.png" alt=""><br><strong>separate approximation</strong>.<br>张量近似误差随着近似秩的增加而减小，当近似秩变得足够大时，可以准确地近似权重张量。<br>然而，我们的实验表明，网络正常运行并不需要精确的近似。</p>
+<p><strong>combining approximations</strong>.<br>第 2 层近似于秩 64。在那之后，通过微调除新层之外的所有层，精度的下降很小。<br>最后，第 3 层以秩 64 近似，对于该层，这种近似不会导致网络预测精度显着下降，因此无需再次对网络进行微调。</p>
+<p>此过程得出的网络比原始模型快 8.5 倍，而分类准确率下降 1% 至 90.2%</p>
+<h3 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h3><p>本文考虑了Alexnet的第二个卷积<br>可以注意到，所考虑网络的 conv2 需要更大的 rank （与<br>CharNetexperiment）来实现适当的性能。秩越大，精度损失越低，但模型加速比会降低。我们未能找到良好的SGD学习率：较大的值导致梯度爆炸，而较小的值则无法合理地减少重建损失。我们怀疑这种效应是由于低秩CP分解的不稳定性，规避这种问题的方法是使用交替更新因子矩阵。<br>虽然我们的方法在较小的架构（如字符分类）中更胜一筹，但对于像AlexNet这样的大型网络来说，它并不是最好的方法。</p>
+<h2 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h2><h3 id="Speeding-up-and-compression-convolutional-neural-networks-by-low-rank-decomposition-without-fine-tuning"><a href="#Speeding-up-and-compression-convolutional-neural-networks-by-low-rank-decomposition-without-fine-tuning" class="headerlink" title="Speeding-up and compression convolutional neural networks by low-rank decomposition without fine-tuning"></a>Speeding-up and compression convolutional neural networks by low-rank decomposition without fine-tuning</h3><ul>
+<li>背景：随着卷积神经网络（CNN）的快速发展，CNN的精度得到了显著提高，这也给资源有限的移动终端或嵌入式设备的部署带来了极大的挑战。最近，通过低秩分解压缩CNN取得了重大成就。</li>
+<li>与现有方法使用相同的分解形式和基于奇异值分解（SVD）的分解策略进行微调不同，我们的方法对不同的层使用不同的分解形式，并提出了无需微调的分解策略。</li>
+<li>我们提出了一种简单有效的方案来压缩整个CNN，称为余弦相似度SVD，无需微调。</li>
+<li>对于AlexNet，与贝叶斯优化（BayesOpt）算法相比，我们的余弦相似度算法的秩选择需要84%的时间来找到秩。</li>
+<li>在不同数据集上测试了各种CNN（AlexNet、VGG-16、VGG-19和ResNet-50）后，实验结果表明，当精度损失小于1%时，权重参数下降可以超过50%，而无需微调。浮点运算 （FLOP） 下降约为 20%，在不进行微调的情况下精度损失小于 1%。<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.b7861p9c53k.png" alt="cd"><br>拟议的方案由三部分组成，包括预处理、分解形式的测定和秩选择和分解策略优化。如上图所示，蓝色框表示预处理，其中包括读取预训练的 CNN参数。绿色框代表确定分解形式和秩选择，基于SVD对不同层使用不同的分解形式并通过我们的余弦相似度算法确定排名。黄色框表示分解策略优化器，无需微调来决定哪些层适合分解。底部框代表优化分解策略的最终结果。<br>拟议的方案包括三个步骤。<br>（1）需要对数据集进行CNN训练，并保存预训练参数，或直接读取预训练参数。<br>（2）确定不同分解形式是关键并根据不同的层进行排名选择。我们自动排名算法适用于所有单排名解决方案。<br>（3）通过我们的分解策略，无需微调，我们可以决定哪些层适合分解。分解策略没有微调避免了长时间的训练。<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.2l4wvbttsho0.webp" alt=""></li>
+</ul>
+<h3 id="Deep-Convolutional-Neural-Network-Compression-via-Coupled-Tensor-Decomposition"><a href="#Deep-Convolutional-Neural-Network-Compression-via-Coupled-Tensor-Decomposition" class="headerlink" title="Deep Convolutional Neural Network Compression via Coupled Tensor Decomposition"></a>Deep Convolutional Neural Network Compression via Coupled Tensor Decomposition</h3><ul>
+<li>背景：大型神经网络在各种现实世界的应用中取得了令人瞩目的进展。然而，运行深度网络需要昂贵的存储和计算资源，这使得它们在移动设备上部署时出现问题。</li>
+<li>最近，矩阵和张量分解已被用于压缩神经网络。在本文中，我们开发了一种用于网络优化的同时张量分解技术。</li>
+<li>首先讨论共享网络结构。有时，不仅结构而且参数也被共享以形成压缩模型，但代价是性能下降。这表明一个网络内各层之间的权重张量既包含相同的分量又包含独立的分量。</li>
+<li>为了利用这一特性，针对完全和部分结构共享的情况开发了两种新的耦合张量序列分解，并提出了一种用于低秩张量计算的交替优化方法。</li>
+<li>最后，我们通过微调来恢复神经网络模型的性能。然后可以计算所设计方法的压缩比。还包括实验结果，以证明我们的算法对于图像重建和分类应用的好处，使用众所周知的数据集，例如 Cifar-10/Cifar-100 和ImageNet 和广泛使用的网络，例如 ResNet。与最先进的基于独立矩阵和张量分解的方法相比，我们的模型可以在相同的压缩比下获得更好的网络性能</li>
+</ul>
+<h2 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h2><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BA%E6%96%87%E5%88%86%E6%9E%90/" rel="tag"># 论文分析</a>
+              <a href="/tags/tensor-decomposition/" rel="tag"># tensor decomposition</a>
+              <a href="/tags/model-compression/" rel="tag"># model compression</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/01/10/%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="prev" title="张量分解与深度学习">
+      <i class="fa fa-chevron-left"></i> 张量分解与深度学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/01/18/Paper-Analysis-ASVD%20Activation-aware%20Singular%20Value%20Decomposition%20for%20Compressing%20Large%20Language%20Models/" rel="next" title="Paper Analysis: ASVD: Activation-aware Singular Value Decomposition for Compressing Large Language Models">
+      Paper Analysis: ASVD: Activation-aware Singular Value Decomposition for Compressing Large Language Models <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Title-and-Authors"><span class="nav-number">1.</span> <span class="nav-text">Title and Authors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background-and-Motivation"><span class="nav-number">2.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main-Contributions"><span class="nav-number">3.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Theoretical-Framework-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Theoretical Framework&#x2F;Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experimental-Design-and-Results"><span class="nav-number">5.</span> <span class="nav-text">Experimental Design and Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#character-classification-CNN"><span class="nav-number">5.1.</span> <span class="nav-text">character-classification CNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AlexNet"><span class="nav-number">5.2.</span> <span class="nav-text">AlexNet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comparative-Analysis"><span class="nav-number">6.</span> <span class="nav-text">Comparative Analysis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Speeding-up-and-compression-convolutional-neural-networks-by-low-rank-decomposition-without-fine-tuning"><span class="nav-number">6.1.</span> <span class="nav-text">Speeding-up and compression convolutional neural networks by low-rank decomposition without fine-tuning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deep-Convolutional-Neural-Network-Compression-via-Coupled-Tensor-Decomposition"><span class="nav-number">6.2.</span> <span class="nav-text">Deep Convolutional Neural Network Compression via Coupled Tensor Decomposition</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Discussion-and-Limitations"><span class="nav-number">7.</span> <span class="nav-text">Discussion and Limitations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="upupwords"
+      src="/images/pig.png">
+  <p class="site-author-name" itemprop="name">upupwords</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:upupwords@hnu.edu.cn" title="E-Mail → mailto:upupwords@hnu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">upupwords</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

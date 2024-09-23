@@ -1,6 +1,815 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>LLM的基础理解</title>
+    <url>/2024/02/07/LLM%E7%9A%84%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3%20(SFConflict%20upupwords@hnu.edu.cn%202024-09-23-12-39-00)/</url>
+    <content><![CDATA[<h1 id="LLM的阶段划分"><a href="#LLM的阶段划分" class="headerlink" title="LLM的阶段划分"></a>LLM的阶段划分</h1><p>LLM可以分为四个训练阶段</p>
+<h2 id="预训练-Pre-training"><a href="#预训练-Pre-training" class="headerlink" title="预训练 Pre-training"></a>预训练 Pre-training</h2><p>这是LLM的初始阶段，模型在此阶段通过大规模的未标记文本数据进行自监督学习。</p>
+<ul>
+<li>目的：模型学会理解语言的语法、语义和上下文，以及构建词汇和语言知识。在预训练期间，模型学习使用各种自监督任务来提取文本数据的特征和结构。</li>
+<li>输入：large-scale unlabeled text dataset. 这可以是来自互联网、书籍、文章等多种来源的文本数据。</li>
+<li>输出：预训练的语言模型。这个模型具有学习到的语言知识和结构，通畅以模型参数的形式保存，如权重矩阵和词嵌入。</li>
+</ul>
+<h2 id="微调阶段-fine-tuning"><a href="#微调阶段-fine-tuning" class="headerlink" title="微调阶段 fine-tuning"></a>微调阶段 fine-tuning</h2><p>在预训练之后，模型可以通过在特定任务或领域上进行微调来适应特定的应用。</p>
+<ul>
+<li>目的：微调将预训练模型加载到特定任务的数据集上，并使用有监督学习方法调整模型的参数，以最大程度提高模型在该任务上的性能。微调可以使模型更好地适应特定领域或任务的特征和数据分布。</li>
+<li>输入：预训练的语言模型和特定任务或领域的标记数据集。标记数据集包含用于训练模型的带有标签的示例，例如情感分析中的文本评论和对应的情感标签。</li>
+<li>输出：微调后的语言模型。这是一个在特定任务或领域上经过优化的模型，其参数经过微调以最大程度地提高在该任务上的性能。<h2 id="量化阶段-quantization"><a href="#量化阶段-quantization" class="headerlink" title="量化阶段 quantization"></a>量化阶段 quantization</h2>在一些情况下，为了减少模型的存储空间和计算成本，可以对模型的参数进行量化。</li>
+<li>目的：量化阶段涉及将模型的浮点参数转换为固定位宽的整数表示，从而减少模型的存储需求和计算量，同时尽量保持模型的性能。</li>
+<li>输入：Fine-tuned language model。这是一个具有浮点参数的模型，通常具有较大的存储需求和计算成本。</li>
+<li>输出：Quantized language model. This is a model where parameters are represented as fixed-width integers, reducing the model’s storage requirements and computational costs while attempting to maintain its performance.</li>
+</ul>
+<h2 id="部署阶段-deployment"><a href="#部署阶段-deployment" class="headerlink" title="部署阶段 deployment"></a>部署阶段 deployment</h2><p>在完成微调和量化之后，模型可以部署到生产环境中用于实际应用。</p>
+<ul>
+<li>目的：部署阶段涉及将模型集成到应用程序或系统中，并确保模型能够有效地处理实际数据并产生准确的预测或输出。</li>
+<li>输入： Quantized language model and input data for the actual application. 输入数据可以是任意的文本或文本序列</li>
+<li>输出：部署的语言模型的预测或输出结果。这可以是模型对输入文本的情感分类、文本生成、问答等任务的预测结果。</li>
+</ul>
+<h1 id="LLM和一般的NLP的区别"><a href="#LLM和一般的NLP的区别" class="headerlink" title="LLM和一般的NLP的区别"></a>LLM和一般的NLP的区别</h1><p>大型语言模型（LLM）与一般的自然语言处理（NLP）任务有以下区别：</p>
+<ol>
+<li><p>重点任务不同：LLM主要用于语言理解和生成，它们旨在处理自然语言文本，并在各种语言任务上表现出色，如语言翻译、文本生成、问答系统等。而一般的NLP任务涵盖更广泛，包括词性标注、命名实体识别、句法分析等。</p>
+</li>
+<li><p>模型规模和复杂性：LLM通常比一般的NLP模型更大更复杂。它们可能具有数十亿或数万亿的参数，以便更好地捕获语言中的复杂关系和语义。</p>
+</li>
+<li><p>预训练和微调：LLM通常会进行预训练，然后在特定任务上进行微调。这种预训练使得模型能够学习通用的语言表示，从而可以适应各种任务。相比之下，一般的NLP模型可能会直接在任务特定的数据集上进行训练，不涉及预训练的过程。</p>
+</li>
+<li><p>模型用途：LLM主要用于生成文本、回答问题、进行对话等任务。而一般的NLP模型可能用于更多种类的任务，包括信息提取、情感分析、语音识别等。</p>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>LLM的基础理解</title>
+    <url>/2024/02/07/LLM%E7%9A%84%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="LLM的阶段划分"><a href="#LLM的阶段划分" class="headerlink" title="LLM的阶段划分"></a>LLM的阶段划分</h1><p>LLM可以分为四个训练阶段</p>
+<h2 id="预训练-Pre-training"><a href="#预训练-Pre-training" class="headerlink" title="预训练 Pre-training"></a>预训练 Pre-training</h2><p>这是LLM的初始阶段，模型在此阶段通过大规模的未标记文本数据进行自监督学习。</p>
+<ul>
+<li>目的：模型学会理解语言的语法、语义和上下文，以及构建词汇和语言知识。在预训练期间，模型学习使用各种自监督任务来提取文本数据的特征和结构。</li>
+<li>输入：large-scale unlabeled text dataset. 这可以是来自互联网、书籍、文章等多种来源的文本数据。</li>
+<li>输出：预训练的语言模型。这个模型具有学习到的语言知识和结构，通畅以模型参数的形式保存，如权重矩阵和词嵌入。</li>
+</ul>
+<h2 id="微调阶段-fine-tuning"><a href="#微调阶段-fine-tuning" class="headerlink" title="微调阶段 fine-tuning"></a>微调阶段 fine-tuning</h2><p>在预训练之后，模型可以通过在特定任务或领域上进行微调来适应特定的应用。</p>
+<ul>
+<li>目的：微调将预训练模型加载到特定任务的数据集上，并使用有监督学习方法调整模型的参数，以最大程度提高模型在该任务上的性能。微调可以使模型更好地适应特定领域或任务的特征和数据分布。</li>
+<li>输入：预训练的语言模型和特定任务或领域的标记数据集。标记数据集包含用于训练模型的带有标签的示例，例如情感分析中的文本评论和对应的情感标签。</li>
+<li>输出：微调后的语言模型。这是一个在特定任务或领域上经过优化的模型，其参数经过微调以最大程度地提高在该任务上的性能。<h2 id="量化阶段-quantization"><a href="#量化阶段-quantization" class="headerlink" title="量化阶段 quantization"></a>量化阶段 quantization</h2>在一些情况下，为了减少模型的存储空间和计算成本，可以对模型的参数进行量化。</li>
+<li>目的：量化阶段涉及将模型的浮点参数转换为固定位宽的整数表示，从而减少模型的存储需求和计算量，同时尽量保持模型的性能。</li>
+<li>输入：Fine-tuned language model。这是一个具有浮点参数的模型，通常具有较大的存储需求和计算成本。</li>
+<li>输出：Quantized language model. This is a model where parameters are represented as fixed-width integers, reducing the model’s storage requirements and computational costs while attempting to maintain its performance.</li>
+</ul>
+<h2 id="部署阶段-deployment"><a href="#部署阶段-deployment" class="headerlink" title="部署阶段 deployment"></a>部署阶段 deployment</h2><p>在完成微调和量化之后，模型可以部署到生产环境中用于实际应用。</p>
+<ul>
+<li>目的：部署阶段涉及将模型集成到应用程序或系统中，并确保模型能够有效地处理实际数据并产生准确的预测或输出。</li>
+<li>输入： Quantized language model and input data for the actual application. 输入数据可以是任意的文本或文本序列</li>
+<li>输出：部署的语言模型的预测或输出结果。这可以是模型对输入文本的情感分类、文本生成、问答等任务的预测结果。</li>
+</ul>
+<h1 id="LLM和一般的NLP的区别"><a href="#LLM和一般的NLP的区别" class="headerlink" title="LLM和一般的NLP的区别"></a>LLM和一般的NLP的区别</h1><p>大型语言模型（LLM）与一般的自然语言处理（NLP）任务有以下区别：</p>
+<ol>
+<li><p>重点任务不同：LLM主要用于语言理解和生成，它们旨在处理自然语言文本，并在各种语言任务上表现出色，如语言翻译、文本生成、问答系统等。而一般的NLP任务涵盖更广泛，包括词性标注、命名实体识别、句法分析等。</p>
+</li>
+<li><p>模型规模和复杂性：LLM通常比一般的NLP模型更大更复杂。它们可能具有数十亿或数万亿的参数，以便更好地捕获语言中的复杂关系和语义。</p>
+</li>
+<li><p>预训练和微调：LLM通常会进行预训练，然后在特定任务上进行微调。这种预训练使得模型能够学习通用的语言表示，从而可以适应各种任务。相比之下，一般的NLP模型可能会直接在任务特定的数据集上进行训练，不涉及预训练的过程。</p>
+</li>
+<li><p>模型用途：LLM主要用于生成文本、回答问题、进行对话等任务。而一般的NLP模型可能用于更多种类的任务，包括信息提取、情感分析、语音识别等。</p>
+</li>
+</ol>
+<h1 id="LLM-Config解读"><a href="#LLM-Config解读" class="headerlink" title="LLM Config解读"></a>LLM Config解读</h1><p>以下列出config.json中对应的数学上的shape信息,q请注意，这里并不是数学维度，而是按照[input_feature, output_feature]</p>
+<ul>
+<li>encoder/decoder的个数：num_hidden_layers</li>
+<li>max_position_embedding：序列的长度</li>
+<li>X : [batch_size, max_position_embeddings, hidden_size]</li>
+<li>权重矩阵 q_proj, k_proj, v_proj: [hidden_size, num_attention_heads $\times$ head_dim]</li>
+<li>权重矩阵 o_proj: [num_attention_heads $\times$ head_dim, hidden_size]</li>
+<li>权重矩阵 FFN W_1 :[hidden_size, intermediate_size] </li>
+<li>权重矩阵 FFN W_2 :[intermediate_size, hidden_size] </li>
+<li>hidden_size, intermediate_size这两个参数一定是倍数关系，但我看基本都是4倍的关系</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Paper-Analysis-Exploring Extreme Parameter Compression for Pre-trained Language Models</title>
+    <url>/2024/02/19/Paper-Analysis-Exploring-Extreme-Parameter-Compression-for-Pre-trained-Language-Models/</url>
+    <content><![CDATA[<h1 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h1><p>Exploring Extreme Parameter Compression for Pre-trained Language Models</p>
+<h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>Pre-trained language（Bert and ALbert）大规模PLM的部署是具有挑战性的</p>
+<ol>
+<li>模型不能完全部署或存储在单个GPU服务器中，模型并行性将消耗许多服务器之间的网络通信的额外时间；</li>
+<li>边缘设备可能没有足够的空间来存储模型；</li>
+<li>长的推理时间无法支持实时反馈</li>
+</ol>
+<p>PLM中的参数冗余可以分成两类：</p>
+<ul>
+<li>intra-matrix redundancy。常发生在可以分开计算的heads中，头部之间的注意力作用于相似的子空间，因此是低秩的，同时每个FFN层都可以分解为许多独立的子FFN</li>
+<li>inter-matrix redundancy。发生在不同的层之间，例如，层之间的注意力图可能相似。</li>
+</ul>
+<p>对Transformer层中的主要权重矩阵的探索发现，这些权重矩阵可以以低秩的方式进行近似——证明了可能的矩阵内冗余和矩阵间冗余。本文分析比较了用于参数压缩的不同分解方法，包括矩阵分解，tt分解和tucker分解。区别在于</p>
+<ul>
+<li>由于intra-matrix冗余而对每个权重矩阵进行矩阵分解</li>
+<li>对于inter-matrix冗余，tt分解共享head和tail矩阵同时保持core matrix冗余</li>
+<li>tucker分解引入matrix bank，使得parameter scale几乎恒定<br>得出的结论是就压缩比而言，tucker分解比其他分解更有效。matrix/tensor 分解面临的挑战为</li>
+<li>分解可能导致原始权重和近似权重之间的差异，并且在大压缩比的情况下不可能进行精确分解。相反，知识蒸馏以损失感知的方式模拟原始模型的预测</li>
+<li>其次，重建可能导致额外的计算成本。有效的重建协议是通过对乘法运算进行重新排序来实现的，这些乘法运算也保持了相同的结果。</li>
+</ul>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><p>这项工作的贡献是：</p>
+<ol>
+<li>我们提出了一个具有标准化术语的形式化框架，以全面讨论矩阵/张量分解方法来压缩基于Transformer的语言模型；</li>
+<li>我们采用张量分解来压缩PLM，这也更快，而现有的工作没有显示出PLM加速的潜力；</li>
+<li>我们的压缩BERT在Transformer层中具有1/7个参数，其性能与GLUE基准测试中的原始BERT相当。此外，一个微小的版本在Transformer中仅具有1/48个参数，实现了96.7%的BERT基础性能，推理速度快2.7倍。我们直接在TinyBERT上使用所提出的方法（Jiao et al.，2020），该方法纯粹基于KD，因为我们的工作是对KD等现有压缩方法的补充。</li>
+</ol>
+<h1 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h1><p><strong>Compressing PLMs</strong>. 本文专注于基于transformer的预训练语言模型的压缩，而不是设计新的transformer。本文重用现有的模型，现有的压缩方法有<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240219/image.2acrnb7z7xog.png" alt=""><br>我们认为，现有的压缩方法（见表1）可能不足以进行极端参数压缩，这一点正在研究中。原因是多方面的，首先，基于知识提取的方法通常从头开始学习新的学生模型，在提取之前不能从教师模型继承太多知识。其次，一些方法具有压缩比的上限。例如，层共享ALBERT以最大L次压缩共享L层中的参数。量化将现有的32位参数替换为最大减少32倍的二进制参数。此外，量化还需要进一步的硬件支持，这通常是针对特定平台的。可以说，重量修剪不能实现大的压缩比。</p>
+<p><strong>matrix/tensor decomposition for compression</strong> 我们认为，使用矩阵/张量分解的现有工作的压缩比的PLM相对较小；它们中的大多数不具有加速效应，限制了它们在大规模PLM中的应用。利用矩阵/张量分解压缩PLM的潜力正在研究之中。在这项工作中，我们采用张量分解，对PLM的参数进行三次压缩。</p>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><p>PLM本质上是多个transformer的堆叠.</p>
+<blockquote>
+<p>transformer layers包含a self-attention module and a feed-forward network<br>为SAN和FFN引入一个称为“可分解性decomposability”的重要属性，这表明SAN或FFN中的每个子组件都是独立计算的，而子组件之间没有相互作用，因此它们可能是冗余的。</p>
+</blockquote>
+<ul>
+<li>decomposable的定义: A computing module $f$ 是 decomposable， 如果他的 sub-components $\{g_1, g_2, \cdots g_H \}$ 可以独立计算:$ f(x) =  \delta\big(g_1(x) ,g_2(x), \cdots, g_H(x) \big)$. 通常 $\delta$ 是一个相对$\{ g_h\}$可以忽略不计的简单操作 特别是，如果$\delta$是级联或加法，则子组件之间的反向传播是独立的。$f$中的子组件可以在没有交互的情况下并行计算。我们将检查SAN和FFN是否是可分解的。</li>
+</ul>
+<p><strong>decomposability in SAN</strong>.SAN可以分解成每个head的输出之和。For the query/key/value/output transformations parameterized by $W^Q / W^K / W^V / W^O$, we divide them as $N_h$ heads:  $\{W^Q_h\}^{N_h}, \{W^K_h\}^{N_h}, \{W^V_h\}^{N_h}, \{W^O_h\}^{N_h}$. A single head is calculated as </p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\small
+    \textrm{Att}_h (X)  =  \textrm{Softmax}( \frac{1}{\sqrt{d}} X W^Q_h {W^K_h}^T X^T) X W^V_h {W^O_h}^T 
+\end{equation}</script><p>Then $\textrm{SAN}(X)  = \sum_{h=1}^{N_h}  \textrm{Att}_h (X)$, indicating SAN is decomposable.<br>头部之间的注意力由于独立计算而学习冗余的密钥/查询投影。</p>
+<p><strong>decomposability in FFN</strong><br>FFN中的两个权重矩阵, $W^{In}$ and $W^{Out}$. </p>
+<script type="math/tex; mode=display">
+\begin{equation} \label{sec:ffn}
+\small
+    \textrm{FFN}(X)  = \sum_{h=1}^{4D}  \textrm{GeLU} (X W^{In}_{\cdot,h} + b^{In}_{h}  ) W^{Out}_{h,\cdot} + b^{Out}
+\end{equation}</script><p>FFN也作为一种类似于SAN的键值机制运行：可以将FFN的输入视为查询向量，将两个线性层的FFN分别视为键值。可能存在一些可能引入冗余的类似键值对。</p>
+<h2 id="expoloration-of-a-pre-trained-transformer"><a href="#expoloration-of-a-pre-trained-transformer" class="headerlink" title="expoloration of a pre-trained transformer"></a>expoloration of a pre-trained transformer</h2><p>Transformer的主要权重矩阵$\{W^Q,W^K,W^V,W^O, W^{In},  W^{Out}\}$，（FFN能以a multi-head fashion来分别计算的，我们将其分组为$\{ W^{In} \}$ and $\{ W^{Out} \}$ into four groups like $\{  W^{In}_h  \}^{h=4} $ and  $\{  W^{Out}_h  \}^{h=4} $ respectively.）。<br>这样操作后，所有的权重矩阵reshape为$D\times D$，此时得到了12个$D\times D$矩阵（4个来自SAN，8个来自FFN）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240219/image.2lwoh7cbgug0.png" alt=""><br>如上可以发现 intra-matrix and inter-matrix redundancy。<br>图1a看到只需要half dimensions的PCA就可以得到80%的方差， 还通过进行在两个任意配对的权重矩阵之间的级联矩阵上的PCA。见图1b，半维可以捕获近80%的方差，这表明压缩矩阵间冗余的可能性。这种矩阵间冗余可能是双重的：<br>（1）子FFN是可分解的；<br>（2）不同层中的计算（例如注意力图）可以是相似的。</p>
+<h2 id="exploring-parameter-compression"><a href="#exploring-parameter-compression" class="headerlink" title="exploring parameter compression"></a>exploring parameter compression</h2><p>我们将不同layer的SAN以及FFN中的权重矩阵堆叠在一起，第$j$-th transfomer的weight matrices为</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    W^{(j)} = \left[ \{W^Q,W^K,W^V,W^O\}
+    \oplus    \{  W^{In}_h  \}^{h=4} \oplus \{  W^{Out}_h  \}^{h=4} \right]_j \in \mathbb{R}^{12 \times D \times D}.
+\end{equation}</script><p>对于L层的transformers而言，其权重矩阵可以堆叠为三阶张量大小为$12L\times D\times D$, The original non-decomposed weights is called  Ⅰ: $W^{Ⅰ} = \{W^{(j)}\}_{j=1}^{L} \in \mathbb{R}^{12LD^2}$.  Each weight matrix in  $W^{Ⅰ}$ is $W_i^{Ⅰ} = W_i \in\mathbb{R}^{D \times D}$.</p>
+<p><strong>Ⅱ matrix decomposition</strong>. 受intra-matrix redundancy的启发，可以采用矩阵分解将矩阵分解/近似为一些较小的矩阵。一种典型的方法就是SVD，called Ⅱ-$\alpha$, for each $D\times D$ matrix $W_i \in\mathbb{R}^{D \times D}$<br><!-- $W_i \in W^{Ⅰ} $,  --></p>
+<script type="math/tex; mode=display">
+\begin{equation}
+W_i \approx  W_i^{Ⅱ}= U_i \Sigma_i V_i \in \mathbb{R}^{D\times D}
+\end{equation}</script><p>One can also drop the diagonal ${\Sigma_i}$ by decomposing it into two parts that are  multiplied to $U_i$ and $V_i$,  namely $W_i   \approx  U_i  V_i$, denoted as `Ⅱ-$\beta$’.   $U_i \in \mathbb{R}^{D \times d} $ and $V_i \in \mathbb{R}^{d \times D}$ and usually $d&lt; D$. Since the compression ratio is $\frac{D^2}{2Dd}$ with reducing the rank from $ D$ to $d$, 近似矩阵的保留秩随着压缩率线性地减小。</p>
+<p><strong>Ⅲ tensor train decomposition</strong>. 受inter-matrix redundancy的启发，可以在矩阵之间共享参数。<br>在SVD中最大的矩阵是$U_i$和$V_i$ 因为$\{ {\Sigma_i} \}$ 相对其他矩阵参数量少。我们可以共享矩阵间的分解结果中的$ \{ U_i \}$和$ \{ V_i \}$,对于每个权重矩阵</p>
+<script type="math/tex; mode=display">
+\begin{equation}\label{eq:tt}
+W_i \approx W_i ^{Ⅲ}  =  U  V \in  \mathbb{R}^{D \times D}
+\end{equation}</script><p>Here,  $\{ {\Sigma_i} \}$ 不一定是对角线的。 This results in a tensor-train(TT) decomposition. </p>
+<blockquote>
+<p>A tensor-train decomposition  is to approximate a high-order tensor with a product of many smaller three-order tensors — except for the first and last ones being matrices. Here, for a three-order tensor $W \in \mathbb{R}^{12L \times D \times D}$, it is approximated by $W \approx  U G V$ and shape transpose, where $U \in \mathbb{R}^{D \times r_1}$, $G \in \mathbb{R}^{r_1 \times 12L \times r_2}$, and $V \in  \mathbb{R}^{r_2 \times D}$.  For a specific slice of $W$,  $W_i \approx  U G_{\cdot,i,\cdot} V$. $r_1$ and $r_2$ are the `TT ranks’.</p>
+</blockquote>
+<p>还可以考虑更高阶的TT分解（即，张量乘法的较长链），这可能更具参数效率；这通常需要用启发式方法将原始张量重塑为高阶张量。然而，在训练过程中，它更耗时，占用更多的GPU内存，我们将其作为未来的工作。</p>
+<p><strong>Ⅳ tucker decomposition.</strong> 在上式中，最大的项是 $\{ {\Sigma _i} \} \in \mathbb{R}^{ 12L \times d^2}$，特别是当模型的层数很大时。本文提出了一种固定尺寸的{matrix bank} 使得权重矩阵被视为bank中的矩阵的线性组合，使得参数尺寸相对于层数几乎不变。</p>
+<script type="math/tex; mode=display">
+\begin{equation}\label{eq:tucker}
+W_i \approx  W_i ^{Ⅳ} =  U (P _i C  ) V \in  \mathbb{R}^{D \times D} 
+\end{equation}</script><p>where  $C \in \mathbb{R}^{l \times d^2}$ is a  matrix bank with a size of $l$, each matrix is assigned with a  weight vector $ P_i  \in \mathbb{R}^{1 \times l} $.<br>ALBERT could be considered as a special case of $Ⅳ$.</p>
+<h2 id="comparison-between-these-decomposition"><a href="#comparison-between-these-decomposition" class="headerlink" title="comparison between these decomposition"></a>comparison between these decomposition</h2><p>下图表示这些分解方法的的参数规模。</p>
+<p>由于$D&gt;d$和$L&gt;l$，我们通常可以得出结论，参数尺度从Ⅰ Ⅱ Ⅲ 减小到Ⅳ。我们可以观察到，在Ⅳ中添加新层的边际参数成本接近$12l$，与其他参数相比可以忽略不计。在推理阶段，不涉及批量大小$b$或序列长度$n$的项在开始推理之前只能以离线方式计算一次，这需要更多的存储空间，但会略有加速-由于这项工作的主要目的是压缩模型，我们在这项工作中忽略了它，但鼓励在速度敏感的场景中这样做。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.3m51698uwia0.png" alt=""></p>
+<h2 id="extremely-compressing-bert-using-tensor-decomposition"><a href="#extremely-compressing-bert-using-tensor-decomposition" class="headerlink" title="extremely compressing bert using tensor decomposition"></a>extremely compressing bert using tensor decomposition</h2><h3 id="decomposition-protocol"><a href="#decomposition-protocol" class="headerlink" title="decomposition protocol"></a>decomposition protocol</h3><p>Ⅳ 减少空间复杂度从 $\mathcal{O}(12LD^2) $ 到  $\mathcal{O}(l  d ^2 + 12L  l + 2Dd ) $ where $d&lt;D$ and $l &lt; 12L$.<br>$l$决定了我们希望在所有模块之间共享Transformer参数的程度，这是一个灵活的因素，可以将普通BERT平滑地转换为layer-shared BERT（或称为“ALBERT”）$d$决定了每个线性变换的表达能力（秩）（最初为$D\times D$）。<br>估计权重矩阵总是与原始矩阵有些差距。由于多层神经网络架构，低层中权重矩阵的微小分解差异可能导致最终输出的累积差异，我们建议使用知识蒸馏来模拟原始模型的最终输出。</p>
+<script type="math/tex; mode=display">
+\begin{equation} 
+    f_{W^{Ⅰ}} (x)  \approx  f_{W^{Ⅳ} } (x)
+\end{equation}</script><p>$f_{W ^ {Ⅰ}}$是原始BERT模型，$f_{W^{Ⅳ}}$是压缩模型。我们认为，预测中的近似（如方程7中的知识提取）比权重中的近似更重要。这种压缩中的损失感知策略可以在量化中找到。</p>
+<h3 id="reconstruction-protocol"><a href="#reconstruction-protocol" class="headerlink" title="reconstruction protocol"></a>reconstruction protocol</h3><p>$D \times D$ 参数块的一个切片表示为矩阵乘积，$W_i^{Ⅳ}\approx U(P_i C)V\in\mathbb{R}^{D \times D}$.<br>对于输入$X \in \mathbb{R}^{b \times n \times D}$，其中b是批大小，n是序列长度，X和D×D参数块之间的线性变换的输出将是$Y = X{W}_{i;;} = XU(P_i C)V$.由于矩阵乘法是满足分配律，不同的乘法分配不会影响最终结果，但它们的计算复杂度可能不同。可以在表3中看到乘法阶的计算复杂性。在实践中，批量大小b将设置得尽可能大，以增加数据吞吐量并使训练更加稳定，我们可以得出结论，IV-3比IV-2更有效。<br>当$D&gt;2d$, IV-3比IV-1更有效。；在实践中D通常比d大得多并且$D&gt;2d$。总之，在这种情况下，设置IV-3是最有效的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.12nszye6ti9s.webp" alt=""></p>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h2 id="settings"><a href="#settings" class="headerlink" title="settings"></a>settings</h2><p><strong>decomposition</strong>. 对于BERT-base($L=12, D=768$),权重矩阵为$W^Ⅰ \in \mathbb{R}^{144 D^2}$被分解为三种因子矩阵<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.5im6dxh1prw0.webp" alt=""></p>
+<p><strong>Knowledge distillation</strong>. 对于压缩模型，我们使用两阶段知识提取。在普通蒸馏（GD）阶段，<br>我们采用知识蒸馏（KD）作为压缩模型来模拟通用教师模型（BERT库）的最后一层隐藏状态和最后一层注意力图。在第二阶段，<br>我们采用任务特定蒸馏（TD）来模拟任务特定BERT模型的logits（例如。fine-tuned on MNLI任务）。在GD中，压缩模型用两个时期进行训练。在TD中，我们还通过使用Glove根据词向量相似性或掩蔽目标词时BERT的预测物流，用相似词随机替换随机词来扩充训练数据，</p>
+<p><strong>GLUE evaluation</strong>. GLUE的微调和评估遵循Huggingface的设置。根据开发集选择性能最佳的模型，其中我们在[1e-5，2e-5]中选择学习率，在[16，32]中选择批量大小。</p>
+<ol>
+<li>结果<br>性能：其中一个配置，BERT-III-384，以Transformer层仅1/7的参数超越了BERT-base的性能，并略微增加了吞吐量。另一个模型，BERT-IV-72-384，以更少的参数与原始BERT模型表现相当。<br>压缩与效率：BERT-III和BERT-IV模型展示了在保持或略微提高GLUE基准任务性能指标的同时，实现极端压缩的潜力。文档特别强调了像BERT-III-64这样的模型，仅使用Transformer层1/48的参数就达到了BERT-base性能的96.7\%，并在推理速度上实现了2.7倍的加速。</li>
+</ol>
+<ol>
+<li>消融研究<br>知识蒸馏的必要性：一个消融研究确认了GD和TD阶段在实现压缩模型有效性能中的关键作用。去除TD显著降低了总体性能。<br>对FFNs或SANs的分解：尝试分别压缩前馈网络（FFNs）或自注意力网络（SANs），结果显示两者几乎可以匹敌原模型的性能。FFNs显示出略好的可压缩性。</li>
+</ol>
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1>]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Paper Analysis: ASVD: Activation-aware Singular Value Decomposition for Compressing Large Language Models</title>
+    <url>/2024/01/18/Paper-Analysis-ASVD%20Activation-aware%20Singular%20Value%20Decomposition%20for%20Compressing%20Large%20Language%20Models/</url>
+    <content><![CDATA[<h1 id="ASVD-Activation-aware-Singular-Value-Decomposition-for-Compressing-Large-Language-Models"><a href="#ASVD-Activation-aware-Singular-Value-Decomposition-for-Compressing-Large-Language-Models" class="headerlink" title="ASVD: Activation-aware Singular Value Decomposition for Compressing Large Language Models"></a>ASVD: Activation-aware Singular Value Decomposition for Compressing Large Language Models</h1><h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>有大量的方法用来减少LLM的内存消耗。这些方法可以归类于两种</p>
+<ul>
+<li>neural network compression <ul>
+<li>weight quantization</li>
+<li>network pruning</li>
+<li>knowledge distillation</li>
+</ul>
+</li>
+<li>system optimizations<ul>
+<li>memory management with cache mechanisms</li>
+</ul>
+</li>
+</ul>
+<p>与这些方法不同的是，低秩分解的范式(paradigm)探索较少。该技术涉及使用较低秩的矩阵来逼近神经网络中的权重矩阵，它是一种相对未充分利用的LLM压缩方法。此外，低秩分解通过进一步压缩量化的或剪枝的模型来补充现有的 LLM 压缩技术，从而提高整体效率。</p>
+<p>从网络压缩的角度来看，传统的低秩分解方法通常遵循一个简单的过程：首先训练原始模型，然后对分解模型进行微调。但这种方法需要整个训练数据集和大量的计算能力才能进行端到端的反向传播。但在LLMs上不现实。1. LLM的训练数据并不总是容易获得。2. 这些模型的训练过程在时间和计算方面都非常昂贵。基于这些限制，“training-free”压缩成为一种更可行的方法。包括 LLM post-training quantization and LLM post-training pruning, 这些方法都不需要再训练。</p>
+<blockquote>
+<ul>
+<li>后训练量化（Post-Training Quantization）：这种方法涉及在模型训练完成后将权重和激活从更高精度（例如32位浮点数）转换为更低精度（例如8位或16位）。这样做的关键好处是显著减少了模型的存储需求和提高了推理速度，而对模型性能的影响通常很小。对于LLMs来说，这是一种有效的压缩手段，因为它不需要再次访问庞大的训练数据集或进行昂贵的训练过程。</li>
+<li>后训练剪枝（Post-Training Pruning）：这种方法在模型训练完成后进行，它通过识别并移除那些对最终输出影响不大或冗余的权重来减小模型的大小。后训练剪枝的挑战在于找到一个平衡点，即在不显著影响模型性能的情况下尽可能多地移除权重。这种方法同样适用于LLMs，因为它不需要重新训练模型。</li>
+<li>参数冻结（Parameter Freezing）：在这种方法中，选定模型的某些部分（如特定层或参数）在推理过程中保持不变。这意味着这些部分不需要在推理时进行计算，从而减少了计算成本。这种方法通常适用于那些对输出贡献较小的部分。</li>
+<li>子网络选择（Subnetwork Selection）：这种方法涉及从原始模型中识别并使用一个更小的高效子网络。这个子网络可以在没有任何额外训练的情况下执行特定任务，从而减少了计算需求。</li>
+<li>权重共享（Weight Sharing）：在权重共享中，模型的不同部分共享相同的权重集，而不是每个部分都有独立的权重集。这可以显著减少模型的总参数数量。</li>
+<li>动态稀疏性（Dynamic Sparsity）：这种方法涉及在推理时动态地选择和使用模型中的一部分参数，而不是在每次推理时都使用所有参数。这可以减少计算负担，尤其是在模型需要快速响应的场景中。</li>
+<li>二值化或三值化网络（Binarization or Ternarization）：这些技术将权重和激活限制为非常小的离散集，如{-1, 0, 1}，从而简化了计算过程。</li>
+<li>使用激活稀疏性（Leveraging Activation Sparsity）：在某些情况下，神经网络的激活可以非常稀疏。通过利用这一点，可以减少推理过程中的计算负担。</li>
+<li>结构化剪枝（Structured Pruning）：与传统剪枝相比，结构化剪枝不仅移除单个权重，而是移除整个神经元或卷积核，这可以在不需要重新训练的情况下更有效地减少模型的大小。</li>
+</ul>
+</blockquote>
+<p>为了实现 low-rank post-training decomposition in LLMs, 本文分析了现有的LLM分解方法。发现直接应用现有的低秩分解技术对于LLMs是无效的，分析这些失败的原因后，发现一个关键挑战， managing outliers in the activations, 这些异常值加剧了分解误差。</p>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li><p>引入activation-aware singular value decomposition. ASVD将the distribution of activations 合并到分解过程中。它通过根据在输入和输出的channel中观察到的distribution patterns，逐列缩放权重矩阵中的值来实现。事实证明这种调整对于具有异常activations的channels特别有益，允许ASVD将重点放在这些specific weights上。这种针对性的调整有助于更准确地重建weight matrix，因此最小化预测误差以及提升分解过程的效率。</p>
+</li>
+<li><p>进一步深入研究了不同LLM层对分解的不同敏感性。发现multi-head attention layers会比multi-layer perceptron layer更加适应分解。这种对于分解的灵敏度并非在所有层都是一致的，因此本文开发一种方法为每层分配最优的rank。且这个方法很高效，只需要有限的sample set来评估。</p>
+</li>
+<li>我们通过吸收分解后的奇异值来优化推理，从而实现计算高效的矩阵运算。我们的方法将奇异值均匀地分布到其他 U 和 V 矩阵中，通过减少量化误差来有利于权重量化</li>
+<li>应用ASVD到LLaMA和LLaMA-2上，实验表明，ASVD可以有效地将网络权重压缩约10%-20%，而在MMLU等基准测试中，精度仅略有1%的损失。</li>
+<li>这种压缩是通过免训练的方式实现的，例如 LLaMA-7b 的分解过程，在 Nvidia A6000 GPU 上仅需要 4 个小时。重要的是，我们对 ASVD 与 4/6/8 位量化的兼容性进行了初步验证。 ASVD 作为 LLM 压缩的正交范例出现，无缝集成为与现有 LLM 量化方法一致的即插即用技术。<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1></li>
+</ul>
+<h2 id="low-rank-decomposition"><a href="#low-rank-decomposition" class="headerlink" title="low-rank decomposition"></a>low-rank decomposition</h2><p>现有的针对neural network的低秩分解方法可以分成两类</p>
+<ul>
+<li>fixed low rank<ul>
+<li>通常使用SVD或者张量分解来分解预训练网络的权重矩阵，然后对分解网络进行微调</li>
+<li>它们还涉及约束权重矩阵以在训练期间保持固定的低秩</li>
+<li>或将层构建为具有不同rank的层的线性组合</li>
+<li>显着局限性是引入了矩阵分解秩作为需要微调的附加超参数</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>variable low rank<ul>
+<li>通过自动确定和调整低秩结构</li>
+<li>使用启发式搜索来预先确定分解的rank或者通过一个惩罚评估的矩阵的rank的损失函数来学习低秩权重</li>
+<li>消除了选择LLM超参数的需要,并突出了低秩分解作为模型压缩有效工具的潜力,为更高效、可扩展的大语言模型 (LLM) 铺平了道路</li>
+</ul>
+</li>
+</ul>
+<h2 id="difference-with-TensorGPT"><a href="#difference-with-TensorGPT" class="headerlink" title="difference with TensorGPT"></a>difference with TensorGPT</h2><p>在通过分解进行LLM压缩的方法中，最相关的工作的是并发的TensorGPT，其中embedding layer of LLMs使用tensor-train decomposition进行压缩来以低秩的张量格式来存储large embeddings，并伴随着fewer parameters。区别在与</p>
+<ul>
+<li>TensorGPT只关注于 token embedding matrix, ASVD关注于压缩LLMs的所有权重</li>
+<li>TensorGPT使用固定的rank，而本文使用rank-adaptive.</li>
+</ul>
+<h2 id="原始的SVD"><a href="#原始的SVD" class="headerlink" title="原始的SVD"></a>原始的SVD</h2><p>在LLM中，最为耗时的是multi-head attention and feed-forward layers中的linear weight matrices。<br>SVD对于weight matrix的压缩过程可以分为三步：</p>
+<ol>
+<li>decomposition：将权重矩阵W分解SVD</li>
+<li>truncation: 保留top的k个奇异值以及对应的right and left singular vectors，这称为$U_k\in \mathbb{R}^{m\times k}, \Sigma_k \in \mathbb{R}^{k\times k}, V^T_k\in \mathbb{R}^{k\times n}$. $k$的选择对于平衡compression ratio和压缩模型性能非常重要。</li>
+<li>Reconstruction：$W_k=U_k \Sigma_k V_k^T$</li>
+</ol>
+<p>在 SVD 上下文中影响模型性能的主要因素是截断误差。这种误差是由于截断的SVD的近似而产生的，这可以通过计算原始权重矩阵W和近似矩阵Wk之间的差值来测量$L_t=| W-W_k|_F=\sum^{min(m,n)}_{i=k+1}\delta^2_i$，这里$\delta_i$是被排除在$\Sigma_k$的奇异值。</p>
+<h2 id="使用SVD进行压缩LLMs的挑战"><a href="#使用SVD进行压缩LLMs的挑战" class="headerlink" title="使用SVD进行压缩LLMs的挑战"></a>使用SVD进行压缩LLMs的挑战</h2><p>需要在训练，这些方法的主要局限性在于它们依赖于训练数据和大量优化来重新调整分解的模型，这与我们以免训练方式压缩 LLM 的目标形成鲜明对比。这种post-training decomposition of LLMs的主要困难在于</p>
+<ul>
+<li><p><strong>challenge 1</strong> :sensitivity of weight variation<br>近期的论文都强调了考虑activations在压缩LLM的权重中的重要性，不仅考虑权重矩阵的截断误差，还考虑了activations。主要是因为activations中的outliers的重要性，因此对于effective LLM decompsition，目标优化变为</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+W^*_k= argmin_{W_k}L(W_k):=\|W_kX-WX\|
+\end{equation}</script><p>这里$X$表示input activations,从小型calibration set中缓存的。这个集合来源于预训练数据集来避免对于特定任务的过拟合。<br>相比于完成分解，本文更加关注于确保分解后的LLM的输出与原始LLM的输出非常相似（相比分解效率，更加注重分解的准确性？）。<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240120/image.3ork3740a6c0.png" alt=""><br>定义activations的variation为</p>
+<script type="math/tex; mode=display">
+\Delta Y=(W_k-W)X</script><p>上图是这个方差的可视化结果。可以发现即使$\Delta$相对较小，但是对应的activations中的variance会很大，这就是为什么直接的SVD分解的效率很低的主要原因。<br>尽管activation variance是从input activation(not weight variations)中得出，但是会导致整个模型发生巨大的变化从而破坏分解的有效性。</p>
+</li>
+<li><p><strong>challenge 2</strong> singular values variations among layers<br>矩阵中奇异值的分布表明了它的稀疏性，进而表明了它对某些类型信息的敏感性。在不同层之间奇异值有很大的差别。在一些层中，大的奇异值会比较集中，这表示他对weight variation相对不敏感，这些层往往很容易压缩。相对的，LLM 中的其他层显示较小奇异值的更均匀分布。这说明不同的层需要一种定制的方法来分解和维护LLM。</p>
+</li>
+</ul>
+<p>为了解决以上的两个挑战，本文提出了两种策略。</p>
+<h2 id="activation-aware-singualr-value-decomposition"><a href="#activation-aware-singualr-value-decomposition" class="headerlink" title="activation-aware singualr value decomposition"></a>activation-aware singualr value decomposition</h2><p>这个方法在考虑权重矩阵的同时还考虑input activation channels.分为以下三步。</p>
+<ol>
+<li>scaling the weight matrix.<br>使用对角线矩阵$S$来缩放权重矩阵$W$.$S$矩阵用来表示权重的input channels的重要性，本质上是用来调整$W$来更好地使用输入$X$的activation patterns。这个scaled weight matrix $WS$为<script type="math/tex; mode=display">
+W=WSS^{-1}=(WS)S^{-1}</script>因为它修改了权重矩阵以反映不同输入通道的不同意义，为更有效和更有针对性的分解过程奠定基础。$\color{red}{估计是为了突出channel中的outlier， 见上图的红色}$</li>
+<li>applying svd to the scaled matrix:<br>对$WS$应用截断SVD，得到<script type="math/tex; mode=display">
+WS\approx U'_k\Sigma'_kV'^T_k</script>只保留最重要的前k个奇异值的信息。</li>
+<li>reconstructing the approximated weight matrix<script type="math/tex; mode=display">
+W\approx U'_k\Sigma'_k(V'^T_kS^{-1})\approx U'_k\Sigma'_kV''^T_k</script>我们的 ASVD 专注于channel-wise activation outliers，努力通过适当调整相应的权重来减轻这些异常值。通过这种方式，可以减轻活化变化，如图2所示。请注意，S 的对角线性质简化了其反演过程，<br>使 $S^{−1}$ 具有计算效率。随后的挑战是设计一种准确确定 S 的方法或标准，使其有效地与 LLM 中观察到的激活模式保持一致，确保缩放过程以最佳方式解决异常激活问题.</li>
+<li>scaling matrix S exploration<br>缩放矩阵 $S$ 中的每个对角线元素，特别是 $S_{ii}$，对于将输入激活调制为 $（WS）X$ 至关重要。$S_{ii}$ 的每个条目都专门缩放第 i 个输入通道的影响。这种缩放有助于调整每个激活通道在分解过程中如何影响权重矩阵。</li>
+</ol>
+<ul>
+<li><strong>Absolute Mean Value of Input Activation</strong>: 该方法通过计算第 i 通道中激活的绝对平均值来计算 <script type="math/tex; mode=display">
+S_{ii}=(\frac{1}{n}\sum_{j=1}^n|X_{ij}|)^\alpha</script>其中 n 是第 i 个通道的激活总数，超参数α提供了调整缩放中包含的激活灵敏度水平的灵活性。该方法侧重于每个通道中激活的平均幅度，捕获激活信号的一般强度，而不管其正向或负向性质如何。</li>
+<li><strong>Absolute maximum value of input activation</strong>: 与基于均值的方法不同，该方法将每个通道内的peak activation归零。在这种方法下，$S_{ii}$ 由在第 i 个通道的激活中观察到的最高绝对值决定。<script type="math/tex; mode=display">
+S_{ii}=(\max_j(|X_{ij}|))^\alpha</script>这种方法强调每个通道中最显着或最高峰的激活，将其作为通道整体影响和重要性的关键指标。通过关注峰值，这种方法强调了具有最明显激活响应的通道，</li>
+</ul>
+<h2 id="sensitivity-based-truncation-rank-searching"><a href="#sensitivity-based-truncation-rank-searching" class="headerlink" title="sensitivity-based truncation rank searching"></a>sensitivity-based truncation rank searching</h2><p>为了解决第二个挑战，即不同层LLM之间奇异值的变化，我们引入了基于灵敏度的截断秩搜索（STRS）方法。这一挑战源于这样一个事实，即LLM中的不同层对信息压缩表现出不同程度的敏感性，这反映在其奇异值的分布中。STRS旨在分析和利用这种特定于图层的灵敏度，特别是关于奇异值的截断如何影响预测准确性。</p>
+<p>我们首先收集一个小而有代表性的校准数据集。该数据集有助于评估图层对不同截断等级的响应能力。对于校准集，我们从维基文本中选择序。<br>在 NLP 领域，困惑度perplexity是评估语言模型预测标记序列的有效性的关键指标。在我们的分析范围内，“灵敏度”是指在模型分解后在校准数据集中观察到的困惑度的降低值。</p>
+<p>这个sensitivity evaluation本质上就是探索神经网络对于不同截断的反应。定义了一个潜在的截断率$R=\{0.1,0.2,0.3,\cdots,0.9\}$，这些比率决定了截断SVD中为$m\times n$的权重矩阵保留的k秩的fraction，</p>
+<script type="math/tex; mode=display">
+r=\frac{km+kn}{mn}, r\in R</script><p>对LLM中的每个linear layer，迭代所有的ratio，对layer的权重矩阵进行截断SVD并替换为分解后的评估矩阵，对前面给出的calibration dataset评估其perplexity，这个迭代过程找到最优ratio来平衡模型压缩和评估误差下降。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240120/image.66zhp75kfo00.webp" alt=""><br>如图 3 所示，网络不同层之间的灵敏度存在明显差异。从这一分析中得出三个关键观察结果：</p>
+<ol>
+<li>相反比例关系：我们观察到困惑度与参数比率成反比。具体说来较低的参数比率往往会导致较高的困惑度分数。这一发现凸显了模型压缩和推理性能之间的关键权衡，表明仔细选择参数以保持平衡的重要性。</li>
+<li>MLP 层中的更高灵敏度：多层感知器 （MLP） 中的层与前馈模块相比，表现出更高的灵敏度。这种区别对于指导压缩策略至关重要，表明在哪些地方需要更谨慎的截断。</li>
+<li>可变灵敏度层：某些层表现出相对较低的灵敏度，表明有可能在不显著性能下降的情况下进行更激进的压缩。这种变化表明 LLM 中存在冗余，为更有效的压缩方法提供了机会。针对这些不太敏感的层可以产生既紧凑又计算高效的模型。</li>
+</ol>
+<p>评估敏感度后，编制了一个元组列表(layer, truncation rank, sensitivity),然后根据 sensitivity进行排序。设计了一个binary search algorithm，该算法旨在根据每层的灵敏度和对整体模型性能的贡献，来应对为每一层选择最有效截断等级的复杂性。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240120/image.l7ep1wkw3xs.webp" alt=""></p>
+<h2 id="absorbing-singular-values"><a href="#absorbing-singular-values" class="headerlink" title="absorbing singular values"></a>absorbing singular values</h2><p>将$\Sigma$这个对角线融入其他的两个奇异值向量</p>
+<script type="math/tex; mode=display">
+W\approx U_k\Sigma_kV^T_k=U_k\sqrt{\Sigma_k}\cdot \sqrt{\Sigma_k}V_k^T=A_k\cdot B_k</script><p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240120/image.16h2bcr1kb7g.webp" alt=""><br>这个图与仅将奇异值Σk融合到U或V矩阵中的方法相比，我们提出的融合技术在权重量化方面具有显着优势<br>这确保了 Ak 和 Bk 的分布更加均匀，从而减少了不同通道之间的差异并减少了量化误差</p>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h2 id="hyper-parameters-exploration"><a href="#hyper-parameters-exploration" class="headerlink" title="hyper-parameters exploration"></a>hyper-parameters exploration</h2><p>探索了前文提到的scaling matrix $S$的两种方法。</p>
+<p>工具：OPT-125m</p>
+<p>方法：在相对较小的网络OPT-125m上测试，测试$\alpha={0.1,0.25,0.5,1,2}$的影响。对于两种$S$的计算，将truncation ratio设置为0.9，使用binary search进行截断排名。将这两种指标进行两两组合计算在Wikitext2的测试集上的perplexity.</p>
+<p>结论：根据谁的perplexity的最小值，与标准SVD STRS相比，两种激活感知方法都显示出更好的性能，$\alpha$取中值0.5最合适，且绝对平均值优于绝对最大值</p>
+<h2 id="evaluation-of-asvd-on-LLaMA-models"><a href="#evaluation-of-asvd-on-LLaMA-models" class="headerlink" title="evaluation of asvd on LLaMA models"></a>evaluation of asvd on LLaMA models</h2><p>工具：LLaMA-7b  LLaMA-2-7b,每个都包含了7billion paramaters.对于每个模型，我们从维基文本数据集中选择了 32 个校准数据集，每个数据集包含 2048 个标记，以评估逐层灵敏度。</p>
+<p>方法：设置不同的阈值 binary searching process，使我们能够观察不同压缩级别对模型性能的影响。该方法产生了一系列压缩网络，每个网络都具有独特的压缩比。我们使用困惑度作为主要指标来评估这些压缩网络的性能，重点关注两个数据集：Wikitext-2和Penn Treebank（PTB）。</p>
+<p>结论：</p>
+<ul>
+<li>随着参数比率的降低，困惑度相应增加。压缩的参数越多，SVD 引入的误差就越大。这会降低网络的表示能力，从而导致更高的困惑度分数。</li>
+<li>当参数比值超过0.9时，观察到一个平台区域。在此范围内，ASVD 主要解压缩不太敏感的层，从而对预测准确性的影响最小。（</li>
+<li>参数比值低于0.85时，困惑度迅速增加，表示更敏感的层正在被解压缩到较低的截断等级，从而对模型的性能产生不利影响。</li>
+</ul>
+<h2 id="integration-ASVD-with-Quantization"><a href="#integration-ASVD-with-Quantization" class="headerlink" title="integration ASVD with Quantization"></a>integration ASVD with Quantization</h2><p>如何将 ASVD 与量化技术集成以压缩大型语言模型，作为初步步骤，我们研究了 ASVD 与简单量化方法 RoundTo-Nearest （RTN） 和 4 位 NormalFloat （NF4）之间的协同作用。</p>
+<p>方法：应用ASVD来分解网络，随后对分解的权重进行量化。我们采用每通道非对称量化，针对两个量化级别：8 位和 6 位。我们使用NF4来量化 4-bit。</p>
+<p>在LLaMA-7b和LLaMA-2-7b上进行实验<br>进行了以下观察： </p>
+<ul>
+<li>8 位量化：结果表明，8 位量化对原始网络和 ASVD压缩网络的模型性能影响可以忽略不计。</li>
+<li>6 位量化：使用 6 位量化时，预测精度略有下降。这种效应在具有较高压缩率（较低参数比）的网络中更为明显，表明压缩和较低位量化的复合影响。</li>
+<li>4 位量化：将网络量化为 NF4 后，观察到预测准确性进一步恶化。当参数比大于0.9时，量化导致的性能下降与非分解网络的性能下降基本一致。例如，在未分解的LLaMA-2-7b的情况下，NF4量化导致wiki PPL与FP16相比降低了0.18。同样，在参数比率0.95，NF4 定量产生的 PPL 与 FP16 相比降低了 0.19。</li>
+<li>总之，研究结果表明ASVD与权重量化技术兼容。</li>
+</ul>
+<h2 id="decomposed-network-analysis"><a href="#decomposed-network-analysis" class="headerlink" title="decomposed network analysis"></a>decomposed network analysis</h2><p>工具：在LLaMA-2-7a上使用ASVD压缩后，per-type parameters ratio and per-block parameters ratio随着params ratio的变化情况，</p>
+<p>结论：</p>
+<ul>
+<li>在MLP层中(gate projection, up projection and down projection)，参数有最好的压缩效果</li>
+<li>在MHA层中，V projection layer的压缩相对小勺，而q projection layer和k projection layer可以显著被压缩</li>
+<li>在per-block ratio中，第一层可以承受实质性的压缩。相比之下，除两个中间层外，其他层的压缩比，显示相似的压缩率。</li>
+</ul>
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h2 id="LQ-LoRA-Low-rank-Plus-Quantized-Matrix-Decomposition-for-Efficient-Language-Model-Finetuning"><a href="#LQ-LoRA-Low-rank-Plus-Quantized-Matrix-Decomposition-for-Efficient-Language-Model-Finetuning" class="headerlink" title="LQ-LoRA: Low-rank Plus Quantized Matrix Decomposition for Efficient Language Model Finetuning"></a>LQ-LoRA: Low-rank Plus Quantized Matrix Decomposition for Efficient Language Model Finetuning</h2><ul>
+<li>我们提出了一种简单的方法，用于对预训练的语言模型进行内存高效调整。</li>
+<li>我们的方法使用迭代算法将每个预训练矩阵分解为 a high-precision low-rank component and a memory-efficient quantized component。在微调期间，量化分量保持不变，仅更新低秩分量。我们提出了一个量化组件的整数线性规划公式，该公式可以在给定总体目标内存预算的情况下为每个矩阵动态配置量化参数（例如，位宽、块大小）。</li>
+<li>我们进一步探索了该算法的数据感知版本，该算法使用Fisher信息矩阵的近似值在矩阵分解过程中对重建目标进行加权。</li>
+<li>对 RoBERTa 和 LLaMA-2（7B 和 70B）进行调整的实验表明，我们的低秩加量化矩阵分解方法 （LQ-LoRA） 优于强大的 QLoRA 和 GPTQ-LoRA 基线，并且能够实现更积极的量化。例如，在 OpenAssistant 基准测试中，LQ-LoRA 能够学习 2.5 位 LLaMA-2 模型，该模型与使用 4 位 QLoRA 微调的模型竞争。在语言建模校准数据集上进行微调时，LQ-LoRA也可用于模型压缩;在此设置中，我们的 2.75 位LLaMA-2-70B 型号（包括低rank组件时平均为 2.85 位，需要 27GB GPU 内存）在全精度方面与origin model竞争。</li>
+<li>这项工作提出了 LoRA 的简单扩展，它将预训练矩阵分解为低秩和量化组件，其中量化组件可以采用动态配置策略。我们观察到这种低秩加量化分解方法在语言建模中给定的量化水平上，对强基线产生了有意义的改进，指令调优和 GLUE 基准测试。<br>模型微调：全面微调不合理，现有的可以根据数据在instruction上进行supervised finetuning。</li>
+</ul>
+<h2 id="HEAT-Hardware-Efficient-Automatic-Tensor-Decomposition-for-Transformer-Compression"><a href="#HEAT-Hardware-Efficient-Automatic-Tensor-Decomposition-for-Transformer-Compression" class="headerlink" title="HEAT: Hardware-Efficient Automatic Tensor Decomposition for Transformer Compression"></a>HEAT: Hardware-Efficient Automatic Tensor Decomposition for Transformer Compression</h2><ul>
+<li>Transformer 在自然语言处理和计算机视觉方面取得了卓越的性能。它们的自注意力层和前馈层被过度参数化，限制了推理速度和能源效率。</li>
+<li>张量分解是一种很有前途的技术，它通过利用张量代数属性以分解形式表达参数来减少参数冗余。以前的工作使用手动或启发式分解设置，而没有硬件感知定制，导致硬件效率低下和性能大幅下降。</li>
+<li>在这项工作中，我们提出了一个硬件感知的张量分解框架，被称为 HEAT，能够有效地探索可能分解的指数空间，并通过硬件感知的协同优化自动选择张量化形状和分解等级。我们共同研究了张量收缩路径优化和融合的 Einsum 映射策略，以弥合理论优势与实际硬件效率提高之间的差距。我们的两阶段知识蒸馏流程解决了可训练性瓶颈，从而显着提高了分解变压器的最终精度。</li>
+<li>总体而言，我们通过实验表明，与手动调整和启发式基线相比，我们的硬件感知分比式 BERT 变体将能量延迟积降低了 5.7× 的精度损失小于 1.1\%，并实现了更好的效率精度的Pareto frontier</li>
+<li>在这项工作中，我们探索了硬件高效张量分解的大设计空间，并提出了用于 Transformer 模型压缩的自动分解框架 HEAT。我们超越了传统的手动分解，只关注压缩比或计算。<br>我们在优化循环中考虑硬件成本，并有效地找到富有表现力和硬件效率的张量化形状。我们基于 SuperNet 的一次性排名搜索流程可以有效地生成优化的每张量分解排名设置。我们采用两级蒸馏流程来解决分解变压器的可训练性瓶颈，并显著提高其任务性能。<br>实验表明，HEAT在我们定制的加速器上减少了高达5.7×的能量延迟积，精度下降小于1.1%。与手动和启发式张量分解方法相比，<br>我们搜索的 HEAT 变体显示精度提高了 1-3%，硬件成本平均降低了 ∼30%。</li>
+</ul>
+<h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>% ## Title and Authors </p>
+<p>% ## Background and Motivation</p>
+<p>% ## Main Contributions</p>
+<p>% ## Theoretical Framework/Algorithm</p>
+<p>% ## Experimental Design and Results</p>
+<p>% ## Comparative Analysis</p>
+<p>% ## Discussion and Limitations</p>
+<p>% ## Conclusion</p>
+]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Paper-Analysis-Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization</title>
+    <url>/2024/07/18/Paper-Analysis-Feature-based-Low-Rank-COmpression-of-Large-Language-Models-via-Bayesian-Optimization/</url>
+    <content><![CDATA[<h1 id="Feature-based-Low-Rank-Compression-of-Large-Language-Models-via-Bayesian-Optimization"><a href="#Feature-based-Low-Rank-Compression-of-Large-Language-Models-via-Bayesian-Optimization" class="headerlink" title="Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization"></a>Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization</h1><h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>随着现有的模型越来越大，当部署LLMs时，有必要考虑efficiency and performance. Such as pruning, quantization and knowledge distillation. 这些方法中unstructured pruning and quantization可以减少一半甚至更多的存储空间，但是他们需要特定的GPU内核函数来实现这样的加速过程。相反， structured pruning 可以生成不依赖专门的硬件的轻量级模型，但这种方法的性能会远远落后于原始模型。LRC是另一种方法，将权重矩阵分解为两个稠密low-rank矩阵乘积，舍弃不重要的参数。</p>
+<p>LRC的关键在于：low-rank decomposition methods and low-rank dimension allocation. 现有的LRC可以分为两类：weight-based and feature-based decomposition. 前者最小化截断SVD或者权重SVD产生的权重矩阵的重构误差。大多数基于 Transformer 的语言模型的权重具有高秩甚至接近满秩的典型特征；因此，直接分解可能会导致显着的误差。相反，模型的特征通常表现出低秩特征。因此，更多的工作集中在feature-based decomposition来最小化features的重构误差。另一方面，根据目标压缩率给不同的权重矩阵分配合适的低秩维度也可以减少模型整体性能的下降，因为它们对低秩压缩表现出不同的敏感度。</p>
+<p>LRC的challenges：</p>
+<ul>
+<li>hard to maintain LLMs generality while achieving feature-based low-rank compression。这是因为 LLM 的特征空间维度极高，使得特征分布更加复杂，异常特征的存在可能会干扰准确的分布估计。因此，我们使用池化协方差矩阵代替样本协方差矩阵，这样可以更准确地估计特征分布.</li>
+<li>manual design for low-rank dimension allocation很达到理想的效果，且需巨大的搜索空间，grid 搜索需要相当长的时间。经过实验验证，不同类型参数的low-rank sensitivity存在显著的差异。参数分为几组，让每组共享相同的低秩维度。这种方法有效地缩小了搜索空间，此外，我们利用样本高效的贝叶斯优化来确定最佳低秩分配。</li>
+</ul>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li>我们分析了 LLM 在低秩压缩方面面临的挑战，并通过实证研究证明以 LLaMA 为代表的 LLM 对各种参数的低秩压缩表现出截然不同的敏感性。</li>
+<li>我们提出了一种基于贝叶斯优化的新型特征低秩压缩 (Bolaco)。</li>
+<li>大量实验表明，我们的 Bolaco 优于 LLM 中现有的强结构化剪枝和 LRC 方法。</li>
+</ul>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><p>weight-based factorization is one naive method. For a linear layer $W\in \mathbb{R}^{d_2\times d_1}$, the objective can be formulated as:</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\min_{B,A} \| W-BA\|_F\\
+& rank(BA)=r
+\end{align}</script><p>如果$r&lt;d_1d_2/(d_1+d_2)$，这个分解就可以减少总体的参数量。但是在大量的研究中发现，对权重矩阵进行直接的截断SVD会造成巨大的截断误差，这些weights通常有high rank。相反的是PLMs的representation space展现出了low-rank property。因此，考虑feature-based decomposition</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\min_{B,A} \| WX-BAX\|_F\\
+& rank(BA)=r
+\end{align}</script><h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>在论文的3.2章节“基于贝叶斯优化的低秩分配”中，具体通过以下步骤确定rank（秩）：</p>
+<ol>
+<li><p><strong>低秩压缩率分配的优化目标</strong>：</p>
+<ul>
+<li>定义了一个优化目标函数 ( H(\lambda) )，该函数评估压缩模型在特定低秩压缩率 ( \lambda ) 下的性能。这个优化问题的目标是在总压缩率 ( \rho ) 的约束条件下，最小化 ( H(\lambda) )。</li>
+</ul>
+</li>
+<li><p><strong>贝叶斯优化的应用</strong>：</p>
+<ul>
+<li>使用贝叶斯优化来寻找最优的低秩压缩率分配 ( \lambda )。贝叶斯优化通过一个随机代理模型（通常是高斯过程）来估计目标函数 ( H(\lambda) )，并根据每次搜索步骤的结果更新对 ( H(\lambda) ) 的后验估计。</li>
+<li>给定前 ( t-1 ) 步的搜索结果 (\{ \lambda_1, \lambda_2, …, \lambda_{t-1} \}) 及其评价 ( H_{t-1} )，更新代理模型的均值 ( \mu(\lambda) ) 和方差 ( \sigma^2(\lambda) )。</li>
+</ul>
+</li>
+<li><p><strong>获取函数（Acquisition Function）</strong>：</p>
+<ul>
+<li>使用期望改进（Expected Improvement, EI）作为获取函数来决定下一步的低秩压缩率分配状态。获取函数通过期望改进值 ( \alpha(\lambda) ) 来选择具有最大期望改进的点，从而引导搜索过程。</li>
+<li>公式为：[<br>\alpha(\lambda) = \mathbb{E}_{H(\lambda)} \left[ \max \{0, H’ - H(\lambda) \} \right]<br>]<br>其中 ( H’ ) 为目前观察到的最小值。贝叶斯优化选择具有最大期望改进的点来进一步探索。</li>
+</ul>
+</li>
+<li><p><strong>最终低秩确定</strong>：</p>
+<ul>
+<li>通过贝叶斯优化过程获得的最优压缩率分配 ( \lambda^* )，计算最终的低秩。为了充分利用GPU矩阵乘法的加速效果，将低秩维度四舍五入为八的倍数：</li>
+<li>公式为：[<br>r_i = \left[ \frac{(1-\lambda_i) d_1 d_2}{d_1 + d_2} / 8 \right] \times 8<br>]</li>
+</ul>
+</li>
+<li><p><strong>正则化项</strong>：</p>
+<ul>
+<li>为了防止贝叶斯优化在较小的验证集上过拟合，在优化目标中引入了反向KL散度（Reverse KL Divergence, RKL）作为正则化项。这个正则化项量化了压缩模型与原始模型预测分布之间的差异，从而平滑了目标函数，使高斯过程代理模型更准确地逼近真实的黑箱目标函数。</li>
+</ul>
+</li>
+</ol>
+<p>通过上述步骤，结合贝叶斯优化和低秩特征分解的方法，有效地确定了不同层和参数的最优低秩分配，从而在保持模型性能的同时实现了高效的低秩压缩。</p>
+]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Paper-Analysis-LQ-LoRA: Low-rank Plus Quantized Matrix Decomposition for Efficient Language Model Finetuning</title>
+    <url>/2024/01/26/Paper-Analysis-LQ-LoRA-Low-rank-Plus-Quantized-Matrix-Decomposition-for-Efficient-Language-Model-Finetuning/</url>
+    <content><![CDATA[<h1 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h1><p>LQ-LoRA: Low-rank Plus Quantized Matrix Decomposition for Efficient Language Model Finetuning</p>
+<h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>LLM的庞大规模使得他们通过全面finetuning来适应新数据集的成本很高。memory-efficient LLM adaption方法其中的一个方法使用parameter-efficient finetuning方法，这些方法可以学习到一个基于pretrained model的更小的微调扩展，可以减少微调所需的内存量。这是因为pretrained parameters 会 remain fixed，从而减少了为存储这些参数的梯度和优化器状态分配内存的需求，从而要优化的新参数的数量只是固定参数的一小部分。</p>
+<blockquote>
+<p>2022年 Hu 等人提出了一个low-rank adaption,预训练模型的权重矩阵被重新参数化$W+L_1L_2$且只有L1和L2被微调.近期也有一些方法来改进LoRA,来使用一个quantized pretrained model $q(W)+L_1L_2$,这里$q(\cdot)$是某种quantization function.</p>
+</blockquote>
+<h2 id="LOW-RANK-ADAPTION-OF-LLM"><a href="#LOW-RANK-ADAPTION-OF-LLM" class="headerlink" title="LOW-RANK ADAPTION OF LLM"></a>LOW-RANK ADAPTION OF LLM</h2><p>low-rank adaption是2022年提出的一种简单有效的LLM内存开销减少办法。给定一个pretrained linear layer的权重矩阵$W\in \mathbb{R}^{d\times r}$，LoRA初始化两个$L_1\in\mathbb{R}^{d\times r}, L_2\in\mathbb{R}^{r\times k}$，其中$r&lt;\min(d,k)$，$L_1$初始化为Gaussian noise以及$L_2$被初始化为0.LoRA将linear layer重新参数化为$X(W+L_1L_2)$，$X$是之前层的激活值，在language model adaption中只需要微调$L_1L_2$.<br>LoRA比full fientuning更有效，因为不需要为gradients和相关的优化器状态（例如Adam的动量和variance statistics）分配GPU内存。更重要的是用于内存高效微调的其他策略也可以在预训练模型上学习少量的参数以及prompt tuning。因此LoRA因适应LLM而广受欢迎。</p>
+<h2 id="weight-quantization-of-LLMs"><a href="#weight-quantization-of-LLMs" class="headerlink" title="weight quantization of LLMs"></a>weight quantization of LLMs</h2><p>权重量化（Weight Quantization）：权重量化是一种将神经网络中的权重参数从浮点数值转换为较低精度的整数值的技术。这有助于减小模型的存储需求和加速推断过程。<br>Round-to-Nearest（RTN）量化：这是一种标准的量化方法，它将权重量化为一个整数值，其计算方式为将权重除以一个缩放因子，然后将结果四舍五入到最接近的整数。这个缩放因子根据权重的范围和所需的位数进行计算。这个方法在8-bits上被证明进行量化LLM的预训练权重是有效的。但是对于(sub)4-bit量化，使用RTN非常困难。因此研究人员使用一种数据感知策略，通过calibration samples来获得更好的权重量化结果。<br>NormalFloat（NF）量化：NF量化方案利用了训练模型的权重分布近似为高斯分布的事实。NF量化将权重分成一系列概率值和相应的量化点，然后将权重映射到最接近的量化点。</p>
+<p>QLoRA是一种基于NF量化的方法，它在预训练的LLM上执行4位NF量化，并学习低秩更新。它已经在多个基准测试中表现出竞争力。</p>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><p>在LoRA中, L2被初始化为0来确保模型输出与finetuning初期保持一致 $X(W+L_1L_2)=XW$.然而,如果预训练矩阵被量化到会发生大量的量化误差的程度(sub-4-bit regimes),则零初始化可能不是最优的,因为$q(W)+L_1L_2\neq W$.<br>因此本文考虑LoRA仅对量化模型进行低秩更新的前提下,推导出一个考虑量化误差的初始化方案.<br>本文参考robust PCA中的迭代方法,来分解W, $W\approx Q+L_1L_2$.这里$Q$是保持fixed的quantized component而$L_1L_2$(获取$W$的high-variance subspaces)参与finetuning.本文不将相同的量化配置应用于所有层,而是使用整数线性规划来找到允许分配不同配置的混合量化策略(bits, block size等),最后探索了该算法的数据感知版本.<br>应用LQ-LoRA来改编RoVERTa和LLaMA-2模型,发现它比QLoRA和GPTQ-LoRA更好,同时用户能自由设置目标内存.</p>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><p>我们的方法依赖于一个简单的因子分解方案，该方案将每个预训练的矩阵分解为一个低秩矩阵加一个量化矩阵（§3.1），其中在微调过程中只调整低秩分量。在§3.2中，我们通过整数线性规划探索了一种混合量化策略，以允许在给定目标平均比特率的情况下跨层动态量化。我们进一步考虑LQ-LoRA的数据感知版本，通过使用经验Fisher信息矩阵在矩阵分解过程中对重建目标进行加权（§3.3）。</p>
+<h2 id="low-rank-plus-quantized-matrix-decomposition"><a href="#low-rank-plus-quantized-matrix-decomposition" class="headerlink" title="low-rank plus quantized matrix decomposition"></a>low-rank plus quantized matrix decomposition</h2><p>LoRA确保了模型输出与微调开始时的重新参数化之前完全相同，但在使用W的量化版本时可能会出现问题。当量化到low bits，有$| W-Quantize(W)| _F &gt;&gt; 0$.在决定适应哪些子空间时，这种初始化不考虑W的结构。我们从矩阵分解的角度来处理这个问题，其中我们感兴趣的是将原始矩阵分解为易于量化的分量和捕获高方差方向的低秩分量，</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{aligned}
+&argmin_{\mathbf{Q}, \mathbf{L}_1, \mathbf{L}_2} \, \Vert W - (Q +  L_1 L_2) \Vert_F, 
+&& \text{where} \,\, Q \in \mathbb{Q}_b^{d \times k}, L_1 \in \mathbb{R}^{d \times r}, L_2 \in \mathbb{R}^{r \times k}.
+\label{eq:lpq}
+\end{aligned}
+\end{equation}</script><p>这里，$\mathbb{Q}_b^{d \times k}\subset \mathbb{R}^{d \times k}$是可无损NF量化为b比特的矩阵集。</p>
+<blockquote>
+<p>在量化过程中，选择哪些子空间（即哪些权重方向或分量）进行保留可以帮助模型在低比特位下仍然保持较好的性能。这种选择通常需要考虑权重的结构和重要性，以便在量化后最大程度地保留模型的表达能力。</p>
+</blockquote>
+<p>本文使用alternating 来优化$L_1L_2$ 和 $Q$</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{aligned}
+    L_1^{(t)}, L_2^{(t)} &\gets \operatorname{SVD}(W - Q^{(t-1)}, r), && \hspace{0.5cm} {\color{gray} = argmin_{rank(L) \le r} \, \Vert W - (Q^{(t-1)} + L) \Vert_{F},} \\
+    Q^{(t)} &\gets \operatorname{Quantize}(W - L_1^{(t)} L_2^{(t)}), && \hspace{0.5cm} {\color{gray} \approx argmin_{Q \in \mathbb{Q}^{d \times k}_b} \, \Vert W - (Q + L_1^{(t)}L_2^{(t)}) \Vert_F,}
+\end{aligned}
+\label{eq:lpq-steps}
+\end{equation}</script><p>上述算法是启发式的。因此，我们采用了一个简单的停止准则，其中我们跟踪误差$\Vert W - (Q^{(t)} + L_1^{(t)} L_2^{(t)}) \Vert_F$，并在误差增加时终止算法。算法如下所示<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240128/image.3zwi4h7dfoi0.png" alt=""></p>
+<p>下图表示不同分解方式的误差，左边图中，展示了分解误差随着迭代变化情况，关注的是LLaMA-2-7B的一些layers。中间这个图表示的是对于3-bit的NF量化的量化误差，右边表示的是本文提出的LQ分解的量化误差。对于这两种方法，我们发现value和output projection matrices在更深的层变得更难量化，而key矩阵和query矩阵变得更容易；然而，我们的LQ分解能够改进所有层的vanilla量化。<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240128/image.6wlpedhjdtc0.webp" alt=""></p>
+<h2 id="mixed-configuration-quantization-via-an-integer-linear-program"><a href="#mixed-configuration-quantization-via-an-integer-linear-program" class="headerlink" title="mixed-configuration quantization via an integer linear program"></a>mixed-configuration quantization via an integer linear program</h2><p>LQ-LoRA使用NormalFloat（NF）量化方案来量化每个时间步长的残差Q。NF量化有几个影响整体压缩率的参数，例如分位数仓的数量、块的数量和用于双重量化的比特the number of quantile bins, number of blocks, and bits for double quantization。<br>在本文中，我们使用稍微不同的变体，该变体通过以下方式量化矩阵A：</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{aligned}
+\widehat{A}, s =  \operatorname{Quantize-NF}\left(A, b_0, B_0 \right), \,\,\,\,\,\,\,\, &  \widehat{s}, v = \operatorname{Quantize-INT}\left(s, b_1, B_1 \right), && \widehat{v} =  \operatorname{cast}\left( v, b_2 \right).
+\end{aligned}
+\end{equation}</script><p>此量化方案要求存储 $\widehat{A}, \widehat{s}, \widehat{v}$ to represent $A$. 因此，我们可以量化 the storage cost (number of bits) for storing $A$ given a configuration $c = (b_0, b_1, b_2, B_0, B_1)$ as </p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\operatorname{storage}(A, c) = \operatorname{sizeof}(A) \cdot \left( b_0 + \frac{b_1}{B_0} +  \frac{b_2}{B_0 \cdot B_1} \right).
+\label{eq:storage}
+\end{equation}</script><p>先前关于量化LLM的工作通常集中于将相同的量化策略应用于每个矩阵，这不能适应用户变化的资源约束，而且考虑到一些矩阵可能比其他矩阵更难量化，这可能是次优的。我们探索了一种基于整数线性规划的混合精度量化策略（Yao et al.，2021；唐等人，2022；Kundu et al.，2022），该策略允许在给定用户定义的目标目标比特率的情况下为每个矩阵分配不同的配置。</p>
+<p>这是一个关于动态权重量化配置的方法，该方法旨在根据不同的资源限制和权重矩阵的性质为每个权重矩阵选择合适的量化策略。</p>
+<ul>
+<li><p>首先，它介绍了配置参数，这些参数用于表示不同的量化策略。这些参数包括位宽（$b_0$、$b_1$、$b_2$）、块大小（$B_0$、$B_1$）等，用户可以定义一组可能的配置，以满足其需求。</p>
+</li>
+<li><p>然后，文中提到了一个搜索空间 $\mathcal{C}$，它包含了所有可能的配置组合。在这个示例中，搜索空间的具体设置如表格所示，包括不同的位宽和块大小选项。</p>
+</li>
+<li><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240128/image.4r25hpidmhi0.webp" alt=""></li>
+</ul>
+<p>接下来，文中提到了一个目标和约束问题。目标是找到一种分配方式，使得在进行低秩加量化分解之前和之后的权重矩阵之间的Frobenius范数差异最小，同时要求满足用户定义的内存预算。这是一个整数线性规划问题，其中涉及到了两个主要方面：</p>
+<p>目标函数：最小化矩阵的重构误差，其中 $\operatorname{error}(W^{(i)}, c^{})$ 表示使用配置 $c$ 进行量化后的矩阵 $W^{(i)}$ 与低秩加量化分解后的矩阵之间的Frobenius范数差异。</p>
+<p>约束条件：确保总存储空间不超过用户定义的内存预算，以及每个权重矩阵都被分配到一个配置。</p>
+<script type="math/tex; mode=display">
+\begin{equation*}
+\begin{aligned}
+&\min_{X \in \{0, 1\}^{N \times |\mathcal{C}|}} && \sum_{i \in [N]} \sum_{c \in \mathcal{C}} \operatorname{error}(A^{(i)}, c) \cdot \mathbf{X}[i, c], \\
+& \text {subject to} && \sum_{i \in [N]} \sum_{c \in \mathcal{C}} \operatorname{storage}(A^{(i)}, c) \cdot \mathbf{X}[i, c] \leq \text{budget}, \\
+& &&\sum_{c \in \mathcal{C}} \mathbf{X}[i, c] = 1, \quad \forall i \in [N].
+\end{aligned}
+\label{eq:ilp}
+\end{equation*}</script><p>为了解决这个整数线性规划问题，研究人员进行了一次预计算，计算了各个矩阵和配置的重构误差。然后，使用专业的求解器来找到（近似）最佳配置分配。这个过程可以在预处理阶段完成，而且只需要一次，预处理过程可以并行化，所以速度较快。</p>
+<p>最后，一旦找到了最优配置，就可以将这些配置应用于每个权重矩阵，进行低秩加量化分解，以获得最终的量化矩阵。这个方法的优势在于它可以根据不同的权重矩阵和资源限制，自动选择最佳的量化配置，从而提高了量化后模型的性能。</p>
+<p><strong>实现方法</strong>：现有的权重量化实现通常依赖于特定的CUDA扩展，这使得难以将其扩展到混合量化策略上。与此不同，作者选择了基于PyTorch的实现，以获得更大的灵活性和易用性。<br>他们使用了PyTorch的特殊功能，即<strong>torch_dispatch</strong>，来模拟PyTorch张量，并通过操作重载实现了即时的反量化功能。这意味着当需要对量化后的张量执行操作时，系统会自动进行反量化，以便在计算中使用原始的浮点数值。<br>此外，他们还充分利用了PyTorch的编译器，将位解压、反量化和其他线性代数操作进行了编译，以提高计算效率。值得注意的是，对于批量大小大于1的情况，这种基于PyTorch的实现（经过编译）在性能上表现得与一些自定义的CUDA实现相当。</p>
+<h2 id="data-aware-matrix-decomposition-via-fisher-weighted-svd"><a href="#data-aware-matrix-decomposition-via-fisher-weighted-svd" class="headerlink" title="data-aware matrix decomposition via fisher-weighted svd"></a>data-aware matrix decomposition via fisher-weighted svd</h2><p>前文中的分解目标是数据不可知的，因为它将$W$中的每个entry在分解期间的重构中同等重要，最近的工作证明了使用校准数据量化LLM的重要性。使用Fisher信息矩阵的对角近似来加权重建目标，来考虑该方法的数据感知版本。W的经验Fisher信息矩阵的（对角线）由下式给出，其中每个entry是D个样本的倒数的平方平均值<br>$<br>    F_{ij} = \frac{1}{D} \sum_{d=1}^{D} \left( \frac{\partial}{\partial W_{ij}} \log p_{\text{LM}}\left(x^{(d)}\right)\right)^2.<br>$<br>该指标测量模型的输出表示对每个参数的扰动的敏感度，并且之间已经被用于改进预训练language model的低秩压缩，因此使用F来加权分解目标</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{aligned}
+\left\Vert {\sqrt{F}\, \odot } \left(W - \left(Q + L_1 L_2\right) \right) \right\Vert_F^2,
+\end{aligned}
+\label{eq:weighted-error}
+\end{equation}</script><p>where $\odot$ is the Hadamard product.应用到前文的LQ分解，定义$E:=W-Q$,有</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{aligned}
+\mathbf{L}_1, \mathbf{L}_2
+= argmin_{\mathbf{L}_1, \mathbf{L}_2}  \; \left\Vert \sqrt{\mathbf{F}} \odot \left( E  -  \mathbf{L}_1 \mathbf{L}_2\right)\right\Vert_F^2 .
+\end{aligned}
+\end{equation}</script><p>这是个NP难问题，但如果我们假设权重矩阵F的行或列具有相同的值，则我们具有以下恒等式，</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{aligned}
+\mathbf{L}_1, \mathbf{L}_2
+= argmin_{\mathbf{L}_1, \mathbf{L}_2}  \; \left\| \sqrt{\mathbf{F}} \odot \left( E -  \mathbf{L}_1 \mathbf{L}_2\right)\right\|_F^2 \\
+= argmin_{\mathbf{L}_1, \mathbf{L}_2}  \; \left\| \mathbf{D}_{\text{row}} \left( E -  \mathbf{L}_1 \mathbf{L}_2\right)\mathbf{D}_{\text{col}}\right\|_F^2, 
+\end{aligned}
+\end{equation}</script><p>where $\mathbf{D}_{\text{row}}$ is a diagonal matrix consists of row-means of $\sqrt{\mathbf{F}}$, and $\mathbf{D}_{\text{col}}$ is a diagonal matrix consisting of the column-means of $\sqrt{\mathbf{F}}$, i.e., </p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{aligned}
+\mathbf{D}_{\text{row}} {=}
+\operatorname{diag}\left(\left[
+\operatorname{avg}(\sqrt{\mathbf{F}_{1, \cdot}}), \dots, \operatorname{avg}(\sqrt{\mathbf{F}_{d, \cdot}})
+\right]\right),
+\mathbf{D}_{\text{col}} {=}
+\operatorname{diag}\left(\left[
+\operatorname{avg}(\sqrt{\mathbf{F}_{\cdot, 1}}), \dots,  \operatorname{avg}(\sqrt{\mathbf{F}_{\cdot, k}})
+\right]\right).
+\end{aligned}
+\end{equation}</script><p>In this case the above problem can be solved exactly by standard SVD,</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{aligned}
+\mathbf{U}, \Sigma, \mathbf{V}^\top \gets \operatorname{SVD}(\mathbf{D}_{\text{row}} A \mathbf{D}_{\text{col}}), \,\,\,\,\, & \mathbf{L}_1 \gets \mathbf{D}_{\text{row}}^{-1} \mathbf{U} \sqrt{\Sigma}, && \,\,\,\,\,
+\mathbf{L}_2 \gets \sqrt{\Sigma} \mathbf{V}^\top \mathbf{D}_{\text{col}}^{-1}.
+\end{aligned}
+\label{eq:custom-weighted-svd}
+\end{equation}</script><p>虽然齐次行/列假设显然不适用于F，但我们发现这种方法在实践中效果良好。9我们注意到，这种近似是Hsu等人的简单扩展。（2022）他们在加权SVD中使用Drow，但不使用Dcol（我们发现同时使用行和列平均值的效果略好）。</p>
+<blockquote>
+<p>LQ-LoRA的这种数据感知版本需要能够通过预训练的LM进行反向传播，以获得Fisher矩阵{F（i）}i∈[N]，在某种意义上，这违背了memory-efficient adaptation methods所针对的设置，其中完全微调被认为是不可能的。这是一个有效的观点，因此我们在实证研究中研究了LQ-LoRA的两个版本。然而，我们注意到，我们基于一些通用文本数据计算{F（i）}i∈[N]，以获得LQ-LoRA初始化{Q（i），L1（i）、L2（i）}i∈[N]，并对不同的下游任务使用相同的初始化。这使得数据感知方法变得实用，因为Fisher计算和矩阵分解只需要执行一次（如在非数据感知版本中）。</p>
+</blockquote>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><p>我们在三个settings下进行实验：</p>
+<ol>
+<li>continual language modeling on C4 training data</li>
+<li>instruction tuning on the OpenAssistant dataset</li>
+<li>finetuning on GLUE<br>对于1和2，我们使用LLaMA-2模型，而对于3，我们使用RoBERTa-Large。设置密切遵循Dettmers等人的设置。（2023a）。LQ-LoRA的Fisher加权版本使用来自C4训练集的随机采样序列，其中对于RoBERTa Large，我们使用masked language modeling objective（也在C4上）来获得Fisher矩阵。</li>
+</ol>
+<h2 id="baselines"><a href="#baselines" class="headerlink" title="baselines"></a>baselines</h2><p>我们的主要基线包括QLoRA和GPTQ-LoRA。这两种方法在学习对量化模型的低秩更新以进行自适应之前，对预训练的模型执行PTQ；QLoRA使用NF量化，而GPTQ-LoRA使用近似二阶信息来求解$argmin_{\hat{ W} \in \mathbb{Q}_{b}^{d \times k}}\Vert  X W -  X\ \hat{ W}\Vert_F$。在我们的主要实验中使用秩=64，并在我们的分析部分中讨论消融该秩。</p>
+<h2 id="evaluation"><a href="#evaluation" class="headerlink" title="evaluation"></a>evaluation</h2><p>为了评估在C4上的模型，我们使用了三个指标</p>
+<ul>
+<li>perplexity on C4 validation</li>
+<li>perplexity on WikiText-2</li>
+<li>5-shot MMLU accuracy<br>对WikiText-2的评估是为了确保语言模型不会通过LoRA微调过度拟合到C4数据集。</li>
+</ul>
+<p>对于instruction tuning，我们使用Vicuna-style automatic evaluation。这包括要求GPT-4在对于超过80个精心策划的问题其输出和GPT-3.5的输出之间进行配对比较（可能出现平局）。根据Dettmers等人的建议设置，我们选择了这种评估方案，而不是10分评分系统。（2023a）。</p>
+<p>对于GLUE基准，我们显示了所有任务的平均指标。</p>
+<h2 id="training-details"><a href="#training-details" class="headerlink" title="training details"></a>training details</h2><p>除非另有规定，我们使用64 rank，没有LoRA dropout，默认学习率为2×10−5，只有少数例外。</p>
+<p>对于continual language modeling，我们 train on one partition of the C4 data for half an epoch，使用1024的序列长度进行训练和评估。</p>
+<p>为了估计Fisher，我们使用序列长度为1024的C4的10000个样本。</p>
+<p>对于GLUE任务，我们使用类似的设置，但在C4上使用屏蔽语言建模目标。</p>
+<p>对于instruction tuning，我们使用Dettmers等人建议的超参数。（2023a）（除LoRA dropout）。</p>
+<p>对于GLUE微调，我们遵循Hu等人推荐的学习率和时期数量。（2022）QLoRA基线。然而，由于MNLI和QQP的大小，我们只微调了5个时期的模型。</p>
+<h2 id="Language-Modeling和指令调优实验："><a href="#Language-Modeling和指令调优实验：" class="headerlink" title="Language Modeling和指令调优实验："></a>Language Modeling和指令调优实验：</h2><ul>
+<li>方法：在实验中，研究人员使用了LLaMA-2模型，并对不同模型大小和指标进行了语言建模和指令调优。他们比较了LQ-LoRA、QLoRA和GPTQ-LoRA在相似位数预算下的性能。</li>
+<li>结果：实验结果表明，LQ-LoRA在大多数情况下几乎总是优于QLoRA和GPTQ-LoRA。例如，3.5位（Fisher）的LQ-LoRA通常与需要4.127位/参数的NF-4位QLoRA性能相当；同样，2.75位的LQ-LoRA与需要3.127位/参数的NF-3位QLoRA竞争力相当。这突显了混合量化方案的实用性，因为没有ILP，这些混合策略甚至不会被发现。不过，需要注意的是，当接近2.5位时，性能开始显著下降。在较小的7B规模上，Fisher加权的LQ-LoRA在所有目标位宽下都优于未加权的版本，但在70B规模上，这种差异缩小了。</li>
+<li><h2 id="LQ-LoRA用于模型压缩："><a href="#LQ-LoRA用于模型压缩：" class="headerlink" title="LQ-LoRA用于模型压缩："></a>LQ-LoRA用于模型压缩：</h2></li>
+<li><p>方法：在这个实验中，研究人员使用LQ-LoRA来进行模型压缩，针对C4和WikiText数据集进行了实验，并测量了特定子集数据上的性能，通过困惑度来评估。</p>
+</li>
+<li>结果：研究发现，使用2.75位的LQ-LoRA进行模型压缩时，考虑到LoRA组件后，7B和70B模型的平均位数分别为2.95位和2.85位。这通常优于其他低于4位的PTQ方法，这些方法也使用了校准数据来量化预训练模型。这表明LQ-LoRA是一种有效的模型压缩技术。</li>
+</ul>
+<h2 id="零-少次迁移能力评估："><a href="#零-少次迁移能力评估：" class="headerlink" title="零/少次迁移能力评估："></a>零/少次迁移能力评估：</h2><ul>
+<li>方法：研究人员使用Eleuther AI语言模型评估工具在多个基准任务上评估了LQ-LoRA的零/少次迁移能力。他们评估了模型在不同任务上的性能。</li>
+<li>结果：实验发现，在某些基准任务上存在一定程度的性能下降，这表明困惑度的下降并不总是与零/少次迁移性能的变化成比例关系。这强调了在不同任务上评估模型性能的重要性。</li>
+</ul>
+<h2 id="存储需求分析："><a href="#存储需求分析：" class="headerlink" title="存储需求分析："></a>存储需求分析：</h2><ul>
+<li>方法：研究人员分析了不同位数下模型的存储需求，将存储分为不同部分，包括非量化部分、量化部分和LoRA参数。</li>
+<li>结果：实验结果显示，在低于3位的量化下，模型所需的存储显著减少，这使得可以在单个GPU上运行70B模型。对低于3位的模型进行微调需要更多的内存，但他们成功地在单个80GB GPU上以批量大小为2和序列长度为2048的情况下运行了完整的前向/后向传播。<br>总的来说，这些实验支持了LQ-LoRA作为一种有效的模型量化和压缩技术的潜力，特别是在资源受限的环境中，同时也提供了关于性能、扩展性和存储需求的有用信息。<br>&lt;!— ## results<br>图2显示了LLaMA-2上不同模型大小和度量的language modeling and instruction tuning结果。<br>表明LQ-LoRA混合量化策略在不同模型尺寸和性能指标下的优越性，尤其在相对低的位宽条件下。这种策略的性能提升归功于混合量化，而混合策略的发现得益于整数线性规划方法的应用。<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240128/image.6cckv547xks0.webp" alt=""></li>
+</ul>
+<h2 id="LQ-LoRA-for-model-compression-—-gt"><a href="#LQ-LoRA-for-model-compression-—-gt" class="headerlink" title="LQ-LoRA for model compression —&gt;"></a>LQ-LoRA for model compression —&gt;</h2><h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><ol>
+<li><p><strong>迭代算法和优化方法</strong>：作者提到他们使用的迭代算法在实验中表现良好，但仍然是一种经验性的启发式方法。他们表示，未来的研究可以探索更具理论基础的优化算法，以提高LQ-LoRA的性能。此外，他们还建议在其他量化方法的基础上应用LQ分解，可能会带来更好的效果。</p>
+</li>
+<li><p><strong>混合精度和混合秩分解</strong>：研究人员提到可以将ILP-based混合精度方法扩展到混合精度量化和混合秩分解，以允许为每个矩阵分配不同的秩。然而，他们指出这可能不是最优的，因为ILP只最小化了分解误差，而没有考虑最终的下游性能。他们提到，可以通过在ILP中将LoRA参数视为更不昂贵（因为可微调的参数对于下游性能贡献更多），以解决这个问题。</p>
+</li>
+<li><p><strong>负面结果和局限性</strong>：研究人员还讨论了一些负面结果和LQ-LoRA的局限性。他们发现，周期性地重新因子化矩阵（例如，在每个$K$个梯度步骤之后）并没有改善性能。此外，他们尝试了一种混合方法，其中一半可调整的低秩组件来自LQ-LoRA，另一半来自标准的LoRA初始化，但并没有发现这能够改善结果。最后，他们指出，他们的方法在很大程度上依赖于适应通过低秩更新来实现，因此不适用于其他参数高效的微调方法。这些局限性和负面结果提供了对LQ-LoRA的一些限制和改进方向的思考。</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Paper-Analysis-SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression</title>
+    <url>/2024/04/29/Paper-Analysis-SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression/</url>
+    <content><![CDATA[<h1 id="SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression"><a href="#SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression" class="headerlink" title="SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression"></a>SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression</h1><h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>SVD作为一种模型压缩方法，不需要硬件依赖或者模型再训练。现有的一些SVD方法，如ASVD以及FWSVD被提出。但是这些方法当模型的压缩率高时，这些方法的性能会有很大的下降。主要原因是</p>
+<ul>
+<li>imprecise data preposcessing. 尽管ASVD考虑了activation的outliers,但是并没有建立奇异值和模型压缩损失的关系.</li>
+<li>忽视SVD截断之后的模型参数更新. 为了补偿截断产生的额误差,需要更新剩余的参数。但是现在基于SVD的方法都没有考虑参数更新，当压缩率高时，并没有去处理准确度的问题。</li>
+</ul>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li>truncation-aware data whitening技术. 通过理论证明，SVD-LLM 可以将奇异值直接映射到模型压缩损失。这种技术可以识别哪些损失值被截断时，模型压缩的损失是最小的。</li>
+<li>layer-wise closed-form model parameter update. 为了补偿高压缩率下的准确度降低，SVD-LLM可以逐层更新压缩的权重。</li>
+</ul>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><p>SVD-LLM的流程为：使用sentence的随机集合作为校准集来生成activation，以实现truncation-aware whitening 以及 layer-wise closed-form update。SVD-LLM使用cholesky decomposition来洗白activation，对权重矩阵执行svd。</p>
+<h2 id="truncation-aware-data-whitening"><a href="#truncation-aware-data-whitening" class="headerlink" title="truncation-aware data whitening"></a>truncation-aware data whitening</h2><p>受制于input activation的高方差，使用原始SVD来进行LLM压缩会产生严重的accuracy degradation。为了解决这个问题，ASVD将LLM 压缩问题转换成了如下的优化问题：</p>
+<script type="math/tex; mode=display">
+O=\min (L:=\|WX-W'X\|_F)</script><p>其中W是LLM的原始权重，X是给定输入的W的激活值,L是压缩损失。ASVD从X中提取一个对角矩阵，将$WX$ 转换为 $(WS_0)S^{-1}_0X)$，ASVD对$WS_0$执行截断SVD。尽管这种normalizing activation可以提高性能，ASVD并不能直接建立起奇异值和压缩损失的直接关系。如下是两个直接的例子来说明这样的关系。在图2(a)中，只截断一个奇异值时，若是最小的奇异值0.1被截断时，产生的loss为1.1.而截断第二最小的奇异值0.0时，产生的损失值为0.7。当截断两个奇异值时，截断最小的两个奇异值反而比截断2.4和0.1产生的损失值更大。因此截断最小的奇异值并不会产生最小的损失值。</p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.99t5xhs5wk.png" alt=""></p>
+<p>SVD LLMs的关键思想是结合一种感知截断的数据白化技术，以确保奇异值和压缩损失之间的直接映射。<br>为了实现这个技术，SVD-LLM将激活值转变为正交矩阵，激活值变为$S^{-1}X$，此时$(S^{-1}X)(S^{-1}X)^T=I$。其中$S$来自$XX^T$的Cholesky分解。我们对$WS$执行SVD来获取$U,\Sigma,V$，最后对奇异值进行截断，得到 $W’=U\times Trunc(\Sigma)\times V^T\times S^{-1}$. 图2(b)展现了本文的效果。当只有一个奇异值被截断是，compression loss等于被截断的奇异值本身。截断多个奇异值的压缩损失等于它们的平方和的平方根。因此，在所提出的感知截断的数据白化技术下，截断最小的奇异值导致最小的压缩损失。</p>
+<p>以下是通过理论证明为什么这种技术可以在奇异值和压缩损失之间建立一个直接的关系。</p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.67x9z57v2b.png" alt=""><br>根据Lemma 3.1，当截断$S^{-1}X$的$i$-th奇异值获得压缩损失</p>
+<script type="math/tex; mode=display">
+\begin{align}
+    L_i &= \|(W-W')X\|_F=\|(W-U\times Trunc(\Sigma)\times V^T\times S^{-1})X\|_F \\
+    &= \|(WS-U\times Trunc(\Sigma)\times V^T)S^{-1}X\|_F \\
+    &= \|(U\times \Sigma\times V^T-U\times Trunc(\Sigma)\times V^T)S^{-1}X\| \\
+    &= \|\sigma_iu_iv_i^TS^{-1}X\|_F
+\end{align}</script><p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.26lakrm59y.png" alt=""></p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvde6x21.png" alt=""></p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.8ad2n7xwiv.webp" alt=""><br><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.6bgvwvsrix.webp" alt=""></p>
+<h2 id="layer-wise-closed-form-update"><a href="#layer-wise-closed-form-update" class="headerlink" title="layer-wise closed-form update"></a>layer-wise closed-form update</h2><p>随着压缩率的提高，$W$需要截断更多的奇异值。有必要设计一个更新策略来最小化$|WX’-W’X’|_F$<br><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.1vyh67dt7x.png" alt=""><br>为了更新layer $i$，以及不破坏$W_i’$的低秩结构，SVD-LLM只更新$U_i$而固定$Trunc.(\Sigma)_i, V_i$，有<br><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvrzo8tu.webp" alt=""></p>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h3 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h3><p>vanilla SVD, FWSVD, ASVD</p>
+<h3 id="Models-and-Datasets"><a href="#Models-and-Datasets" class="headerlink" title="Models and Datasets"></a>Models and Datasets</h3><p>8个model：LLaMA-7B,13B,30B,65B, LLaMA2-7B, OPT-6.7B, Vivuna-7B, Mistral-7B<br>10个datasets: 3个language modeling datasets(WikiText-2, PTB, C4) 和 7个 classification datasets(OpenbookQA, WinoGrande, HellaSwag, PIQA, MathQA, ARC-e, ARC-c) in zero-shot setting with LM-Evaluation-Harness framework.</p>
+<h3 id="Implementation-Details"><a href="#Implementation-Details" class="headerlink" title="Implementation Details"></a>Implementation Details</h3><p>为了确保公平的比较，我们遵循ASVD[28]随机选择来自WikiText-2的256个样本作为校准数据。由于逐层闭合形式更新旨在缓解较高压缩比下的精度下降，因此我们仅在压缩比为40%及以上时应用它。我们所有的实验都是在Nvidia A100 GPU上进行的。</p>
+<h2 id="overall-performance"><a href="#overall-performance" class="headerlink" title="overall performance"></a>overall performance</h2><p>我们从四个方面来进行测试</p>
+<ul>
+<li>执行不同的压缩率</li>
+<li>执行不同的LLMs</li>
+<li>执行更大规模的LLMs</li>
+<li>与LoRA fine-tuning一起执行</li>
+</ul>
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>为了实现这个技术，SVD-LLM将激活值转变为正交矩阵，激活值变为$S^{-1}X$，此时$(S^{-1}X)(S^{-1}X)^T=I$。其中$S$来自Cholesky分解。我们对$WS$执行SVD来获取$U,\Sigma,V$，最后对奇异值进行截断，得到 $W’=U\times Trunc(\Sigma)\times V^T\times S^{-1}$. 图2(b)展现了本文的效果。当只有一个奇异值被截断是，compression loss等于被截断的奇异值本身。截断多个奇异值的压缩损失等于它们的平方和的平方根。因此，在所提出的感知截断的数据白化技术下，截断最小的奇异值导致最小的压缩损失。</p>
+]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Paper-Analysis-Tensor Decomposition for Hyperspectral data process in remote sense</title>
+    <url>/2024/06/24/Paper-Analysis-Tensor-Decomposition-for-Hyperspectral-data-process-in-remote-sense/</url>
+    <content><![CDATA[<p>Hyperspectral remote sensing imaging 关注了大量时空信息。</p>
+<h1 id="Mathematical-notations"><a href="#Mathematical-notations" class="headerlink" title="Mathematical notations"></a>Mathematical notations</h1><ul>
+<li>T-product. The T-product of two three-order tensors $\mathcal{A} \in \mathbb{R}^{n_1 \times n_2 \times n_3}$ and $\mathcal{B} \in \mathbb{R}^{n_2 \times n_4 \times n_3}$ is denoted by $\mathcal{C} \in \mathbb{R}^{n_1 \times n_4 \times n_3}$</li>
+<li><p>Tensor n-mode product. </p>
+</li>
+<li><p>Four special tensors</p>
+</li>
+<li>First mode-k unfolding/matricization</li>
+<li>Second mode-k unfolding/matricization</li>
+<li>mode-k permutation</li>
+<li>multilinear product</li>
+<li>circular dimensional permuation</li>
+</ul>
+<h1 id="hyperspectral-restoration"><a href="#hyperspectral-restoration" class="headerlink" title="hyperspectral restoration"></a>hyperspectral restoration</h1><p>an observed degraded HS image can be formulated as follows:</p>
+<script type="math/tex; mode=display">
+\mathcal{T}=M(\mathcal{X}) + \mathcal{S} + \mathcal{N} \tag{1}\label{eq1}</script><p>$\mathcal{T, X, S,N}$分别表示观测图像、重构图像、稀疏误差以及加性误差。这个加性误差建模为独立的信号，通常为高斯误差。$M(\cdot)$为不同的重构问题的表示不同的线性退化操作。</p>
+<ol>
+<li>当$M(\mathcal{X})=\mathcal{X}$, $\eqref{eq1}$ 是HS destriping problem ($\mathcal{T=X+S}$)或者是HS denoising problem (只有高斯噪声 $\mathcal{T=X+N}$或者混合噪声$\mathcal{T=X+S+N}$)</li>
+<li>当$M(\cdot)$表示二元操作，1为原始像素，0为缺失数据，$\eqref{eq1}$变为HS inpainting problem.</li>
+<li>当$M(\cdot)$是一个blur kernel，也被称为point spread function(PSF)，$\eqref{eq1}$称为HS deblurring problem.</li>
+</ol>
+<p>HS restoration通过$\mathcal{T}$来评估$\mathcal{X}$。这个ill-posed问题表明，需要对$\mathcal{X}$实施额外的约束才能得到最优解。这些额外的约束解释了HS的期望属性和各种类型的HS先验信息，例如非局部相似性、空间和光谱平滑度以及子空间表示。HS restoration problem可以总结为</p>
+<script type="math/tex; mode=display">
+\min_{\mathcal{X}} \frac{1}{2}\| \mathcal{T}-M(\mathcal{X})-\mathcal{S}\|_F^2+\tau f(\mathcal{X}) + \lambda g(\mathcal{S})</script><p>$\tau$ and $\lambda$是正则参数，且$f(\mathcal{X})$和$g(\mathcal{S})$分别代表正则化，用于探索recovered $\mathcal{X}$和稀疏项$\mathcal{S}$. 空间和光谱的信息可以使用不同的先验约束来体现，例如 the LR property, sparse representation, nonlocal similarity and total variation(TV).</p>
+<h1 id="low-rank-tensor-decomposition"><a href="#low-rank-tensor-decomposition" class="headerlink" title="low-rank tensor decomposition"></a>low-rank tensor decomposition</h1><p>LRTD可以分为factorization-based approaches和rank minimizatio-based approaches.前者需要预定义rank的值，后者可以直接最小化rank。</p>
+<h2 id="factorization-based-approaches"><a href="#factorization-based-approaches" class="headerlink" title="factorization-based approaches"></a>factorization-based approaches</h2><p>常见的就是tucker分解和CP分解。</p>
+<h2 id="rank-minimization-approaches"><a href="#rank-minimization-approaches" class="headerlink" title="rank minimization approaches"></a>rank minimization approaches</h2><script type="math/tex; mode=display">
+\begin{align}
+&\min_{\mathcal{X}} rank(\mathcal{X})\\
+&s.t. \mathcal{T =X+S+N}
+\end{align}</script><p>$rank(\mathcal{X})$表示HS tensor $\mathcal{X}$，包括不同的rank 定义，例如 tucker rank, CP rank, TT rank and tubal rank. 由于上述秩最小问题属于非凸问题，因此是NP-hard问题。核范数通常用作非凸秩函数的凸替代。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\min_{\mathcal{X, S,N}} \|\mathcal{X}\|_* + \lambda_1\|\mathcal{S}\|_1+\lambda_2\|\mathcal{N}\|_F^2\\
+&s.t. \mathcal{T =X+S+N}
+\end{align}</script><p>$\lambda_1$控制稀疏噪声的强度，$\lambda_2$控制加性高斯噪声的强度。<br>ADMM已经成为解决约束优化问题的流行方法，在ADMM中引入了辅助变量，推导出一个等效问题，该问题具有可分离的无约束函数，该函数受原始变量和辅助变量之间的线性兼容性约束。ADMM几乎不依赖于优化问题的平滑性，并且可以快速收敛到一个具有中等精度的最优解。</p>
+<h1 id="other-priors-regularized-low-rank-tensor-decomposition"><a href="#other-priors-regularized-low-rank-tensor-decomposition" class="headerlink" title="other priors-regularized low-rank tensor decomposition"></a>other priors-regularized low-rank tensor decomposition</h1><h2 id="nonlocal-similarity"><a href="#nonlocal-similarity" class="headerlink" title="nonlocal similarity"></a>nonlocal similarity</h2><p>HS图像通常具有许多重复的局部空间模式，因此a local patch在HS图像中总是具有许多相似的patch。</p>
+<h2 id="spatial-and-spectral-smoothness"><a href="#spatial-and-spectral-smoothness" class="headerlink" title="spatial and spectral smoothness"></a>spatial and spectral smoothness</h2><p>HS image在空间和光谱上往往具有相对平滑的特性。一般使用TV method来处理这个平滑性。为了增强HS图像的空间分段平滑性和光谱一致性，分别制定了3DTV范数和空间光谱TV范数</p>
+<h2 id="subspace-representation"><a href="#subspace-representation" class="headerlink" title="subspace representation"></a>subspace representation</h2>]]></content>
+  </entry>
+  <entry>
+    <title>Paper Analysis: Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition</title>
+    <url>/2024/01/14/Paper-Analysis-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition/</url>
+    <content><![CDATA[<h2 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h2><ul>
+<li>Title : Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition</li>
+<li>Year: 2015</li>
+<li>Publication: ICLR</li>
+</ul>
+<h2 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h2><p>对于low-end architecture和real-time操作而言，减少CNN计算开销是必要的。而CNN中耗时最大的就是卷积层，提高卷积操作的效率是本文的目标。张量分解作为一种常见的加速卷积层的操作很常见。CNN中的典型卷积是将一个输入的3d张量（two spatial dimensions and one input image maps dimension）经过卷积计算得到一个相似结构的输出3d张量。而卷积核convolution kernel本身是一个4d张量（two spatial dimensions, one input image maps and output image maps dimension）.</p>
+<h2 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h2><ul>
+<li>易于分解实现。CP分解具有很好理解的性质和成熟的实现</li>
+<li>易于实现CNN。CP分解通过具有小的矩阵序列来近似4d核张量的卷积操作。所有的这些低维卷积都代表标准的CNN层，很容易使用现有的CNN包插入CNN中。</li>
+<li>易于微调。一旦卷积层被替换为小矩阵序列，就可以直接使用反向传播对训练数据进行微调整个网络。</li>
+<li>效率。与之前的方法相比the full kernel CPD和global 微调的简单组合可以为近似网络带来对于速度和准确度之间更好的均衡。</li>
+</ul>
+<h2 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h2><p>方法可以总结为两步</p>
+<ol>
+<li>对卷积层中的卷积核使用张量分解。</li>
+<li>使用反向传播微调整个网络。</li>
+</ol>
+<p>本文使用tenorlab中的non-linear least squares method来最小化估计残差的L2范数，使用Gauss-Newton优化。</p>
+<p>现有generalized convolution，将input tensor $U(\cdot,\cdot,\cdot)\in\mathbb{R}^{X\times Y\times S}$映射到output tensor $V(\cdot,\cdot,\cdot)\in\mathbb{R}^{(X-d+1)\times (Y-d+1)\times T}$</p>
+<script type="math/tex; mode=display">
+V(x,y,t)=\sum_{i=x-\delta}^{x+\delta}\sum_{j=y-\delta}^{y+\delta}\sum_{s=1}^{S}K(i-x+\delta, j-y+\delta,s,t)U(i,j,s)</script><p>这里$K(\cdot,\cdot,\cdot,\cdot)$是一个4d核张量大小为$d{\times}d{\times}S{\times}T$ （the first two dimensions corresponding to the spatial dimensions, the third dimension corresponding to different input channels, the fourth dimension corresponding to different output channels.） The spatial width and height of the kernel are denoted as $d$, while $\delta$ denotes ``half-width’’ $(d-1)/2$ (for simplicity we assume square shaped kernels and even $d$). </p>
+<p>The rank-$R$ CP-decomposition of the 4D kernel tensor has the form:</p>
+<script type="math/tex; mode=display">
+K(i,j,s,t) = \sum_{r=1}^R  K^x(i-x+\delta,r)  K^y(j-y+\delta,r)\\ K^s(s,r)   K^t(t,r)</script><p>where $K^x(\cdot,\cdot)$, $K^y(\cdot,\cdot)$, $K^s(\cdot,\cdot)$, $K^t(\cdot,\cdot)$ are the four components of the composition representing 2D tensors (matrices) of sizes $d{\times}R$, $d{\times}R$, $S{\times}R$, and $T{\times}R$ respectively.</p>
+<p>将上面两个公式结合，得到</p>
+<script type="math/tex; mode=display">
+V(x,y,t) = \sum_{r=1}^{R} K^t(t,r) 
+\left(\sum_{i=x-\delta}^{x+\delta} K^x(i-x+\delta,r)
+\left(\sum_{j=y-\delta}^{y+\delta} K^y(j-y+\delta,r)
+\left(\sum_{s=1}^S \, K^s(s,r) \, U(i,j,s)\right)\right)\right)</script><p>此时，输出张量$V$可以通过4次使用更小的卷积核来进行卷积计算得到</p>
+<script type="math/tex; mode=display">
+\begin{align}
+U^s(i,j,r) &=\, \sum_{s=1}^S K^s(s,r)\, U(i,j,s) \tag{6}\\
+U^{sy}(i,y,r) &= \sum_{j=y-\delta}^{y+\delta} K^y(j-y+\delta,r) \, U^s(i,j,r) \tag{7}\\ 
+U^{syx}(x,y,r) &= \sum_{i=x-\delta}^{x+\delta} K^x(i-x+\delta,r) \, U^{sy}(i,y,r) \tag{8}\\ 
+V(x,y,t) &= \sum_{r=1}^{R} K^t(t,r)\,  U^{syx}(x,y,r)\,, \tag{9}
+\end{align}</script><p>其中 $U^s(\cdot,\cdot,\cdot)$, $U^{sy}(\cdot,\cdot,\cdot)$, and $U^{syx}(\cdot,\cdot,\cdot)$ are intermediate tensors (map stacks).  </p>
+<ul>
+<li>根据$U(\cdot,\cdot,\cdot)$计算 $U^s(\cdot,\cdot,\cdot)$（ Eq.$(6)$ ）以及根据 $U^{syx}(\cdot,\cdot,\cdot)$ 计算 $V(\cdot,\cdot,\cdot)$ ( Eq.$(9)$ )被称为 $1{\times}1$ convolutions。</li>
+<li>根据$U^s(\cdot,\cdot,\cdot)$计算 $U^{sy}(\cdot,\cdot,\cdot)$ （ Eq.$(7)$ ）以及根据 $U^{sy}(\cdot,\cdot,\cdot)$ 计算 $U^{syx}(\cdot,\cdot,\cdot)$ （ Eq.$(8)$ ）是使用更小卷积核的标准卷积。</li>
+<li>通过对训练数据进行标准反向传播（带动量）对生成的架构进行微调。所有网络层，包括近似层上方的层、近似层下方的层以及插入的四个卷积层都参与微调。然而，我们发现插入层内的梯度容易出现梯度爆炸，因此应该小心保持较低的学习率，或者修复部分或全部插入的层，同时仍然对上方和下方的层进行微调。</li>
+</ul>
+<blockquote>
+<ol>
+<li><strong>点卷积（pointwise convolution）</strong><br>点卷积是一种特殊的卷积运算，他的卷积大小是$1 \times 1$。其作用主要是改变输入数据的通道数channels，在深度学习中用于将高维空间映射到地位空间，而不改变数据的空间维度（宽度和高度）</li>
+</ol>
+</blockquote>
+<h2 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h2><p>本文在两个network architecture上进行实验。</p>
+<h3 id="character-classification-CNN"><a href="#character-classification-CNN" class="headerlink" title="character-classification CNN"></a>character-classification CNN</h3><p>network由4个卷积层with maxout nonlinearities 以及 a softmax output，用来分类$24\times 24$ image patches为36 classes。我们只考虑第二层和第三层的卷积层，这两层占比时间超过90%。Layer 2有48 input 和 128 output channels以及大小为$9\times 9$，Layer 3有64 input 和 512 output channels以及大小为 $8\times 8$.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.6juv2simz6g0.png" alt=""><br><strong>separate approximation</strong>.<br>张量近似误差随着近似秩的增加而减小，当近似秩变得足够大时，可以准确地近似权重张量。<br>然而，我们的实验表明，网络正常运行并不需要精确的近似。</p>
+<p><strong>combining approximations</strong>.<br>第 2 层近似于秩 64。在那之后，通过微调除新层之外的所有层，精度的下降很小。<br>最后，第 3 层以秩 64 近似，对于该层，这种近似不会导致网络预测精度显着下降，因此无需再次对网络进行微调。</p>
+<p>此过程得出的网络比原始模型快 8.5 倍，而分类准确率下降 1% 至 90.2%</p>
+<h3 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h3><p>本文考虑了Alexnet的第二个卷积<br>可以注意到，所考虑网络的 conv2 需要更大的 rank （与<br>CharNetexperiment）来实现适当的性能。秩越大，精度损失越低，但模型加速比会降低。我们未能找到良好的SGD学习率：较大的值导致梯度爆炸，而较小的值则无法合理地减少重建损失。我们怀疑这种效应是由于低秩CP分解的不稳定性，规避这种问题的方法是使用交替更新因子矩阵。<br>虽然我们的方法在较小的架构（如字符分类）中更胜一筹，但对于像AlexNet这样的大型网络来说，它并不是最好的方法。</p>
+<h2 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h2><h3 id="Speeding-up-and-compression-convolutional-neural-networks-by-low-rank-decomposition-without-fine-tuning"><a href="#Speeding-up-and-compression-convolutional-neural-networks-by-low-rank-decomposition-without-fine-tuning" class="headerlink" title="Speeding-up and compression convolutional neural networks by low-rank decomposition without fine-tuning"></a>Speeding-up and compression convolutional neural networks by low-rank decomposition without fine-tuning</h3><ul>
+<li>背景：随着卷积神经网络（CNN）的快速发展，CNN的精度得到了显著提高，这也给资源有限的移动终端或嵌入式设备的部署带来了极大的挑战。最近，通过低秩分解压缩CNN取得了重大成就。</li>
+<li>与现有方法使用相同的分解形式和基于奇异值分解（SVD）的分解策略进行微调不同，我们的方法对不同的层使用不同的分解形式，并提出了无需微调的分解策略。</li>
+<li>我们提出了一种简单有效的方案来压缩整个CNN，称为余弦相似度SVD，无需微调。</li>
+<li>对于AlexNet，与贝叶斯优化（BayesOpt）算法相比，我们的余弦相似度算法的秩选择需要84%的时间来找到秩。</li>
+<li>在不同数据集上测试了各种CNN（AlexNet、VGG-16、VGG-19和ResNet-50）后，实验结果表明，当精度损失小于1%时，权重参数下降可以超过50%，而无需微调。浮点运算 （FLOP） 下降约为 20%，在不进行微调的情况下精度损失小于 1%。<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.b7861p9c53k.png" alt="cd"><br>拟议的方案由三部分组成，包括预处理、分解形式的测定和秩选择和分解策略优化。如上图所示，蓝色框表示预处理，其中包括读取预训练的 CNN参数。绿色框代表确定分解形式和秩选择，基于SVD对不同层使用不同的分解形式并通过我们的余弦相似度算法确定排名。黄色框表示分解策略优化器，无需微调来决定哪些层适合分解。底部框代表优化分解策略的最终结果。<br>拟议的方案包括三个步骤。<br>（1）需要对数据集进行CNN训练，并保存预训练参数，或直接读取预训练参数。<br>（2）确定不同分解形式是关键并根据不同的层进行排名选择。我们自动排名算法适用于所有单排名解决方案。<br>（3）通过我们的分解策略，无需微调，我们可以决定哪些层适合分解。分解策略没有微调避免了长时间的训练。<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240115/image.2l4wvbttsho0.webp" alt=""></li>
+</ul>
+<h3 id="Deep-Convolutional-Neural-Network-Compression-via-Coupled-Tensor-Decomposition"><a href="#Deep-Convolutional-Neural-Network-Compression-via-Coupled-Tensor-Decomposition" class="headerlink" title="Deep Convolutional Neural Network Compression via Coupled Tensor Decomposition"></a>Deep Convolutional Neural Network Compression via Coupled Tensor Decomposition</h3><ul>
+<li>背景：大型神经网络在各种现实世界的应用中取得了令人瞩目的进展。然而，运行深度网络需要昂贵的存储和计算资源，这使得它们在移动设备上部署时出现问题。</li>
+<li>最近，矩阵和张量分解已被用于压缩神经网络。在本文中，我们开发了一种用于网络优化的同时张量分解技术。</li>
+<li>首先讨论共享网络结构。有时，不仅结构而且参数也被共享以形成压缩模型，但代价是性能下降。这表明一个网络内各层之间的权重张量既包含相同的分量又包含独立的分量。</li>
+<li>为了利用这一特性，针对完全和部分结构共享的情况开发了两种新的耦合张量序列分解，并提出了一种用于低秩张量计算的交替优化方法。</li>
+<li>最后，我们通过微调来恢复神经网络模型的性能。然后可以计算所设计方法的压缩比。还包括实验结果，以证明我们的算法对于图像重建和分类应用的好处，使用众所周知的数据集，例如 Cifar-10/Cifar-100 和ImageNet 和广泛使用的网络，例如 ResNet。与最先进的基于独立矩阵和张量分解的方法相比，我们的模型可以在相同的压缩比下获得更好的网络性能</li>
+</ul>
+<h2 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h2><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2>]]></content>
+      <tags>
+        <tag>论文分析</tag>
+        <tag>tensor decomposition</tag>
+        <tag>model compression</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Paper-Analysis-TensorGPT: Efficient Compression of the Embedding Layer in LLMs based on the Tensor-Train Decomposition</title>
+    <url>/2024/01/31/Paper-Analysis-TensorGPT-Efficient-Compression-of-the-Embedding-Layer-in-LLMs-based-on-the-Tensor-Train-Decomposition/</url>
+    <content><![CDATA[<h1 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h1><p>TensorGPT: Efficient Compression of the Embedding Layer in LLMs<br>  based on the Tensor-Train Decomposition</p>
+<h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>LLMs的大量参数使得其无法在轻量应用以及低端设备上发挥潜力。有一种关注于压缩embedding layer的解决方式，embedding layer占用了30%的参数量。因此对其进行有效的压缩可以减少space complexity和edge devices. embedding layer占据了整个模型参数的31.02\%.</p>
+<p>为了实现这个目的，本文使用tensor-train decomposition来压缩embedding layer of LLM以便使用low-rank张量格式来存储large embeddings。这种格式称为TT-format或Matrix Product State.<br>在许多应用中token vocabulary在不断变化，本文考虑的是每个单独的token embedding（token embedding matrix中的每行）而不是整个token embedding matrix。得益于tensor networks的super-compression特性，本文对每个token embedding进行张量化和分解，然后构建一个高效的embedding存储格式来进行分布式计算。</p>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li>第一个使用TT decomposition和matrix product state来分解GPT系列模型</li>
+<li>将每个token embedding 视为一个matrix product state，这种方法可以便于token embedding的插入或删除，也有助于分布式计算</li>
+<li>实验表明参数数量减少了2.31倍</li>
+</ul>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><h2 id="token-token-embeddings-and-embedding-layer-in-LLMs"><a href="#token-token-embeddings-and-embedding-layer-in-LLMs" class="headerlink" title="token, token embeddings and embedding layer in LLMs"></a>token, token embeddings and embedding layer in LLMs</h2><p><strong>token and tokenization</strong>  token表示文本的单元例如一个单词或者一个标点。tokenization将一段文本分解为若干个单元。GPT系列模型使用了Byte Pair Encoding BPEde tokenization方法。BPE将文本分解为不同长度的子词单元varying-length subword unit。</p>
+<p><strong>token embedding and embedding layer in LLMs</strong> “embedding”是指将离散的输入tokens转化为连续的向量表示。这种表示称为word embedding或者token embedding。在LLMs中，embedding layers根据sequential input tokens进行output token embeddings，该层将每个输入token映射到一个高维向量，这个向量捕获关于token的含义和上下文的语义和句法信息。embedding layer有一个大小为V的vocabulary$\{v\}$，对于每个token $v$，对应的embedding $x_v$的长度为$D$，此时weights of embedding layer表示为$W\in\mathbb{R}^{V\times D}$. 如果令牌嵌入维度D过大，则会存在过多的参数复杂性，导致嵌入层的高存储成本，以及此后整个语言模型的高存储成本。</p>
+<blockquote>
+<p>嵌入权重矩阵W可以被看作查找表。基本嵌入生成找到与所有输入令牌相对应的令牌嵌入，并根据输入顺序对其进行堆叠。应该注意的是，在当前的LLM中，例如类似GPT和类似BERT的模型中，令牌的位置和掩码信息也被编码到嵌入中。在这些情况下，嵌入xv的令牌不仅仅是通过查找过程生成的。</p>
+</blockquote>
+<h2 id="tensor-train-decomposition-and-matrix-product-state"><a href="#tensor-train-decomposition-and-matrix-product-state" class="headerlink" title="tensor-train decomposition and matrix product state"></a>tensor-train decomposition and matrix product state</h2><p>Tensor-Train Decomposition最常见的形式是量子物理界引入的Matrix Product State（MPS或TT-MPS），它应用算法中描述的Tensor-Train Singular Value Decomposition（TT-SVD）算法来分解一个大阶-$N$ 张量 $\mathcal{X} \in \mathbb{R}^{I_1 \times I_2 \times \cdots \times I_N}$, into $N$ smaller $2$-nd or $3$-rd order core tensors, $\mathcal{G}^{(n)} \in \mathbb{R}^{ R_{n-1} \times  I_n \times R_n }$ for $n=1, \dots, N$, such that </p>
+<script type="math/tex; mode=display">
+\begin{equation}\label{ttcp_eq:tt_def}
+\begin{aligned}
+    \mathcal{X} \approx \mathcal{G}^{(1)} \times_2^1 \mathcal{G}^{(2)} \times_3^1 \mathcal{G}^{(3)} \times_3^1 \cdots \times_3^1 \mathcal{G}^{(N)}
+\end{aligned}
+\end{equation}</script><blockquote>
+<p>A $(2, 1)$-tensor contraction between two order-$2$ tensors, $\textbf{A} \in \mathbb{R}^{I_1 \times I_2}$ and $\textbf{B} \in \mathbb{R}^{J_1 \times J_2}$, where $I_2 = J_1$, is equivalent to a standard matrix multiplication, $\textbf{C} = \textbf{A} \times_2^1 \textbf{B} = \textbf{A} \textbf{B} \in \mathbb{R}^{I_1 \times J_2}$</p>
+</blockquote>
+<p>The tensors $\mathcal{G}^{(1)}, \ldots, \mathcal{G}^{(N)}$ 被称为core tensors, while the set $\{ R_0, \dots, R_{N} \}$, where $R_0=R_N=1$, represents the TT-rank of the TT decomposition. By defining $\mathcal{G}^{(n)}_{:, i_n, :}$, $i_n = 1, \dots, I_N$ as the $i_n$-th horizontal slice of tensor $\mathcal{G}^{(n)}$, the MPS assumes the element-wise form as </p>
+<script type="math/tex; mode=display">
+\begin{equation}
+x_{i_1, i_2, \dots, i_N} = \mathcal{G}^{(1)}_{:, i_1, :}\cdots\mathcal{G}^{(N)}_{:, i_N, :}    
+\end{equation}</script><p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240214/image.4lfbegts7180.webp" alt="算法描述"></p>
+<h2 id="MPS-formatted-token-embedding"><a href="#MPS-formatted-token-embedding" class="headerlink" title="MPS formatted token embedding"></a>MPS formatted token embedding</h2><p>vocabulary发生变化时，如果分解的是整个embedding weight matrix， tensor decomposition就需要整个重新执行。此外，加载整个权重embedding matrix和分解都需要大量的内存和计算资源。本文不分解整个embedding weight matrix，而是分解每个token embedding。每个token embedding reshape为一个N阶张量，$\texttt{ten} \left( \textbf{x}_v \right) = \mathcal{X} \in \mathbb{R}^{I_1 \times \cdots \times I_N}$ such that $D =     \prod_{k=1}^{N} I_k$, 使用MPS form as $\mathcal{X} \approx \mathcal{G}^{(1)} \times_3^1 \cdots \times_3^1 \mathcal{G}^{(N)}$. </p>
+<p>不存储the entire token embedding $\text{x} \in \mathbb{R}^{D}$, 我们存储 corresponding MPS cores, $\mathcal{G}^{(n)} \in \mathbb{R}^{R_{n-1} \times I_n \times R_n}$, for $n=1,\ldots,N$.<br>优点如下：</p>
+<ul>
+<li>lower storage cost</li>
+<li>affordable computation (更利于单节点计算)</li>
+</ul>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><ul>
+<li>实验数据： general language understanding evalution (GLUE)和 microsoft rsearch paraphrase corpus的文本数据集，一共是11602个English 句子。 使用BPE tokenization</li>
+<li>language model : GPT-2, embedding weight matrix $W\in \mathbb{R}^{50257\times 768}$，其中 vacabulary的大小为50257， token embedding dimension为768.</li>
+<li>$\texttt{ten2} \left( \textbf{x}_v \right) = \mathcal{X} \in \mathbb{R}^{2\times2\times\cdots\times2}$. 这里使用了zero-padding</li>
+</ul>
+<h2 id="evaluation-metrics"><a href="#evaluation-metrics" class="headerlink" title="evaluation metrics"></a>evaluation metrics</h2><ul>
+<li>compression ratio</li>
+<li>distortion error<ul>
+<li>mae</li>
+<li>norm-mae</li>
+</ul>
+</li>
+<li>Compatibility with the subsequent GPT-2 network blocks</li>
+</ul>
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1>]]></content>
+      <tags>
+        <tag>论文分析</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>cuda的进阶学习</title>
     <url>/2022/03/06/cuda%E7%9A%84%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<p><a href="https://zhuanlan.zhihu.com/p/441146275">[施工中] CUDA GEMM 理论性能分析与 kernel 优化</a></p>
@@ -18,6 +827,50 @@
         <tag>cuda</tag>
         <tag>gpu</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>importance sampling in stochastic gradient</title>
+    <url>/2024/03/02/importance-sampling-in-stochastic-gradient/</url>
+    <content><![CDATA[<h1 id="Adaptive-Importance-Sampling-for-Finite-Sum-Optimization-and-Sampling-with-Decreasing-Step-Sizes"><a href="#Adaptive-Importance-Sampling-for-Finite-Sum-Optimization-and-Sampling-with-Decreasing-Step-Sizes" class="headerlink" title="Adaptive Importance Sampling for Finite-Sum Optimization and Sampling with Decreasing Step-Sizes"></a>Adaptive Importance Sampling for Finite-Sum Optimization and Sampling with Decreasing Step-Sizes</h1><h2 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h2><p>functions $f$: $\mathbb{R^d}\rightarrow \mathbb{R}$ of the form $f(x)=\sum^N_{i=1}f_i(x)$. 当$N$很大时，偏向使用$f$的随机估计，使用SGD的变体或者stochastic gradient langevin dynamics：</p>
+<script type="math/tex; mode=display">
+X_{t+1}^{SGD}=X_{t}^{SGD} - \alpha_t N \nabla_{f_{I_t}}(X_{t}^{SGD})</script><script type="math/tex; mode=display">
+X_{t+1}^{SGLD}=X_{t}^{SGLD} - \alpha_t N \nabla_{f_{I_t}}(X_{t}^{SGLD})</script><p>$\{\alpha_t\}_{t=1}^T$表示一系列的step-sizes，索引$I_t$从$[N]$从随机挑选，使得$N\nabla_{f_{I_t}}(x)$是$f$的梯度的无偏估计。众所周知，这些算法给出的答案的质量取决于梯度估计器的（迹）方差，并且已经做出了相当大的努力来设计减少这种方差的方法。</p>
+<p>本文关注于使用importance sampling来实现方差减少，在每次迭代，算法根据给定的$p^t$分布中选择$I_t$，估计方差为$\hat{g}^t:=\frac{1}{p^t_{I_t}\nabla f_{I_t}(x_t)}$. $\hat{g}^t$是$g^t:=\nabla f(x_t)$的无偏估计。只要选好了$p^t$,就可以显著地减少方差。但是计算方差减少的最优分布，需要计算每次迭代中的所有个体梯度$g^t_i:=\nabla f_i(x_t)$的euclidean范数，太expensive。</p>
+<p>本文关注于online problem with bandit feedback. 尝试设计一个带有sub-linear expected static regret, which is defined as</p>
+<script type="math/tex; mode=display">
+Regret_S(T):=\sum^T_{t=1}c_t(p^t)-min_{p\in \triangle}\sum_{t=1}^Tc_t(p)</script><p>其中$\triangle$是$\mathbb{R}^N$的probability simplex，$c_t(p)$是$\hat{g}^t$的协方差矩阵的迹</p>
+<script type="math/tex; mode=display">
+c_t(p):=\sum_{i=1}^N\frac{1}{p_i}\|g_i^t\|_2^2-\|g^t\|_2^2</script><p>注意，第二项在regret的定义中被取消，剩下的讨论中忽略了它。在这这个公式中，为了保证计算负载的可管理，只能使用$I^{th}_t$ gradient的范数形式的部分反馈，而不能使用完整的cost function。在一致有界梯度的假设下，[12]中提出了一种具有$\hat{\mathcal{O}}(T^{\frac{2}{3}})$静态regret算法。<br>更好用的是动态regret算法</p>
+<script type="math/tex; mode=display">
+Regret_D(T):=\sum^T_{t=1}c_t(p^t)-\sum_{t=1}^Tmin_{p\in \triangle}c_t(p)</script><h2 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h2><h2 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h2><h2 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h2><!-- % ## Title and Authors 
+
+% ## Background and Motivation
+
+
+
+% ## Main Contributions
+
+
+
+% ## Theoretical Framework/Algorithm
+
+
+
+
+% ## Experimental Design and Results
+
+
+
+
+
+% ## Comparative Analysis
+
+
+
+% ## Discussion and Limitations
+
+% ## Conclusion -->
+]]></content>
   </entry>
   <entry>
     <title>online CP decomposition</title>
@@ -193,7 +1046,7 @@ C=
 </ul>
 <h3 id="sparse-mma-sp-with-tf32-type"><a href="#sparse-mma-sp-with-tf32-type" class="headerlink" title="sparse mma.sp with .tf32 type"></a>sparse mma.sp with .tf32 type</h3><p>当矩阵A的元素类型是.tf32，A的结构化稀疏的粒度必须是1:2。元素存在operand数组中，索引存在matadata中。需要注意的这里还是用4bit来存储索引,只有0b1110和0b0100是有效的索引值，其余索引会产生未定义行为。</p>
 <blockquote>
-<p>这里的子块的长度是2，又是1:2的粒度，却不用1bit来存储索引，这里要注意一下。</p>
+<p>这里的块的长度是2，又是1:2的粒度，却不用1bit来存储索引，这里要注意一下。</p>
 </blockquote>
 <p><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220614/微信截图_20220615133612.sopfz9sioio.png" alt=""><br>sparse selector决定哪些线程获得metadata</p>
 <ul>
@@ -203,13 +1056,214 @@ C=
 </blockquote>
 </li>
 </ul>
-<h3 id="sparse-mma-sp-with-integer-type"><a href="#sparse-mma-sp-with-integer-type" class="headerlink" title="sparse mma.sp with integer type"></a>sparse mma.sp with integer type</h3>]]></content>
+<h3 id="sparse-mma-sp-with-integer-type"><a href="#sparse-mma-sp-with-integer-type" class="headerlink" title="sparse mma.sp with integer type"></a>sparse mma.sp with integer type</h3><p>当A和B有1 .u8/.s8的元素类型，矩阵A结构化稀疏的粒度是2:4，和前面的没有差别。</p>
+<p>当A和B有1 .u4/.s4的元素类型，矩阵A pair-wise 结构化稀疏的粒度是4:8，这里的限制条件更多了。此时chunk大小是8，对于每两个连续元素组成的子块要么都是零值，要么都是非零值。<br><img src="https://raw.githubusercontent.com/HURONG0510/blogpic/main/20220615/image.6dsymnve4vo0.png" alt=""><br>sparse selector为</p>
+<ul>
+<li>m16n8k32 with .u8/.s8 and m16n8k64 with .u4/.s4 type: group中一对线程存储metadata，在{0，1}和{2，3}中各选一个</li>
+<li>m16n8k32 with .u8/.s8 and m16n8k64 with .u4/.s4 type: 一组四个连续线程中的所有线程都提供sparsity metadata。因此，在这种情况下，稀疏性选择器必须为 0。稀疏性选择器的任何其他值都会导致未定义的行为。</li>
+</ul>
+<h2 id="matrix-fragments-for-multiply-accumulate-operation-with-sparse-matrix-A"><a href="#matrix-fragments-for-multiply-accumulate-operation-with-sparse-matrix-A" class="headerlink" title="matrix fragments for multiply-accumulate operation with sparse matrix A"></a>matrix fragments for multiply-accumulate operation with sparse matrix A</h2><p>本节主要描述线程寄存器的上下文与各种矩阵的fragment和sparsity metadata的关联。</p>
+<ul>
+<li>对于矩阵A，仅根据寄存器向量大小及其与矩阵数据的关联来描述fragment的布局。</li>
+</ul>
+]]></content>
       <categories>
         <category>cuda进阶学习</category>
       </categories>
       <tags>
         <tag>gpu</tag>
         <tag>ptx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python助教</title>
+    <url>/2022/09/20/python%E5%8A%A9%E6%95%99/</url>
+    <content><![CDATA[<h1 id="python数据类型"><a href="#python数据类型" class="headerlink" title="python数据类型"></a>python数据类型</h1><p><img src="https://cdn.staticaly.com/gh/HURONG0510/blogpic@main/20220920/微信截图_20220920194541.6ybu3bts8b40.png" alt=""></p>
+<h2 id="python数字类型"><a href="#python数字类型" class="headerlink" title="python数字类型"></a>python数字类型</h2><ul>
+<li>整数类型（int）: 对应数学中的整数</li>
+<li>浮点数类型（float)：对应数学中的实数（带小数点的）</li>
+<li>复数类型（complex)：对应数学中的复数（虚数单位默认为：j ）</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>python学习</title>
+    <url>/2022/08/18/python%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h1 id="IPython基础"><a href="#IPython基础" class="headerlink" title="IPython基础"></a>IPython基础</h1><h2 id="运行jupyter-notebook"><a href="#运行jupyter-notebook" class="headerlink" title="运行jupyter notebook"></a>运行jupyter notebook</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook</span><br></pre></td></tr></table></figure>
+<p>启动之后，点击空的代码“单元”，输入一行python代码，然后按下shift-enter来执行</p>
+<h2 id="内省"><a href="#内省" class="headerlink" title="内省"></a>内省</h2><p>在一个变量前后使用（?)可以显示一些关于该对象的概要信息<br><img src="https://cdn.staticaly.com/gh/HURONG0510/blogpic@main/20220818/微信截图_20220818125717.2g63o6jwdbpc.png" alt=""></p>
+<p>这就是对象内省。如果对象是一个函数或者示例方法，且文档字符串已经写好，则文档字符串就会显示出来。使用?来显示文档字符串，使用??显示函数的源代码。 </p>
+<p>?有一个终极用途就是可以像unix一样搜索ipython命名空间。可以把一些字符和通配符(*)结合在一起，会显示所有匹配通配符表达式的命名。例如<br><img src="https://cdn.staticaly.com/gh/HURONG0510/blogpic@main/20220818/微信截图_20220818131048.75kynabehio0.png" alt=""></p>
+<h2 id="run命令"><a href="#run命令" class="headerlink" title="%run命令"></a>%run命令</h2><p>可以在ipython中使用%run命令运行任意的python程序文件，将文件名作为参数传给%run命令。文件中定义的所有变量（导入的、函数中的、全局定义的）在运行后，可以在ipython命令行中使用。</p>
+<blockquote>
+<p>如果你想让待运行的脚本使用ipython命名空间中已有的变量，请使用%run -i 代替普通的%run命令</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>transformer宏观理解</title>
+    <url>/2024/03/13/transformer%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="重消化-Transformers-Explained-Visually-Part-1-Overview-of-Functionality"><a href="#重消化-Transformers-Explained-Visually-Part-1-Overview-of-Functionality" class="headerlink" title="重消化-Transformers Explained Visually (Part 1): Overview of Functionality"></a>重消化-<a href="https://towardsdatascience.com/transformers-explained-visually-part-1-overview-of-functionality-95a6dd460452">Transformers Explained Visually (Part 1): Overview of Functionality</a></h1><h2 id="what-is-a-transformer"><a href="#what-is-a-transformer" class="headerlink" title="what is a transformer"></a>what is a transformer</h2><p>transformer在处理连续文本时特别有用，他将输入的文本序列处理并输出成另一文本序列。它包含了a stack of encoder layers and decomder layers.</p>
+<p>The encoder stack and decoder stack 都拥有自己对应的embedding layers for their respective inputs. 最终还有一个output layer来生成最终的输出。</p>
+<ul>
+<li>所有的encoders都相同，decoder也一样。encoder中包含最重要的self-attention (用于计算序列中不同单词之间的关系)以及前馈层。</li>
+<li>decoder包含self-attention layer， feed-forward layer以及encoder-decoder attention layer.</li>
+<li>每个encoder和decoder有自己的权重。<br><img src="https://miro.medium.com/v2/resize:fit:1098/format:webp/1*F7JlVjpmv-XAEeE9IPyzHA.png" alt=""></li>
+</ul>
+<p>encoder是一个可重用的模块，除了上述的两层之外，他还在两层之间存在residual skip connections以及layerNorm layers。<br><img src="https://miro.medium.com/v2/resize:fit:490/format:webp/1*THykpgtL058A9EpkstnUJQ.png" alt=""></p>
+<p>transformer有许多变体，有些根本没有decoder。</p>
+<h2 id="what-does-attention-do"><a href="#what-does-attention-do" class="headerlink" title="what does attention do"></a>what does attention do</h2><p>transformer突破性能的关键在于他对注意力的使用。在处理词汇时，attention会关注于输入中与该词联系紧密的词。例如”ball”会关联到holding和blue，而boy并不会关联到blue。<br><img src="https://miro.medium.com/v2/resize:fit:634/format:webp/1*1ouB-xrMxPgqu721_zzsbA.png" alt=""></p>
+<p>transformer架构通过将输入序列中的每个单词与其他单词相关联来使用self-attention</p>
+<p>Consider two sentences:</p>
+<ul>
+<li>The _cat_ drank the milk because <strong>it</strong> was hungry.</li>
+<li>The cat drank the _milk_ because <strong>it</strong> was sweet.<br><img src="https://miro.medium.com/v2/resize:fit:1400/1*pT0ZIWeoilLkz3e_1fVeYQ.png" alt=""></li>
+</ul>
+<p>在第一句话中，“it”一词指的是“猫”，而在第二句话中，“it”一词指的是“牛奶”。当模型处理“it”这个词时，自注意力会为模型提供更多有关其含义的信息，以便模型可以将“it”与正确的单词关联起来。</p>
+<p>为了使其能够处理句子意图和语义的更多细微区别，transformers为每个单词提供了多个attention scores。例如。在处理“it”一词时，第一个分数突出显示“cat”，而第二个分数突出显示“hungry”。因此，当它解码“it”这个词时，例如，通过将其翻译成另一种语言，它会将“cat”和“hungry”的某些方面合并到翻译的单词中。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*s2hugsMP28aB2tJoYCq8uA.png" alt=""></p>
+<h2 id="training"><a href="#training" class="headerlink" title="training"></a>training</h2><p>训练数据包含两个部分：</p>
+<ul>
+<li>源或输入序列（例如，英语中的“You are welcome”，用于解决翻译问题）</li>
+<li>目的地或目标序列（例如西班牙语中的“De nada”）</li>
+</ul>
+<p>Transformer traning 的目标是学习如何通过使用<strong>输入和目标序列</strong>来输出目标序列。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*0g4qdq7Rt6QvDalFFAkL5g.png" alt=""></p>
+<ol>
+<li>input sequence 被转换为embeddings (with position encoding)，喂给encoder。</li>
+<li>encoder stack运行这两数据，并产生这个输入序列的encoded representation。</li>
+<li>target sequence 前面添加了 start-of-sentence token(句子开头标记)，然后被转换为embeddings (with position encoding)，喂给decoder。</li>
+<li>decoder stack结合encoder stack的encoded representation来处理这两个数据，并产生target sequence 的 encoder representation。</li>
+<li>output layer将encoder representation转换为词概率 word probabilities以及最终的输出序列。</li>
+<li>Transformer 的损失函数将此输出序列与训练数据中的目标序列进行比较。该损失用于生成梯度，以在反向传播期间训练 Transformer。</li>
+</ol>
+<h2 id="inference"><a href="#inference" class="headerlink" title="inference"></a>inference</h2><p>在推理期间，我们只有输入序列。<br>Transformer inference 的目标是仅从输入序列生成目标序列。</p>
+<blockquote>
+<p>就像在 Seq2Seq 模型中一样，我们在循环中生成输出，并将前一个时间步的输出序列馈送到下一个时间步的解码器，直到遇到句末标记。与 Seq2Seq 模型的区别在于，在每个时间步，我们重新输入迄今为止生成的整个输出序列，而不仅仅是最后一个单词。</p>
+</blockquote>
+<p><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uvybwr8xULd3ug9ZwcSaQ.png" alt=""></p>
+<ol>
+<li>input sequence 被转换为embeddings (with position encoding)，喂给encoder。</li>
+<li>encoder stack运行这两数据，并产生这个输入序列的encoded representation。</li>
+<li>由于没有目标序列，我们使用空的序列（只包含a start-of-sentence token）然后被转换为embeddings (with position encoding)，喂给decoder。</li>
+<li>decoder stack结合encoder stack的encoded representation来处理这两个数据，并产生target sequence 的 encoder representation。</li>
+<li>output layer将encoder representation转换为词概率 word probabilities以及最终的输出序列。</li>
+<li>我们将输出序列的最后一个单词作为预测单词。该单词现在填充到decoder输入序列的第二个位置，其中现在包含句子开头标记和第一个单词.</li>
+<li>返回步骤#3。和以前一样，将新的decoder sequence输入到模型中。然后取出输出的第二个字并将其附加到decoder sequence中。重复此操作，直到预测出句末标记。请注意，由于每次迭代的编码器序列都不会改变，因此我们不必每次都重复步骤 #1 和 #2。</li>
+</ol>
+<h2 id="teacher-forcing"><a href="#teacher-forcing" class="headerlink" title="teacher forcing"></a>teacher forcing</h2><p>在training期间，将target sequence喂给decoder称为teacher forcing</p>
+<h2 id="what-are-transformers-used-for"><a href="#what-are-transformers-used-for" class="headerlink" title="what are transformers used for"></a>what are transformers used for</h2><p>transformer的用途很广泛，可用于大多数NLP任务。对于不同的问题，transformers架构有不同的风格。基本的encoder layer作为构建的常用部件，根据要解决的问题具有不同的特定于应用程序的”head”.</p>
+<h2 id="transformer-classification-architecture"><a href="#transformer-classification-architecture" class="headerlink" title="transformer classification architecture"></a>transformer classification architecture</h2><p>以sentiment analysis应用为例，将文本文档作为输入，一个classification head获取transformer的输出，并且生成分类标签的预测，例如消极和积极情绪。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*tkqBjeTRZMRfOLiLqYV0TA.png" alt=""></p>
+<h2 id="Transformer-Language-Model-architecture"><a href="#Transformer-Language-Model-architecture" class="headerlink" title="Transformer Language Model architecture"></a>Transformer Language Model architecture</h2><p>语言模型架构将输入序列的初始部分（例如文本句子）作为输入，并通过预测随后的句子来生成新文本。A Language Model head 获取 Transformer 的输出并生成词汇表中每个单词的概率。概率最高的单词成为句子中下一个单词的预测输出。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*9HgXzK95-QTOQi5eyZ-S_Q.png" alt=""></p>
+<h2 id="how-are-they-better-than-RNNs"><a href="#how-are-they-better-than-RNNs" class="headerlink" title="how are they better than RNNs"></a>how are they better than RNNs</h2><p>RNNs以及近似 LSTMs和GRUs都可以用来处理NLP任务，RNN-based seq2seq models性能很好，但是他们有两个限制：</p>
+<ul>
+<li>很难长句子中的单词之间的long-range依赖</li>
+<li>一次一词地顺序处理序列，因此只能顺序执行计算，即必须做完t-1时间步才能做t时间步</li>
+</ul>
+<p>另一方面，对于所有输出可以并行执行的CNNs而言，虽然剪辑速度更快，但是在处理远程依赖方面也有局限性</p>
+<ul>
+<li>在卷积层中，只有足够接近以适应内核大小的图像部分（或单词，如果应用于文本数据）可以相互交互。对于相距较远的项目，需要一个更深层次的多层网络。</li>
+</ul>
+<p>transformer处理了以上的限制，</p>
+<ul>
+<li>可以并行计算序列中的所有词汇</li>
+<li>不在乎单词之间的距离，它同样擅长计算相邻单词和相距较远的单词之间的依赖关系。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*Iygs9mQi4GbIJuc6fwBRKg.png" alt=""></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>transformer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>transformer的工作过程</title>
+    <url>/2024/03/16/transformer%E7%90%86%E8%A7%A32/</url>
+    <content><![CDATA[<h1 id="重消化-Transformers-Explained-Visually-Part-2-How-it-works-step-by-step"><a href="#重消化-Transformers-Explained-Visually-Part-2-How-it-works-step-by-step" class="headerlink" title="重消化-Transformers Explained Visually (Part 2): How it works, step-by-step"></a>重消化-<a href="https://towardsdatascience.com/transformers-explained-visually-part-2-how-it-works-step-by-step-b49fa4a64f34">Transformers Explained Visually (Part 2): How it works, step-by-step</a></h1><h2 id="architecture-overview"><a href="#architecture-overview" class="headerlink" title="architecture overview"></a>architecture overview</h2><p><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*cfNpm7aDO4lD3e-Wkwgc1g.png" alt=""><br>以上是只包含一个encoder和一个decoder的最简单的transformer。</p>
+<ul>
+<li>输入数据（encoder和decoder都有）<ul>
+<li>embedding layer</li>
+<li>position encoding layer</li>
+</ul>
+</li>
+<li>encoder<ul>
+<li>encoder stack包含一组encoders</li>
+<li>multi-head attention layer</li>
+<li>feed-forward layer</li>
+</ul>
+</li>
+<li>decoder<ul>
+<li>decoder stack包含一组decoders</li>
+<li>2个multi-head attention layers</li>
+<li>feed-forward layer</li>
+</ul>
+</li>
+<li>输出数据<ul>
+<li>linear layer</li>
+<li>softmax layer<br>接下来按照transformer的训练过程来说明其工作过程。</li>
+</ul>
+</li>
+</ul>
+<h2 id="embedding-and-position-encoding"><a href="#embedding-and-position-encoding" class="headerlink" title="embedding and position encoding"></a>embedding and position encoding</h2><p>每个word都应该输入这个词的meaning和在语句中的position.</p>
+<ul>
+<li>embedding layer encodes 单词的意思</li>
+<li>position encoding layer 表示 单词的位置</li>
+</ul>
+<h3 id="embedding"><a href="#embedding" class="headerlink" title="embedding"></a>embedding</h3><p>transformer包含两个embedding layers，输入和输出数据都需要喂给embedding layers，但是target sequence在喂之前需要在最前面插入一个start token。</p>
+<blockquote>
+<p>在inference过程中，由于没有target sequence，因此此时喂给output的embedding layer的是一个单纯的start token</p>
+</blockquote>
+<p><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*b4MwVq8didNMg9-yD-hXyA.png" alt=""></p>
+<p>文本序列根据vocabulary映射到word IDs,embedding layer将每个单词映射到一个embedding vector<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*OEaVrgvL_KN9RyDnWrGLWw.png" alt=""></p>
+<h3 id="position-encoding"><a href="#position-encoding" class="headerlink" title="position encoding"></a>position encoding</h3><p>transformerde的输入文本中的所有单词都是并行输入的，因此必须添加position信息。<br>同样也有两个position encoding layers。但是position encoding独立于input sequence计算，是一组固定的值，且只取决于sequence的最大长度。</p>
+<ul>
+<li>the first item is a constant code that indicates the first position</li>
+<li>the second item is a constant code that indicates the second position,</li>
+<li>and so on.<br>这些值的计算公式如下：<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/image.4qr2s7vbgy.webp" alt=""></li>
+</ul>
+<h2 id="matrix-dimension"><a href="#matrix-dimension" class="headerlink" title="matrix dimension"></a>matrix dimension</h2><p>the embedding and position encoding layers操作一系列sequence samples表示的矩阵。embedding layer将每个word ID编码为一个word vector，其长度为embedding size，从而产生一个（samples, sequence length, embedding size）形状的矩阵。position encoding使用和embedding size一样的encoding size。因此他产生了一个形状相似的矩阵，可以加入embedding matrix中。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*7LPcSJYhSgjPJZWJnp22XA.png" alt=""></p>
+<p>当数据流经encoder和decoder stack时，embedding and position encoding layers生成的（samples, sequence length, embedding size）形状在整个 Transformer 中得到保留，直到由最终输出层重新整形。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*586QwwjzHY9fP4aVPWrqiQ.png" alt=""></p>
+<h2 id="encoder"><a href="#encoder" class="headerlink" title="encoder"></a>encoder</h2><p><img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*Rch3UQW1oHUCrMygAZ_JFQ.png" alt=""><br>第一个encoder从embedding和position encoding中获取其输入，其他的encoder是从他之前的那个encoder获得输入。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*yz-iScQJrwx8c0xB4PWRyQ.png" alt=""><br>上图是encoder的内部结构，self-attention和feed-forward sub-layers都有一个residual skip-connection，在layer-normalization之后。</p>
+<h2 id="decoder"><a href="#decoder" class="headerlink" title="decoder"></a>decoder</h2><p><img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*4hOio9qBzUxI3FQsTNUX5w.png" alt=""><br>decoder和encoder的结构相似，有几处不同。</p>
+<ul>
+<li><p>decoder将其输入传递到multi-head self-attention layer。它的运行方式与encoder中的运行方式略有不同。只允许参与sequence中earlier position。这是通过masking future position来完成的，我们很快就会讨论这一点。</p>
+</li>
+<li><p>decoder还有第二个multi-head self-attention layer,被称为 encoder-decoder attention layer这个layer的数据来源分为前一个self-attention以及encoder stack的输出。</p>
+</li>
+</ul>
+<p>self-attention、Encoder-Decoder attention和feed-forward sub-layers都有一个residual skip-connection，在layer-normalization之后。</p>
+<h2 id="attention"><a href="#attention" class="headerlink" title="attention"></a>attention</h2><p>在transformer中，一共有三处用到了attention。encoder中的self-attention，以及decoder中的self-attention和encoder-decoder attention.</p>
+<p>attention的输入参数为（query, key, value）:</p>
+<ul>
+<li>encoder self-attention: （query, key, value）</li>
+<li><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*4UT-x4vd6FaBCPTy_Y74yA.png" alt=""></li>
+<li>decoder self-attention: （query, key, value）</li>
+<li>decoder encoder-decoder attention: 来自最后一个encoder的输出传递（value, key）,下面的 Self-attention（和 Layer Norm）模块的输出被传递给 Query 参数. </li>
+<li><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*nEHe_LpPado5b8FRIcnTHQ.png" alt=""></li>
+</ul>
+<h2 id="multi-attention"><a href="#multi-attention" class="headerlink" title="multi-attention"></a>multi-attention</h2><p>transformer将每个attention processor称为一个attention head并且并行地执行多次attention，这就是multi-attention.<br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*DKNIOlVfbh9K1EqU5iDJKA.png" alt=""></p>
+<p>Query, key, value分别通过各自的linear layer，每个layer有自己的权重，产生三个结果称为Q,K,V,使用如下的attention公式来产生attention score。<br><img src="https://miro.medium.com/v2/resize:fit:1284/format:webp/1*z01aP_2l3OowwRVAeQH8Xw.png" alt=""><br>Q，K，V values包含了每个词汇的encoded representation，在注意力计算过程中，将每个单词与序列中其他单词结合，以便attention score对每个单词的score进行编码。</p>
+<h2 id="attention-masks"><a href="#attention-masks" class="headerlink" title="attention masks"></a>attention masks</h2><p>计算注意力分数时, masking应用于 计算Softmax 之前的的分子。被屏蔽的元素（白色方块）被设置为负无穷大，以便 Softmax 将这些值变为零。</p>
+<h3 id="in-the-encoder-self-attention-and-in-the-encoder-decoder-attention"><a href="#in-the-encoder-self-attention-and-in-the-encoder-decoder-attention" class="headerlink" title="in the encoder self-attention and in the encoder-decoder-attention"></a>in the encoder self-attention and in the encoder-decoder-attention</h3><p>masking用于在输入句子中有填充的情况下将注意力输出为零，以确保填充不会对自注意力产生影响。 （注意：由于输入序列可能具有不同的长度，因此它们像大多数 NLP 应用程序中一样使用填充标记进行扩展，以便可以将固定长度的向量输入到 Transformer。）</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*026nzf4bw_DdSZ7kLJWcog.png" alt=""><br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*QxJ5ySWdZgDOUezj5iOhdg.png" alt=""></p>
+<h3 id="in-the-decoder-self-attention"><a href="#in-the-decoder-self-attention" class="headerlink" title="in the decoder self-attention"></a>in the decoder self-attention</h3><p>masking用于防止decoder在预测下一个单词时‘偷看’ target sequence的剩余部分</p>
+<p>decoder处理input sequence中的单词并使用它们来预测target sequence中的单词。在训练期间，这是通过 Teacher Forcing 完成的，其中完整的target sequence作为decoder输入提供。因此，在预测某个位置处的单词时，decoder可以使用该单词之前的目标单词以及该单词之后的目标单词。这允许decoder通过使用未来“时间步骤”中的目标词来“作弊”。</p>
+<p>例如在预测 word3时，decoder只能根据Mi nimbere es来预测，不可以使用Ketan。<br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*H0r38u_sLfDUBKgeVg4ssA.png" alt=""><br>decoder会屏蔽本次单词之后的单词。<br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*cawtdZLjT9hp7ByG2vcKOQ.png" alt=""></p>
+<h2 id="generate-output"><a href="#generate-output" class="headerlink" title="generate output"></a>generate output</h2><p>decoder stack中的最后一个decoder将其输出传给output component，这个部件将输出转换成句子。</p>
+<p>linear layer将decoder vector投影到word score中，其中目标词汇表中每个唯一单词在句子中的每个位置都有一个分数值。例如，如果我们的最终输出句子有 7 个单词，而目标西班牙语词汇有 10000 个唯一单词，我们会为这 7 个单词中的每个单词生成 10000 个分值。分值表示词汇表中每个单词在句子的该位置出现的可能性。<br>然后，Softmax 层将这些分数转换为概率（加起来为 1.0）。在每个位置，我们找到概率最高的单词的索引，然后将该索引映射到词汇表中相应的单词。然后这些单词形成 Transformer 的输出序列。<br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*dQTK3oeYqOBUDVgNktSpCw.png" alt=""></p>
+<h2 id="training-and-loss-function"><a href="#training-and-loss-function" class="headerlink" title="training and loss function"></a>training and loss function</h2><p>在训练过程中，我们使用交叉熵损失等损失函数来将生成的输出概率分布与目标序列进行比较。概率分布给出了每个单词出现在该位置的概率。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*50j_urNlRnctglsXCRoeiw.png" alt=""></p>
+<p>假设我们的目标词汇只包含四个单词。我们的目标是产生与我们预期的目标序列“De nada END”相匹配的概率分布。<br>这意味着第一个单词位置的概率分布对于“De”来说应该是 1，而词汇表中所有其他单词的概率应该是 0。类似地，“nada”和“END”对于“De”来说应该有 1 的概率。分别是第二个和第三个词的位置。</p>
+<p>与往常一样，损失用于计算梯度，以通过反向传播训练 Transformer。</p>
+]]></content>
+      <tags>
+        <tag>transformer</tag>
       </tags>
   </entry>
   <entry>
@@ -266,6 +1320,71 @@ C=
       </tags>
   </entry>
   <entry>
+    <title>transformer中attention score的计算</title>
+    <url>/2024/05/03/transformer%E7%90%86%E8%A7%A33/</url>
+    <content><![CDATA[<h1 id="重消化-Transformers-Explained-Visually-Part-3-Multi-head-Attention-deep-dive"><a href="#重消化-Transformers-Explained-Visually-Part-3-Multi-head-Attention-deep-dive" class="headerlink" title="重消化-Transformers Explained Visually (Part 3): Multi-head Attention, deep dive"></a>重消化-<a href="https://towardsdatascience.com/transformers-explained-visually-part-3-multi-head-attention-deep-dive-1c1ff1024853">Transformers Explained Visually (Part 3): Multi-head Attention, deep dive</a></h1><h2 id="how-attention-is-used-in-the-transformer"><a href="#how-attention-is-used-in-the-transformer" class="headerlink" title="how attention is used in the transformer"></a>how attention is used in the transformer</h2><h3 id="attention-input-parameters-Query-Key-Value"><a href="#attention-input-parameters-Query-Key-Value" class="headerlink" title="attention input parameters - Query, Key, Value"></a>attention input parameters - Query, Key, Value</h3><p>attention layer有三个输入参数，分别为Query, Key, Value。所有三个参数在结构上都很相似，序列中的每个单词都由一个向量表示。</p>
+<!-- ### encoder self-attention
+输入序列被喂给input embedding和position encoding，得到encoded representation。这被送入第一个encoder中的三个参数，Query、Key和Value的self-attention中，现在也包含了每个单词的attention scores。当这通过stack中的所有encoders时，每个self-attention模块也将其自己的注意力分数添加到每个单词的表示中。
+
+### decoder self-attention
+
+target sequence被送入Output Embedding and Position Encoding中，这为目标序列中的每个单词产生了一个编码表示。这被送入第一个decoder中的三个参数，查询（Query）、键（Key）和值（Value）的self-attention中，现在也包含了每个单词的注意力分数。
+
+经过kayer norm后，这被送入第一个decoder中的编码器-解码器注意力的查询参数。
+
+
+
+
+### encoder-decoder attention
+除此之外，堆栈中最终编码器的输出被传递给编码器-解码器注意力中的值和键参数。
+
+因此，编码器-解码器注意力同时获得了目标序列（来自解码器自注意力）和输入序列（来自编码器堆栈）的表示。因此，它产生了一个表示，其中包含了每个目标序列单词的注意力分数，捕捉了来自输入序列的注意力分数的影响。
+
+当这通过堆栈中的所有解码器时，每个自注意力和每个编码器-解码器注意力也将其自己的注意力分数添加到每个单词的表示中。 -->
+<p><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*OYi49Pkg-Vl3D4HleEuu7g.png" alt=""></p>
+<h3 id="Multiple-Attention-Heads"><a href="#Multiple-Attention-Heads" class="headerlink" title="Multiple Attention Heads"></a>Multiple Attention Heads</h3><p>attention modules并行地多次重复计算。每个部件称为一个attention head。每个attention modules将它的Query, key 和 value分为N份，将每份独立地发给head。所有的这种类似的attention 计算组合在一起产生最终的attention score。这被称为multi-head attention，它赋予 Transformer 更大的能力来编码每个单词的多种关系和细微差别。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*DKNIOlVfbh9K1EqU5iDJKA.png" alt=""></p>
+<h2 id="Attention-Hyperparameters"><a href="#Attention-Hyperparameters" class="headerlink" title="Attention Hyperparameters"></a>Attention Hyperparameters</h2><ul>
+<li>embedding size。 embedding vector的size</li>
+<li>query size（等同于key and value size）。三个线性层分别用于生成Query、Key和Value矩阵的权重size.</li>
+<li>number of attention heads.</li>
+</ul>
+<h2 id="Input-layers"><a href="#Input-layers" class="headerlink" title="Input layers"></a>Input layers</h2><p>The Input Embedding and Position Encoding layers 生成一个size为(batch size, sequence length, embedding size)的张量，这会被喂给第一个encoder的Query、Key和Value。<br><img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*8JpkIFoNmN7CeXSbOd8-9A.png" alt=""></p>
+<p>为了简化说明，本文设置batch size为1.<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*ONqbeofLVaCYHl5QQnOJCw.png" alt=""></p>
+<h2 id="linear-layers"><a href="#linear-layers" class="headerlink" title="linear layers"></a>linear layers</h2><p>Query、Key和Value有三个独立的线性层。每个线性层都有自己的权重。输入通过这些线性层来生成 Q、K 和 V 矩阵。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:2000/format:webp/1*NR9x97HungXtL6Vx0CGmow.png" alt=""></p>
+<h2 id="splitting-data-across-attention-heads"><a href="#splitting-data-across-attention-heads" class="headerlink" title="splitting data across attention heads"></a>splitting data across attention heads</h2><p>数据被分割到多个attention head中，以便每个attention head都可以独立处理。</p>
+<p>然而，需要理解的重要一点是，这只是逻辑上的分割。 Query、Key 和 Value 在物理上并未分割成单独的矩阵，每个分割矩阵对应一个attention head。单个数据矩阵分别用于Query、Key 和 Value ，每个attention head具有逻辑上独立的矩阵部分。类似地，也不存在单独的linear layer，每个attention head都有一个linear layer。所有attention head共享相同的linear layer，但只是对数据矩阵的“自己”逻辑部分进行操作。</p>
+<h3 id="linear-layer-weights-are-logically-partitioned-per-head"><a href="#linear-layer-weights-are-logically-partitioned-per-head" class="headerlink" title="linear layer weights are logically partitioned per head"></a>linear layer weights are logically partitioned per head</h3><p>这种逻辑分割是通过在attention head上均匀地划分输入数据和线性权重来完成的。我们可以选择通过query size来实现这个</p>
+<script type="math/tex; mode=display">
+Query\ size=\frac{embedding\ size}{number\ of\ heads}</script><p><img src="https://miro.medium.com/v2/resize:fit:960/format:webp/1*_2mb_TfvIMsZoIFILNq0CA.png" alt=""></p>
+<p>因此所有的head的计算可以通过单个矩阵运算来实现，而不需要N个独立运算，这使得计算更加高效。</p>
+<h3 id="reshaping-the-Q-K-and-V-matrices"><a href="#reshaping-the-Q-K-and-V-matrices" class="headerlink" title="reshaping the Q,K and V matrices"></a>reshaping the Q,K and V matrices</h3><p>通过linear layers产生的Q, K, V矩阵被reshaped，并且添加了一个显式的head dimention。想象成每个head将本来是完整的矩阵切分成了N个小矩阵。</p>
+<p>原始的Q(batch size$\times$ sequence dimension $\times$ embedding size )先reshape为形状为(batch size$\times$ sequence dimension $\times$ head number $\times$ query size)，然后再进行swap得到(batch size$\times$  head number $\times$ sequence dimension $\times$ query size)。</p>
+<blockquote>
+<p>先reshape再swap的原因是：这跟数据的底层存放有关系</p>
+</blockquote>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*iHL0mjVjvBkWEZaFqFnohg.png" alt=""></p>
+<p>下图是一个将Q matrix分割到若个head的过程。请注意：这只是一个逻辑上的过程，她还是一个单独的矩阵。<br><img src="https://miro.medium.com/v2/resize:fit:960/format:webp/1*j5j3YvMgOfy4VoEMtuJGVA.png" alt=""></p>
+<h2 id="compute-the-attention-score-for-each-head"><a href="#compute-the-attention-score-for-each-head" class="headerlink" title="compute the attention score for each head"></a>compute the attention score for each head</h2><p>以batch中只有一个样本，只有一个head为例进行说明。</p>
+<h3 id="encoder-self-attention-score"><a href="#encoder-self-attention-score" class="headerlink" title="encoder self-attention score"></a>encoder self-attention score</h3><p>完整计算encoder self-attention中attention score过程如下。<br>其中mask value用于mask out the padding values。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:960/format:webp/1*NMneDGsvnXyOFqN6m8uSyA.png" alt=""><br>computes the interaction between each input word with other input words</p>
+<h3 id="decoder-self-attention-score"><a href="#decoder-self-attention-score" class="headerlink" title="decoder self-attention score"></a>decoder self-attention score</h3><p>The Decoder Self-Attention works just like the Encoder Self-Attention, except that it operates on each word of the target sequence.<br><img src="https://miro.medium.com/v2/resize:fit:960/format:webp/1*8Tkb3MUQl3iIIJKiLgRErQ.png" alt=""><br>computes the interaction between each target word with other target words</p>
+<h3 id="Decoder-Encoder-Decoder-Attention-score"><a href="#Decoder-Encoder-Decoder-Attention-score" class="headerlink" title="Decoder Encoder-Decoder Attention score"></a>Decoder Encoder-Decoder Attention score</h3><p><img src="https://miro.medium.com/v2/resize:fit:960/format:webp/1*El8DWgp2NAtF-08oCOVCIw.png" alt=""></p>
+<p>computes the interaction between each target word with each input word</p>
+<h2 id="merge-each-head’s-attention-scores-together"><a href="#merge-each-head’s-attention-scores-together" class="headerlink" title="merge each head’s attention scores together"></a>merge each head’s attention scores together</h2><p>这是通过简单地重塑结果矩阵以消除头部维度来完成的。步骤是：</p>
+<ul>
+<li>交换head和sequence dimensions的维度来reshape attention score matrix，从(batch, head, sequence,query size)变为(batch, sequence, head, query size)</li>
+<li>通过重塑为（batch, sequence, head $\times$ query size）来折叠头维度。这有效地将每个头的注意力分数向量连接成单个合并的注意力分数<br><img src="https://miro.medium.com/v2/resize:fit:960/format:webp/1*I-HmWc7Njuxf6HFxn6C8Hg.png" alt=""></li>
+</ul>
+<p>因为 Embedding size =Head * Query size，merged score变为(batch, sequence, embedding size)</p>
+<h2 id="multi-head-attention-的完整计算过程"><a href="#multi-head-attention-的完整计算过程" class="headerlink" title="multi-head attention 的完整计算过程"></a>multi-head attention 的完整计算过程</h2><p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*ArTXQZip_TwbU6gLshXOEw.png" alt=""></p>
+<h2 id="multi-head-split-captures-richer-interpretations"><a href="#multi-head-split-captures-richer-interpretations" class="headerlink" title="multi-head split captures richer interpretations"></a>multi-head split captures richer interpretations</h2><p>embedding vectors 在逻辑上分给多个head的意义是：embedding的不同部分可以学习每个单词含义的不同方面，因为她与sequence中的其他单词相关，这使得transformer能够捕获更丰富的sequence解释。</p>
+]]></content>
+      <tags>
+        <tag>transformer</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>动态并行</title>
     <url>/2022/02/28/%E5%8A%A8%E6%80%81%E5%B9%B6%E8%A1%8C/</url>
     <content><![CDATA[<h1 id="动态并行"><a href="#动态并行" class="headerlink" title="动态并行"></a>动态并行</h1><p>CUDA的动态并行允许在GPU端直接创建和同步新的GPU内核。在GPU端直接创建工作的能力可以减少在主机和设备之间传输执行控制和数据的需求，因为在设备上执行的线程可以在<strong>运行时</strong>决定启动配置。</p>
@@ -318,6 +1437,173 @@ C=
       </tags>
   </entry>
   <entry>
+    <title>利用Python和CUDA进行GPGPU编程</title>
+    <url>/2024/09/23/%E5%88%A9%E7%94%A8Python%E5%92%8CCUDA%E8%BF%9B%E8%A1%8CGPGPU%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>张量分解与深度学习</title>
+    <url>/2024/01/10/%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p><a href="https://jacobgil.github.io/deeplearning/tensor-decompositions-deep-learning">论文的源地址</a></p>
+<p><a href="https://github.com/jacobgil/pytorch-tensor-decompositions">My PyTorch implementation for tensor decomposition methods on convolutional layers.</a></p>
+<p><a href="https://github.com/JeanKossaifi/tensorly-notebooks/blob/master/05_pytorch_backend/cnn_acceleration_tensorly_and_pytorch.ipynb">Notebook contributed to TensorLy.</a></p>
+<h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><p>In this post I will cover a few low rank tensor decomposition methods for taking layers in existing deep learning models and making them more compact. I will also share PyTorch code that uses <a href="https://tensorly.github.io/stable/index.html">Tensorly</a> for performing CP decomposition and Tucker decomposition of convolutional layers.</p>
+<p>Although hopefully most of the post is self contained, a good review of tensor decompositions can be found <a href="http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf">here</a>. The author of Tensorly also created some <a href="https://github.com/JeanKossaifi/tensorly-notebooks">really nice notebooks</a> about Tensors basics. That helped me getting started, and I recommend going through that.</p>
+<p>Together with pruning, tensor decompositions are practical tools for speeding up existing deep neural networks, and I hope this post will make them a bit more accessible.</p>
+<blockquote>
+<p>张量分解和剪枝一样是用来加速DNN的，张量分解将one layer分解为多个smaller layer，尽管层数增加了，但是整个浮点数操作的数量和权重都会减少。</p>
+</blockquote>
+<p>These methods take a layer and decompose it into several smaller layers. Although there will be more layers after the decomposition, the total number of floating point operations and weights will be smaller. Some reported results are on the order of x8 for entire networks (not aimed at large tasks like imagenet, though), or x4 for specific layers inside imagenet. My experience was that with these decompositions I was able to get a speedup of between x2 to x4, depending on the accuracy drop I was willing to take.</p>
+<p>In <a href="https://jacobgil.github.io/deeplearning/pruning-deep-learning">this blog post</a> I covered a technique called pruning for reducing the number of parameters in a model. Pruning requires making a forward pass (and sometimes a backward pass) on a dataset, and then ranks the neurons according to some criterion on the activations in the network.</p>
+<blockquote>
+<p>上面那个链接里包含了很多剪枝的内容，它提到剪枝需要进行前向传播和后向传播并且对神经元进行排序。而TD支队当前层的权重进行分解，并且它的低秩特点使得他在过拟合的网络上效果最好。</p>
+</blockquote>
+<p>Quite different from that, tensor decomposition methods use only the weights of a layer, with the assumption that the layer is over parameterized and its weights can be represented by a matrix or tensor with a lower rank. This means they work best in cases of over parameterized networks. Networks like VGG are over parameterized by design. Another example of an over parameterized model is fine tuning a network for an easier task with fewer categories.</p>
+<p>Similarly to pruning, after the decomposition usually the model needs to be fine tuned to restore accuracy.</p>
+<blockquote>
+<p>和剪枝一样，在分解之后，需要对模型进行微调来恢复精度。但是还有一些缺点</p>
+<ol>
+<li>他们对线性关系的layer进行操作（卷积层或全连接层），会忽视这些层之后的非线性关系</li>
+<li>忽视不同layer之间的交互</li>
+</ol>
+</blockquote>
+<p>One last thing worth noting before we dive into details, is that while these methods are practical and give nice results, they have a few drawbacks:</p>
+<ul>
+<li>They operate on the weights of a linear layer (like a convolution or a fully connected layer), and ignore any non linearity that comes after them.</li>
+<li>They are greedy and perform the decomposition layer wise, ignoring interactions between different layers.</li>
+</ul>
+<p>There are works that try to address these issues, and its still an active research area.</p>
+<h1 id="Truncated-SVD-for-decomposing-fully-connected-layers"><a href="#Truncated-SVD-for-decomposing-fully-connected-layers" class="headerlink" title="Truncated SVD for decomposing fully connected layers"></a>Truncated SVD for decomposing fully connected layers</h1><p>The first reference I could find of using this for accelerating deep neural networks, is in the <a href="https://arxiv.org/abs/1504.08083">Fast-RCNN</a> paper. Ross Girshick used it to speed up the fully connected layers used for detection. Code for this can be found in the <a href="https://github.com/rbgirshick/py-faster-rcnn/blob/master/tools/compress_net.py">pyfaster-rcnn implementation.</a></p>
+<h1 id="SVD-recap"><a href="#SVD-recap" class="headerlink" title="SVD recap"></a>SVD recap</h1><p>The singular value decomposition lets us decompose any matrix A with n rows and m columns:</p>
+<script type="math/tex; mode=display">A_{n\times m} = U_{n\times n} S_{n\times m} V^T_{m\times m}</script><p>S is a diagonal matrix with non negative values along its diagonal (the singular values), and is usually constructed such that the singular values are sorted in descending order. U and V are orthogonal matrices: $U^TU=V^TV=I$</p>
+<p>If we take the largest $t$ singular values and zero out the rest, we get an approximation of $A$: </p>
+<script type="math/tex; mode=display">\hat{A} = U_{n\times t}S_{t\times t}V^T_{m\times t}</script><blockquote>
+<p>截断SVD，具有t秩</p>
+</blockquote>
+<p>$\hat{A}$ has the nice property of being the rank $t$ matrix that has the Frobenius-norm closest to $A$, so $\hat{A}$ is a good approximation of $A$ if $t$ is large enough.</p>
+<h1 id="SVD-on-a-fully-connected-layer"><a href="#SVD-on-a-fully-connected-layer" class="headerlink" title="SVD on a fully connected layer"></a>SVD on a fully connected layer</h1><p>A fully connected layer essentially does matrix multiplication of its input by a matrix A, and then adds a bias b:</p>
+<script type="math/tex; mode=display">Ax+b</script><p>We can take the SVD of A, and keep only the first t singular values.</p>
+<script type="math/tex; mode=display">(U_{n\times t}S_{t\times t}V^T_{m\times t})x + b = U_{n\times t} ( S_{t\times t}V^T_{m\times t} x ) + b</script><p>Instead of a single fully connected layer, this guides us how to implement it as two smaller ones:</p>
+<ul>
+<li>The first one will have a shape of $m\times t$, will have no bias, and its weights will be taken from $S_{t\times t}V^T$.</li>
+<li>The second one will have a shape of $t\times n$, will have a bias equal to b, and its weights will be taken from $U$.</li>
+</ul>
+<p>The total number of weights dropped from $n\times m$ to $t(n+m)$.</p>
+<h1 id="Tensor-decompositions-on-convolutional-layers"><a href="#Tensor-decompositions-on-convolutional-layers" class="headerlink" title="Tensor decompositions on convolutional layers"></a>Tensor decompositions on convolutional layers</h1><p>A 2D convolutional layer is a multi dimensional matrix (from now on - tensor) with 4 dimensions:</p>
+<p><code>cols x rows x input_channels x output_channels</code>.</p>
+<blockquote>
+<p>filters的大小为cols x rows x input_channels，有output_channels个filters</p>
+</blockquote>
+<p>Following the SVD example, we would want to somehow decompose the tensor into several smaller tensors. The convolutional layer would then be approximated by several smaller convolutional layers.</p>
+<p>For this we will use the two popular (well, at least in the world of Tensor algorithms) tensor decompositions: the CP decomposition and the Tucker decomposition (also called higher-order SVD and many other names).</p>
+<h1 id="深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析"><a href="#深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析" class="headerlink" title="深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析"></a><a href="https://zhuanlan.zhihu.com/p/366744794">深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析</a></h1><h1 id="1412-6553-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition"><a href="#1412-6553-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition" class="headerlink" title="1412.6553 Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition"></a>1412.6553 Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition</h1><p><a href="https://arxiv.org/abs/1412.6553">_1412.6553 Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition_</a> shows how CP-Decomposition can be used to speed up convolutional layers. As we will see, this factors the convolutional layer into something that resembles mobile nets.</p>
+<p>They were able to use this to accelerate a network by more than x8 without significant decrease in accuracy. In my own experiments I was able to use this get a x2 speedup on a network based on VGG16 without accuracy drop.</p>
+<p>My experience with this method is that the fine tuning learning rate needs to be chosen very carefuly to get it to work, and the learning rate should usually be very small (around $10^{-6}$).</p>
+<p>A rank R matrix can be viewed as a sum of R rank 1 matrices, were each rank 1 matrix is a column vector multiplying a row vector: $\sum_1^Ra_i*b_i^T$</p>
+<p>The SVD gives us a way for writing this sum for matrices using the columns of U and V from the SVD: $\sum_1^R \sigma_i u_i*v_i^T$.</p>
+<p>If we choose an R that is less than the full rank of the matrix, than this sum is just an approximation, like in the case of truncated SVD.</p>
+<p>The CP decomposition lets us generalize this for tensors.</p>
+<p>Using CP-Decompoisition, our convolutional kernel, a 4 dimensional tensor $K(i, j, s, t)$ can be approximated similarly for a chosen R:</p>
+<p>$\sum_{r=1}^R K^x(i,r)K^y(j,r)K^s(s,r)K^t(t,r)$.</p>
+<p>We will want R to be small for the decomposition to be effecient, but large enough to keep a high approximation accuracy.</p>
+<h1 id="The-convolution-forward-pass-with-CP-Decomposition"><a href="#The-convolution-forward-pass-with-CP-Decomposition" class="headerlink" title="The convolution forward pass with CP Decomposition"></a>The convolution forward pass with CP Decomposition</h1><p>To forward the layer, we do convolution with an input $X(i, j, s)$:</p>
+<script type="math/tex; mode=display">
+V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s) \\= \sum_r\sum_i \sum_j \sum_sK^x(i,r)K^y(j,r)K^s(s,r)K^t(t,r)X(x-i, y-j, s) \\= \sum_rK^t(t,r) \sum_i \sum_j K^x(i,r)K^y(j,r)\sum_sK^s(s,r)X(x-i, y-j, s)</script><p>This gives us a recipe to do the convolution:</p>
+<ol>
+<li><p>First do a pointwise ($1\times 1\times S$) convolution with $K(s)$. This reduces the number of input channels from S to R. The convolutions will next be done on a smaller number of channels, making them faster.</p>
+</li>
+<li><p>Perform seperable convolutions in the spatial dimensions with $K^x_r,K^y_r$. <strong>Like in <a href="https://arxiv.org/abs/1704.04861">mobilenets</a> the convolutions are depthwise seperable, done in each channel separately.</strong> <strong>Unlike mobilenets the convolutions are also separable in the spatial dimensions.</strong></p>
+</li>
+<li><p>Do another pointwise convolution to change the number of channels from R to T If the original convolutional layer had a bias, add it at this point.</p>
+</li>
+</ol>
+<blockquote>
+<ol>
+<li><strong>点卷积（pointwise convolution）</strong><br>点卷积是一种特殊的卷积运算，他的卷积大小是$1 \times 1$。其作用主要是改变输入数据的通道数channels，在深度学习中用于将高维空间映射到地位空间，而不改变数据的空间维度（宽度和高度）</li>
+<li><strong>可分离卷积 （separable convolution）</strong><br>这是一种将常规卷积分解成更小或更易于计算的操作的技术。在深度学习中，最常见的可分离卷积是深度可分离卷积（depthwise separable convolution），它由两个步骤组成：深度卷积（depthwise convolution）和点卷积。</li>
+</ol>
+<ul>
+<li>深度卷积: 这一步骤单独对每个输入通道进行卷积操作。这意味着每个通道有一个独立的卷积核，这些卷积核只在其相应的通道上滑动，处理空间信息。</li>
+</ul>
+</blockquote>
+<p>好的，让我们一步一步地了解这个公式，并将其与您之前提到的三个关于卷积操作的观点联系起来。</p>
+<h3 id="公式解释："><a href="#公式解释：" class="headerlink" title="公式解释："></a>公式解释：</h3><p>公式描述了如何使用 CP 分解（Candecomp/Parafac）来执行卷积操作。在这里，原始的卷积核 ( K(i, j, s, t) ) 被分解为更小的成分 ( K^x(i,r) )，( K^y(j,r) )，( K^s(s,r) )，和 ( K^t(t,r) )。</p>
+<ul>
+<li><p><strong>第一部分</strong>: ( V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s) )</p>
+<ul>
+<li>这表示标准的卷积操作，其中 ( K ) 是卷积核，( X ) 是输入特征图，( V ) 是输出特征图。</li>
+</ul>
+</li>
+<li><p><strong>第二部分</strong>: ( = \sum_r\sum_i \sum_j \sum_sK^x(i,r)K^y(j,r)K^s(s,r)K^t(t,r)X(x-i, y-j, s) )</p>
+<ul>
+<li>这表示 CP 分解的应用。卷积核 ( K ) 被分解为四个部分，分别处理不同的维度（空间和通道）。</li>
+</ul>
+</li>
+<li><p><strong>第三部分</strong>: ( = \sum_rK^t(t,r) \sum_i \sum_j K^x(i,r)K^y(j,r)\sum_sK^s(s,r)X(x-i, y-j, s) )</p>
+<ul>
+<li>这是将上述分解进一步展开，显示了分解操作是如何整合进卷积计算中的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="关联到三个观点："><a href="#关联到三个观点：" class="headerlink" title="关联到三个观点："></a>关联到三个观点：</h3><ol>
+<li><p><strong>点卷积（Pointwise Convolution）</strong>:</p>
+<ul>
+<li>公式中的 ( \sum_sK^s(s,r)X(x-i, y-j, s) ) 代表点卷积。这里，( K^s(s,r) ) 起到了改变通道数量的作用，从 ( S ) 通道减少到 ( R )。</li>
+</ul>
+</li>
+<li><p><strong>可分离卷积（Separable Convolution）</strong>:</p>
+<ul>
+<li>公式中的 ( \sum_i \sum_j K^x(i,r)K^y(j,r) ) 表示可分离卷积。这里，卷积核被分解为沿 x 和 y 方向的两个独立成分，这减少了计算量。</li>
+</ul>
+</li>
+<li><p><strong>再次进行点卷积</strong>:</p>
+<ul>
+<li>公式中的 ( \sum_rK^t(t,r) ) 是另一个点卷积步骤。在这一步中，通道数从 ( R ) 再变回原来的 ( T )。这种操作与 MobileNets 中使用的类似，但是由于它是从原始卷积层的分解得来的，因此它可以用于已存在的网络架构。</li>
+</ul>
+</li>
+</ol>
+<p>通过这种方式，CP 分解使得我们可以通过一系列更简单、计算量更小的操作来近似原始的卷积操作。这不仅减少了所需的计算资源，还保持了网络的效能。希望这能帮助您更好地理解这个公式和它与卷积操作之间的联系！如果您还有其他疑问，欢迎继续提问。</p>
+<p>Notice the combination of pointwise and depthwise convolutions like in mobilenets. While with mobilenets you have to train a network from scratch to get this structure, here we can decompose an existing layer into this form.</p>
+<p>As with mobile nets, to get the most speedup you will need a platform that has an efficient implementation of depthwise separable convolutions.</p>
+<p><img src="https://ai2-s2-public.s3.amazonaws.com/figures/2017-08-08/62e348e26976c3ef77909b9af9788ebc2509009a/3-Figure1-1.png" alt=""> _Image taken from the <a href="https://arxiv.org/abs/1412.6553">paper</a>. The bottom row is an illustration of the convolution steps after CP-decomposition._</p>
+<h1 id="Convolutional-layer-CP-Decomposition-with-PyTorch-and-Tensorly"><a href="#Convolutional-layer-CP-Decomposition-with-PyTorch-and-Tensorly" class="headerlink" title="Convolutional layer CP-Decomposition with PyTorch and Tensorly"></a>Convolutional layer CP-Decomposition with PyTorch and Tensorly</h1><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">def cp_decomposition_conv_layer(layer, rank):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; Gets a conv layer and a target rank, </span></span><br><span class="line"><span class="string">        returns a nn.Sequential object with the decomposition &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    # Perform CP decomposition on the layer weight tensorly. </span><br><span class="line">    last, first, vertical, horizontal = \</span><br><span class="line">        parafac(layer.weight.data, <span class="attribute">rank</span>=rank, <span class="attribute">init</span>=<span class="string">&#x27;svd&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    pointwise_s_to_r_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=first.shape[0], \</span><br><span class="line">            <span class="attribute">out_channels</span>=first.shape[1], <span class="attribute">kernel_size</span>=1, <span class="attribute">stride</span>=1, <span class="attribute">padding</span>=0, </span><br><span class="line">            <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    depthwise_vertical_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=vertical.shape[1], </span><br><span class="line">            <span class="attribute">out_channels</span>=vertical.shape[1], kernel_size=(vertical.shape[0], 1),</span><br><span class="line">            <span class="attribute">stride</span>=1, padding=(layer.padding[0], 0), <span class="attribute">dilation</span>=layer.dilation,</span><br><span class="line">            <span class="attribute">groups</span>=vertical.shape[1], <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    depthwise_horizontal_layer = \</span><br><span class="line">        torch.nn.Conv2d(<span class="attribute">in_channels</span>=horizontal.shape[1], \</span><br><span class="line">            <span class="attribute">out_channels</span>=horizontal.shape[1], </span><br><span class="line">            kernel_size=(1, horizontal.shape[0]), <span class="attribute">stride</span>=layer.stride,</span><br><span class="line">            padding=(0, layer.padding[0]), </span><br><span class="line">            <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">groups</span>=horizontal.shape[1], <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    pointwise_r_to_t_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=last.shape[1], \</span><br><span class="line">            <span class="attribute">out_channels</span>=last.shape[0], <span class="attribute">kernel_size</span>=1, <span class="attribute">stride</span>=1,</span><br><span class="line">            <span class="attribute">padding</span>=0, <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">bias</span>=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    pointwise_r_to_t_layer.bias.data = layer.bias.data</span><br><span class="line"></span><br><span class="line">    depthwise_horizontal_layer.weight.data = \</span><br><span class="line">        torch.transpose(horizontal, 1, 0).unsqueeze(1).unsqueeze(1)</span><br><span class="line">    depthwise_vertical_layer.weight.data = \</span><br><span class="line">        torch.transpose(vertical, 1, 0).unsqueeze(1).unsqueeze(-1)</span><br><span class="line">    pointwise_s_to_r_layer.weight.data = \</span><br><span class="line">        torch.transpose(first, 1, 0).unsqueeze(-1).unsqueeze(-1)</span><br><span class="line">    pointwise_r_to_t_layer.weight.data = last.unsqueeze(-1).unsqueeze(-1)</span><br><span class="line"></span><br><span class="line">    new_layers = [pointwise_s_to_r_layer, depthwise_vertical_layer, \</span><br><span class="line">                    depthwise_horizontal_layer, pointwise_r_to_t_layer]</span><br><span class="line">    </span><br><span class="line">    return nn.Sequential(*new_layers)</span><br></pre></td></tr></table></figure>
+<h1 id="1511-06530-Compression-of-Deep-Convolutional-Neural-Networks-for-Fast-and-Low-Power-Mobile-Applications"><a href="#1511-06530-Compression-of-Deep-Convolutional-Neural-Networks-for-Fast-and-Low-Power-Mobile-Applications" class="headerlink" title="1511.06530 Compression of Deep Convolutional Neural Networks for Fast and Low Power Mobile Applications"></a>1511.06530 Compression of Deep Convolutional Neural Networks for Fast and Low Power Mobile Applications</h1><p><a href="https://arxiv.org/abs/1511.06530">_1511.06530 Compression of Deep Convolutional Neural Networks for Fast and Low Power Mobile Applications_</a> is a really cool paper that shows how to use the Tucker Decomposition for speeding up convolutional layers with even better results. I also used this accelerate an over-parameterized VGG based network, with better accuracy than CP Decomposition. As the authors note in the paper, it lets us do the finetuning using higher learning rates (I used $10^{-3}$).</p>
+<p>The Tucker Decomposition, also known as the higher order SVD (HOSVD) and many other names, is a generalization of SVD for tensors. $K(i, j, s, t) = \sum_{r_1=1}^{R_1}\sum_{r_2=1}^{R_2}\sum_{r_3=1}^{R_3}\sum_{r_4=1}^{R_4}\sigma_{r_1 r_2 r_3 r_4} K^x_{r1}(i)K^y_{r2}(j)K^s_{r3}(s)K^t_{r4}(t)$</p>
+<p>The reason its considered a generalization of the SVD is that often the components of $\sigma_{r_1 r_2 r_3 r_4}$ are orthogonal, but this isn’t really important for our purpose. $\sigma_{r_1 r_2 r_3 r_4}$ is called the core matrix, and defines how different axis interact.</p>
+<p>In the CP Decomposition described above, the decomposition along the spatial dimensions $K^x_r(i)K^y_r(j)$ caused a spatially separable convolution. The filters are quite small anyway, typically 3x3 or 5x5, so the separable convolution isn’t saving us a lot of computation, and is an aggressive approximation.</p>
+<p>The Tucker decomposition has the useful property that it doesn’t have to be decomposed along all the axis (modes). We can perform the decomposition along the input and output channels instead (a mode-2 decomposition):</p>
+<script type="math/tex; mode=display">K(i, j, s, t) = \sum_{r_3=1}^{R_3}\sum_{r_4=1}^{R_4}\sigma_{i j r_3 r_4}(j)K^s_{r3}(s)K^t_{r4}(t)</script><h1 id="The-convolution-forward-pass-with-Tucker-Decomposition"><a href="#The-convolution-forward-pass-with-Tucker-Decomposition" class="headerlink" title="The convolution forward pass with Tucker Decomposition"></a>The convolution forward pass with Tucker Decomposition</h1><p>Like for CP decomposition, lets write the convolution formula and plug in the kernel decomposition:</p>
+<script type="math/tex; mode=display">V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s)</script><script type="math/tex; mode=display">V(x, y, t) = \sum_i \sum_j \sum_s\sum_{r_3=1}^{R_3}\sum_{r_4=1}^{R_4}\sigma_{(i)(j) r_3 r_4}K^s_{r3}(s)K^t_{r4}(t)X(x-i, y-j, s)</script><script type="math/tex; mode=display">V(x, y, t) = \sum_i \sum_j \sum_{r_4=1}^{R_4}\sum_{r_3=1}^{R_3}K^t_{r4}(t)\sigma_{(i)(j) r_3 r_4} \sum_s\ K^s_{r3}(s)X(x-i, y-j, s)</script><p>This gives us the following recipe for doing the convolution with Tucker Decomposition:</p>
+<ol>
+<li><p>Point wise convolution with $K^s_{r3}(s)$ for reducing the number of channels from S to $R_3$.</p>
+</li>
+<li><p>Regular (not separable) convolution with $\sigma_{(i)(j) r_3 r_4}$. Instead of S input channels and T output channels like the original layer had, this convolution has $R_3$ input channels and $R_4$ output channels. If these ranks are smaller than S and T, this is were the reduction comes from.</p>
+</li>
+<li><p>Pointwise convolution with $K^t_{r4}(t)$ to get back to T output channels like the original convolution. Since this is the last convolution, at this point we add the bias if there is one.</p>
+</li>
+</ol>
+<h1 id="How-can-we-select-the-ranks-for-the-decomposition"><a href="#How-can-we-select-the-ranks-for-the-decomposition" class="headerlink" title="How can we select the ranks for the decomposition ?"></a>How can we select the ranks for the decomposition ?</h1><p>One way would be trying different values and checking the accuracy. I played with heuristics like $R_3 = S/3$ , $R_4 = T/3$ with good results.</p>
+<p>_Ideally selecting the ranks should be automated._</p>
+<p>The authors suggested using <a href="http://www.jmlr.org/papers/volume14/nakajima13a/nakajima13a.pdf">variational Bayesian matrix factorization (VBMF) (Nakajima et al., 2013)</a> as a method for estimating the rank.</p>
+<p>VBMF is complicated and is out of the scope of this post, but in a really high level summary what they do is approximate a matrix $V_{LxM}$ as the sum of a lower ranking matrix $B_{LxH}A^T_{HxM}$ and gaussian noise. After A and B are found, H is an upper bound on the rank.</p>
+<p>To use this for tucker decomposition, we can unfold the s and t components of the original weight tensor to create matrices. Then we can estimate $R_3$ and $R_4$ as the rank of the matrices using VBMF.</p>
+<p>I used this <a href="https://github.com/CasvandenBogaard/VBMF">python implementation of VBMF</a> and got convinced it works :-)</p>
+<p>VBMF usually returned ranks very close to what I previously found with careful and tedious manual tuning.</p>
+<p>This could also be used for estimating the rank for Truncated SVD acceleration of fully connected layers.</p>
+<h1 id="Convolutional-layer-Tucker-Decomposition-with-PyTorch-and-Tensorly"><a href="#Convolutional-layer-Tucker-Decomposition-with-PyTorch-and-Tensorly" class="headerlink" title="Convolutional layer Tucker-Decomposition with PyTorch and Tensorly"></a>Convolutional layer Tucker-Decomposition with PyTorch and Tensorly</h1><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">def estimate_ranks(layer):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; Unfold the 2 modes of the Tensor the decomposition will </span></span><br><span class="line"><span class="string">    be performed on, and estimates the ranks of the matrices using VBMF </span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    weights = layer.weight.data.numpy()</span><br><span class="line">    unfold_0 = tensorly.base.unfold(weights, 0) </span><br><span class="line">    unfold_1 = tensorly.base.unfold(weights, 1)</span><br><span class="line">    _, diag_0, _, _ = VBMF.EVBMF(unfold_0)</span><br><span class="line">    _, diag_1, _, _ = VBMF.EVBMF(unfold_1)</span><br><span class="line">    ranks = [diag_0.shape[0], diag_1.shape[1]]</span><br><span class="line">    return ranks</span><br><span class="line"></span><br><span class="line">def tucker_decomposition_conv_layer(layer):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; Gets a conv layer, </span></span><br><span class="line"><span class="string">        returns a nn.Sequential object with the Tucker decomposition.</span></span><br><span class="line"><span class="string">        The ranks are estimated with a Python implementation of VBMF</span></span><br><span class="line"><span class="string">        https://github.com/CasvandenBogaard/VBMF</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    ranks = estimate_ranks(layer)</span><br><span class="line">    <span class="built_in">print</span>(layer, <span class="string">&quot;VBMF Estimated ranks&quot;</span>, ranks)</span><br><span class="line">    core, [last, first] = \</span><br><span class="line">        partial_tucker(layer.weight.data, \</span><br><span class="line">            modes=[0, 1], <span class="attribute">ranks</span>=ranks, <span class="attribute">init</span>=<span class="string">&#x27;svd&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    # A pointwise convolution that reduces the channels <span class="keyword">from</span> S <span class="keyword">to</span> R3</span><br><span class="line">    first_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=first.shape[0], \</span><br><span class="line">            <span class="attribute">out_channels</span>=first.shape[1], <span class="attribute">kernel_size</span>=1,</span><br><span class="line">            <span class="attribute">stride</span>=1, <span class="attribute">padding</span>=0, <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    # A regular 2D convolution layer with R3 input channels </span><br><span class="line">    # <span class="keyword">and</span> R3 output channels</span><br><span class="line">    core_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=core.shape[1], \</span><br><span class="line">            <span class="attribute">out_channels</span>=core.shape[0], <span class="attribute">kernel_size</span>=layer.kernel_size,</span><br><span class="line">            <span class="attribute">stride</span>=layer.stride, <span class="attribute">padding</span>=layer.padding, <span class="attribute">dilation</span>=layer.dilation,</span><br><span class="line">            <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    # A pointwise convolution that increases the channels <span class="keyword">from</span> R4 <span class="keyword">to</span> T</span><br><span class="line">    last_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=last.shape[1], \</span><br><span class="line">        <span class="attribute">out_channels</span>=last.shape[0], <span class="attribute">kernel_size</span>=1, <span class="attribute">stride</span>=1,</span><br><span class="line">        <span class="attribute">padding</span>=0, <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">bias</span>=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    last_layer.bias.data = layer.bias.data</span><br><span class="line"></span><br><span class="line">    first_layer.weight.data = \</span><br><span class="line">        torch.transpose(first, 1, 0).unsqueeze(-1).unsqueeze(-1)</span><br><span class="line">    last_layer.weight.data = last.unsqueeze(-1).unsqueeze(-1)</span><br><span class="line">    core_layer.weight.data = core</span><br><span class="line"></span><br><span class="line">    new_layers = [first_layer, core_layer, last_layer]</span><br><span class="line">    return nn.Sequential(*new_layers)</span><br></pre></td></tr></table></figure>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p>In this post we went over a few tensor decomposition methods for accelerating layers in deep neural networks.</p>
+<ul>
+<li><p>Truncated SVD can be used for accelerating fully connected layers.</p>
+</li>
+<li><p>CP Decomposition decomposes convolutional layers into something that resembles mobile-nets, although it is even more aggressive since it is also separable in the spatial dimensions.</p>
+</li>
+<li><p>Tucker Decomposition reduced the number of input and output channels the 2D convolution layer operated on, and used pointwise convolutions to switch the number of channels before and after the 2D convolution.</p>
+</li>
+</ul>
+<p>I think it’s interesting how common patterns in network design, pointwise and depthwise convolutions, naturally appear in these decompositions!</p>
+]]></content>
+  </entry>
+  <entry>
     <title>神经网络中的结构化张量</title>
     <url>/2022/05/30/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E5%BC%A0%E9%87%8F/</url>
     <content><![CDATA[<p>CNN要求大量的参数去实现高准确度，造成大量的训练时间、长的inference时间和大量的内存。模型压缩作为一种常见的DNN中减少参数量的方式。例如 parameter quantization, knowledge distillation and network pruning。<br>为了能够从稀疏张量核心中受益，输入矩阵必须采用特定的2：4结构。我们将在本文后面描述2：4结构的特征。我们使用2：4修剪来参考修剪结果在2：4结构中的修剪方法。<br>filter pruning是一个标准的网络剪枝的方法。他评估filter的重要性并移除冗余的数据。因此选择一个合适的评估指标来删除冗余权重。这个想法是生成一个较小的模型，该模型可以通过首先进行filter pruning来加速sparse tensor core。然后，我们应用 2：4 修剪，以确保权重矩阵是 2：4 的结构，以利用sparse tensor core提供的性能。</p>
@@ -325,6 +1611,11 @@ C=
 <h2 id="unstructured-pruning"><a href="#unstructured-pruning" class="headerlink" title="unstructured pruning"></a>unstructured pruning</h2><p>非结构化剪枝移除模型中不重要的权重来减少参数。需要将矩阵编码成特殊格式，以跳过零值来减少内存使用。这些格式是传统的CSR或者CSC。但是由于矩阵的稀疏性，需要特殊的硬件和软件支持，为密集计算的硬件和库在剪枝后无法给予稀疏矩阵提供高效的训练和高速的推理。</p>
 <h2 id="structed-pruning"><a href="#structed-pruning" class="headerlink" title="structed pruning"></a>structed pruning</h2><p>结构化剪枝使用结构化的方式来避免非结构化剪枝的问题。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>贝叶斯张量分解</title>
+    <url>/2023/04/08/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>DNN的入门</title>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
+  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
+  <meta name="baidu-site-verification" content="code-DKAkrnpO9u">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Paper-Analysis-SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression">
+<meta property="og:url" content="https://hurong0510.github.io/2024/04/29/Paper-Analysis-SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression/index.html">
+<meta property="og:site_name" content="upupwords">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.99t5xhs5wk.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.67x9z57v2b.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.26lakrm59y.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvde6x21.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.8ad2n7xwiv.webp">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.6bgvwvsrix.webp">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.1vyh67dt7x.png">
+<meta property="og:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvrzo8tu.webp">
+<meta property="article:published_time" content="2024-04-29T15:39:22.000Z">
+<meta property="article:modified_time" content="2024-07-11T12:47:49.000Z">
+<meta property="article:author" content="upupwords">
+<meta property="article:tag" content="论文分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.99t5xhs5wk.png">
+
+<link rel="canonical" href="https://hurong0510.github.io/2024/04/29/Paper-Analysis-SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Paper-Analysis-SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression | upupwords</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">upupwords</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/04/29/Paper-Analysis-SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Paper-Analysis-SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-29 17:39:22" itemprop="dateCreated datePublished" datetime="2024-04-29T17:39:22+02:00">2024-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-11 14:47:49" itemprop="dateModified" datetime="2024-07-11T14:47:49+02:00">2024-07-11</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">相关论文,论文阅读</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression"><a href="#SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression" class="headerlink" title="SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression"></a>SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression</h1><h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>SVD作为一种模型压缩方法，不需要硬件依赖或者模型再训练。现有的一些SVD方法，如ASVD以及FWSVD被提出。但是这些方法当模型的压缩率高时，这些方法的性能会有很大的下降。主要原因是</p>
+<ul>
+<li>imprecise data preposcessing. 尽管ASVD考虑了activation的outliers,但是并没有建立奇异值和模型压缩损失的关系.</li>
+<li>忽视SVD截断之后的模型参数更新. 为了补偿截断产生的额误差,需要更新剩余的参数。但是现在基于SVD的方法都没有考虑参数更新，当压缩率高时，并没有去处理准确度的问题。</li>
+</ul>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li>truncation-aware data whitening技术. 通过理论证明，SVD-LLM 可以将奇异值直接映射到模型压缩损失。这种技术可以识别哪些损失值被截断时，模型压缩的损失是最小的。</li>
+<li>layer-wise closed-form model parameter update. 为了补偿高压缩率下的准确度降低，SVD-LLM可以逐层更新压缩的权重。</li>
+</ul>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><p>SVD-LLM的流程为：使用sentence的随机集合作为校准集来生成activation，以实现truncation-aware whitening 以及 layer-wise closed-form update。SVD-LLM使用cholesky decomposition来洗白activation，对权重矩阵执行svd。</p>
+<h2 id="truncation-aware-data-whitening"><a href="#truncation-aware-data-whitening" class="headerlink" title="truncation-aware data whitening"></a>truncation-aware data whitening</h2><p>受制于input activation的高方差，使用原始SVD来进行LLM压缩会产生严重的accuracy degradation。为了解决这个问题，ASVD将LLM 压缩问题转换成了如下的优化问题：</p>
+<script type="math/tex; mode=display">
+O=\min (L:=\|WX-W'X\|_F)</script><p>其中W是LLM的原始权重，X是给定输入的W的激活值,L是压缩损失。ASVD从X中提取一个对角矩阵，将$WX$ 转换为 $(WS_0)S^{-1}_0X)$，ASVD对$WS_0$执行截断SVD。尽管这种normalizing activation可以提高性能，ASVD并不能直接建立起奇异值和压缩损失的直接关系。如下是两个直接的例子来说明这样的关系。在图2(a)中，只截断一个奇异值时，若是最小的奇异值0.1被截断时，产生的loss为1.1.而截断第二最小的奇异值0.0时，产生的损失值为0.7。当截断两个奇异值时，截断最小的两个奇异值反而比截断2.4和0.1产生的损失值更大。因此截断最小的奇异值并不会产生最小的损失值。</p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.99t5xhs5wk.png" alt=""></p>
+<p>SVD LLMs的关键思想是结合一种感知截断的数据白化技术，以确保奇异值和压缩损失之间的直接映射。<br>为了实现这个技术，SVD-LLM将激活值转变为正交矩阵，激活值变为$S^{-1}X$，此时$(S^{-1}X)(S^{-1}X)^T=I$。其中$S$来自$XX^T$的Cholesky分解。我们对$WS$执行SVD来获取$U,\Sigma,V$，最后对奇异值进行截断，得到 $W’=U\times Trunc(\Sigma)\times V^T\times S^{-1}$. 图2(b)展现了本文的效果。当只有一个奇异值被截断是，compression loss等于被截断的奇异值本身。截断多个奇异值的压缩损失等于它们的平方和的平方根。因此，在所提出的感知截断的数据白化技术下，截断最小的奇异值导致最小的压缩损失。</p>
+<p>以下是通过理论证明为什么这种技术可以在奇异值和压缩损失之间建立一个直接的关系。</p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.67x9z57v2b.png" alt=""><br>根据Lemma 3.1，当截断$S^{-1}X$的$i$-th奇异值获得压缩损失</p>
+<script type="math/tex; mode=display">
+\begin{align}
+    L_i &= \|(W-W')X\|_F=\|(W-U\times Trunc(\Sigma)\times V^T\times S^{-1})X\|_F \\
+    &= \|(WS-U\times Trunc(\Sigma)\times V^T)S^{-1}X\|_F \\
+    &= \|(U\times \Sigma\times V^T-U\times Trunc(\Sigma)\times V^T)S^{-1}X\| \\
+    &= \|\sigma_iu_iv_i^TS^{-1}X\|_F
+\end{align}</script><p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.26lakrm59y.png" alt=""></p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvde6x21.png" alt=""></p>
+<p><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.8ad2n7xwiv.webp" alt=""><br><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.6bgvwvsrix.webp" alt=""></p>
+<h2 id="layer-wise-closed-form-update"><a href="#layer-wise-closed-form-update" class="headerlink" title="layer-wise closed-form update"></a>layer-wise closed-form update</h2><p>随着压缩率的提高，$W$需要截断更多的奇异值。有必要设计一个更新策略来最小化$|WX’-W’X’|_F$<br><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.1vyh67dt7x.png" alt=""><br>为了更新layer $i$，以及不破坏$W_i’$的低秩结构，SVD-LLM只更新$U_i$而固定$Trunc.(\Sigma)_i, V_i$，有<br><img src="https://github.com/HURONG0510/picx-images-hosting/raw/master/image.41xvrzo8tu.webp" alt=""></p>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h3 id="Baseline"><a href="#Baseline" class="headerlink" title="Baseline"></a>Baseline</h3><p>vanilla SVD, FWSVD, ASVD</p>
+<h3 id="Models-and-Datasets"><a href="#Models-and-Datasets" class="headerlink" title="Models and Datasets"></a>Models and Datasets</h3><p>8个model：LLaMA-7B,13B,30B,65B, LLaMA2-7B, OPT-6.7B, Vivuna-7B, Mistral-7B<br>10个datasets: 3个language modeling datasets(WikiText-2, PTB, C4) 和 7个 classification datasets(OpenbookQA, WinoGrande, HellaSwag, PIQA, MathQA, ARC-e, ARC-c) in zero-shot setting with LM-Evaluation-Harness framework.</p>
+<h3 id="Implementation-Details"><a href="#Implementation-Details" class="headerlink" title="Implementation Details"></a>Implementation Details</h3><p>为了确保公平的比较，我们遵循ASVD[28]随机选择来自WikiText-2的256个样本作为校准数据。由于逐层闭合形式更新旨在缓解较高压缩比下的精度下降，因此我们仅在压缩比为40%及以上时应用它。我们所有的实验都是在Nvidia A100 GPU上进行的。</p>
+<h2 id="overall-performance"><a href="#overall-performance" class="headerlink" title="overall performance"></a>overall performance</h2><p>我们从四个方面来进行测试</p>
+<ul>
+<li>执行不同的压缩率</li>
+<li>执行不同的LLMs</li>
+<li>执行更大规模的LLMs</li>
+<li>与LoRA fine-tuning一起执行</li>
+</ul>
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>为了实现这个技术，SVD-LLM将激活值转变为正交矩阵，激活值变为$S^{-1}X$，此时$(S^{-1}X)(S^{-1}X)^T=I$。其中$S$来自Cholesky分解。我们对$WS$执行SVD来获取$U,\Sigma,V$，最后对奇异值进行截断，得到 $W’=U\times Trunc(\Sigma)\times V^T\times S^{-1}$. 图2(b)展现了本文的效果。当只有一个奇异值被截断是，compression loss等于被截断的奇异值本身。截断多个奇异值的压缩损失等于它们的平方和的平方根。因此，在所提出的感知截断的数据白化技术下，截断最小的奇异值导致最小的压缩损失。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BA%E6%96%87%E5%88%86%E6%9E%90/" rel="tag"># 论文分析</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/16/transformer%E7%90%86%E8%A7%A32/" rel="prev" title="transformer的工作过程">
+      <i class="fa fa-chevron-left"></i> transformer的工作过程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/05/03/transformer%E7%90%86%E8%A7%A33/" rel="next" title="transformer中attention score的计算">
+      transformer中attention score的计算 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression"><span class="nav-number">1.</span> <span class="nav-text">SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Background-and-Motivation"><span class="nav-number">2.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Main-Contributions"><span class="nav-number">3.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Theoretical-Framework-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Theoretical Framework&#x2F;Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#truncation-aware-data-whitening"><span class="nav-number">4.1.</span> <span class="nav-text">truncation-aware data whitening</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layer-wise-closed-form-update"><span class="nav-number">4.2.</span> <span class="nav-text">layer-wise closed-form update</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Experimental-Design-and-Results"><span class="nav-number">5.</span> <span class="nav-text">Experimental Design and Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Baseline"><span class="nav-number">5.0.1.</span> <span class="nav-text">Baseline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Models-and-Datasets"><span class="nav-number">5.0.2.</span> <span class="nav-text">Models and Datasets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Implementation-Details"><span class="nav-number">5.0.3.</span> <span class="nav-text">Implementation Details</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overall-performance"><span class="nav-number">5.1.</span> <span class="nav-text">overall performance</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Comparative-Analysis"><span class="nav-number">6.</span> <span class="nav-text">Comparative Analysis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Discussion-and-Limitations"><span class="nav-number">7.</span> <span class="nav-text">Discussion and Limitations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="upupwords"
+      src="/images/pig.png">
+  <p class="site-author-name" itemprop="name">upupwords</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:upupwords@hnu.edu.cn" title="E-Mail → mailto:upupwords@hnu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">upupwords</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
+  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
+  <meta name="baidu-site-verification" content="code-DKAkrnpO9u">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="transformer宏观理解">
+<meta property="og:url" content="https://hurong0510.github.io/2024/03/13/transformer%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="upupwords">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1098/format:webp/1*F7JlVjpmv-XAEeE9IPyzHA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:490/format:webp/1*THykpgtL058A9EpkstnUJQ.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:634/format:webp/1*1ouB-xrMxPgqu721_zzsbA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/1*pT0ZIWeoilLkz3e_1fVeYQ.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/format:webp/1*s2hugsMP28aB2tJoYCq8uA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*0g4qdq7Rt6QvDalFFAkL5g.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uvybwr8xULd3ug9ZwcSaQ.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*tkqBjeTRZMRfOLiLqYV0TA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*9HgXzK95-QTOQi5eyZ-S_Q.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*Iygs9mQi4GbIJuc6fwBRKg.png">
+<meta property="article:published_time" content="2024-03-13T18:56:59.000Z">
+<meta property="article:modified_time" content="2024-04-28T05:08:28.000Z">
+<meta property="article:author" content="upupwords">
+<meta property="article:tag" content="transformer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://miro.medium.com/v2/resize:fit:1098/format:webp/1*F7JlVjpmv-XAEeE9IPyzHA.png">
+
+<link rel="canonical" href="https://hurong0510.github.io/2024/03/13/transformer%E7%90%86%E8%A7%A3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>transformer宏观理解 | upupwords</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">upupwords</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/03/13/transformer%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          transformer宏观理解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-13 19:56:59" itemprop="dateCreated datePublished" datetime="2024-03-13T19:56:59+01:00">2024-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-28 07:08:28" itemprop="dateModified" datetime="2024-04-28T07:08:28+02:00">2024-04-28</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">原文地址 [towardsdatascience.com](https://towardsdatascience.com/transformers-explained-visually-part-1-overview-of-functionality-95a6dd460452)</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="重消化-Transformers-Explained-Visually-Part-1-Overview-of-Functionality"><a href="#重消化-Transformers-Explained-Visually-Part-1-Overview-of-Functionality" class="headerlink" title="重消化-Transformers Explained Visually (Part 1): Overview of Functionality"></a>重消化-<a target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-explained-visually-part-1-overview-of-functionality-95a6dd460452">Transformers Explained Visually (Part 1): Overview of Functionality</a></h1><h2 id="what-is-a-transformer"><a href="#what-is-a-transformer" class="headerlink" title="what is a transformer"></a>what is a transformer</h2><p>transformer在处理连续文本时特别有用，他将输入的文本序列处理并输出成另一文本序列。它包含了a stack of encoder layers and decomder layers.</p>
+<p>The encoder stack and decoder stack 都拥有自己对应的embedding layers for their respective inputs. 最终还有一个output layer来生成最终的输出。</p>
+<ul>
+<li>所有的encoders都相同，decoder也一样。encoder中包含最重要的self-attention (用于计算序列中不同单词之间的关系)以及前馈层。</li>
+<li>decoder包含self-attention layer， feed-forward layer以及encoder-decoder attention layer.</li>
+<li>每个encoder和decoder有自己的权重。<br><img src="https://miro.medium.com/v2/resize:fit:1098/format:webp/1*F7JlVjpmv-XAEeE9IPyzHA.png" alt=""></li>
+</ul>
+<p>encoder是一个可重用的模块，除了上述的两层之外，他还在两层之间存在residual skip connections以及layerNorm layers。<br><img src="https://miro.medium.com/v2/resize:fit:490/format:webp/1*THykpgtL058A9EpkstnUJQ.png" alt=""></p>
+<p>transformer有许多变体，有些根本没有decoder。</p>
+<h2 id="what-does-attention-do"><a href="#what-does-attention-do" class="headerlink" title="what does attention do"></a>what does attention do</h2><p>transformer突破性能的关键在于他对注意力的使用。在处理词汇时，attention会关注于输入中与该词联系紧密的词。例如”ball”会关联到holding和blue，而boy并不会关联到blue。<br><img src="https://miro.medium.com/v2/resize:fit:634/format:webp/1*1ouB-xrMxPgqu721_zzsbA.png" alt=""></p>
+<p>transformer架构通过将输入序列中的每个单词与其他单词相关联来使用self-attention</p>
+<p>Consider two sentences:</p>
+<ul>
+<li>The _cat_ drank the milk because <strong>it</strong> was hungry.</li>
+<li>The cat drank the _milk_ because <strong>it</strong> was sweet.<br><img src="https://miro.medium.com/v2/resize:fit:1400/1*pT0ZIWeoilLkz3e_1fVeYQ.png" alt=""></li>
+</ul>
+<p>在第一句话中，“it”一词指的是“猫”，而在第二句话中，“it”一词指的是“牛奶”。当模型处理“it”这个词时，自注意力会为模型提供更多有关其含义的信息，以便模型可以将“it”与正确的单词关联起来。</p>
+<p>为了使其能够处理句子意图和语义的更多细微区别，transformers为每个单词提供了多个attention scores。例如。在处理“it”一词时，第一个分数突出显示“cat”，而第二个分数突出显示“hungry”。因此，当它解码“it”这个词时，例如，通过将其翻译成另一种语言，它会将“cat”和“hungry”的某些方面合并到翻译的单词中。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*s2hugsMP28aB2tJoYCq8uA.png" alt=""></p>
+<h2 id="training"><a href="#training" class="headerlink" title="training"></a>training</h2><p>训练数据包含两个部分：</p>
+<ul>
+<li>源或输入序列（例如，英语中的“You are welcome”，用于解决翻译问题）</li>
+<li>目的地或目标序列（例如西班牙语中的“De nada”）</li>
+</ul>
+<p>Transformer traning 的目标是学习如何通过使用<strong>输入和目标序列</strong>来输出目标序列。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*0g4qdq7Rt6QvDalFFAkL5g.png" alt=""></p>
+<ol>
+<li>input sequence 被转换为embeddings (with position encoding)，喂给encoder。</li>
+<li>encoder stack运行这两数据，并产生这个输入序列的encoded representation。</li>
+<li>target sequence 前面添加了 start-of-sentence token(句子开头标记)，然后被转换为embeddings (with position encoding)，喂给decoder。</li>
+<li>decoder stack结合encoder stack的encoded representation来处理这两个数据，并产生target sequence 的 encoder representation。</li>
+<li>output layer将encoder representation转换为词概率 word probabilities以及最终的输出序列。</li>
+<li>Transformer 的损失函数将此输出序列与训练数据中的目标序列进行比较。该损失用于生成梯度，以在反向传播期间训练 Transformer。</li>
+</ol>
+<h2 id="inference"><a href="#inference" class="headerlink" title="inference"></a>inference</h2><p>在推理期间，我们只有输入序列。<br>Transformer inference 的目标是仅从输入序列生成目标序列。</p>
+<blockquote>
+<p>就像在 Seq2Seq 模型中一样，我们在循环中生成输出，并将前一个时间步的输出序列馈送到下一个时间步的解码器，直到遇到句末标记。与 Seq2Seq 模型的区别在于，在每个时间步，我们重新输入迄今为止生成的整个输出序列，而不仅仅是最后一个单词。</p>
+</blockquote>
+<p><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uvybwr8xULd3ug9ZwcSaQ.png" alt=""></p>
+<ol>
+<li>input sequence 被转换为embeddings (with position encoding)，喂给encoder。</li>
+<li>encoder stack运行这两数据，并产生这个输入序列的encoded representation。</li>
+<li>由于没有目标序列，我们使用空的序列（只包含a start-of-sentence token）然后被转换为embeddings (with position encoding)，喂给decoder。</li>
+<li>decoder stack结合encoder stack的encoded representation来处理这两个数据，并产生target sequence 的 encoder representation。</li>
+<li>output layer将encoder representation转换为词概率 word probabilities以及最终的输出序列。</li>
+<li>我们将输出序列的最后一个单词作为预测单词。该单词现在填充到decoder输入序列的第二个位置，其中现在包含句子开头标记和第一个单词.</li>
+<li>返回步骤#3。和以前一样，将新的decoder sequence输入到模型中。然后取出输出的第二个字并将其附加到decoder sequence中。重复此操作，直到预测出句末标记。请注意，由于每次迭代的编码器序列都不会改变，因此我们不必每次都重复步骤 #1 和 #2。</li>
+</ol>
+<h2 id="teacher-forcing"><a href="#teacher-forcing" class="headerlink" title="teacher forcing"></a>teacher forcing</h2><p>在training期间，将target sequence喂给decoder称为teacher forcing</p>
+<h2 id="what-are-transformers-used-for"><a href="#what-are-transformers-used-for" class="headerlink" title="what are transformers used for"></a>what are transformers used for</h2><p>transformer的用途很广泛，可用于大多数NLP任务。对于不同的问题，transformers架构有不同的风格。基本的encoder layer作为构建的常用部件，根据要解决的问题具有不同的特定于应用程序的”head”.</p>
+<h2 id="transformer-classification-architecture"><a href="#transformer-classification-architecture" class="headerlink" title="transformer classification architecture"></a>transformer classification architecture</h2><p>以sentiment analysis应用为例，将文本文档作为输入，一个classification head获取transformer的输出，并且生成分类标签的预测，例如消极和积极情绪。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*tkqBjeTRZMRfOLiLqYV0TA.png" alt=""></p>
+<h2 id="Transformer-Language-Model-architecture"><a href="#Transformer-Language-Model-architecture" class="headerlink" title="Transformer Language Model architecture"></a>Transformer Language Model architecture</h2><p>语言模型架构将输入序列的初始部分（例如文本句子）作为输入，并通过预测随后的句子来生成新文本。A Language Model head 获取 Transformer 的输出并生成词汇表中每个单词的概率。概率最高的单词成为句子中下一个单词的预测输出。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*9HgXzK95-QTOQi5eyZ-S_Q.png" alt=""></p>
+<h2 id="how-are-they-better-than-RNNs"><a href="#how-are-they-better-than-RNNs" class="headerlink" title="how are they better than RNNs"></a>how are they better than RNNs</h2><p>RNNs以及近似 LSTMs和GRUs都可以用来处理NLP任务，RNN-based seq2seq models性能很好，但是他们有两个限制：</p>
+<ul>
+<li>很难长句子中的单词之间的long-range依赖</li>
+<li>一次一词地顺序处理序列，因此只能顺序执行计算，即必须做完t-1时间步才能做t时间步</li>
+</ul>
+<p>另一方面，对于所有输出可以并行执行的CNNs而言，虽然剪辑速度更快，但是在处理远程依赖方面也有局限性</p>
+<ul>
+<li>在卷积层中，只有足够接近以适应内核大小的图像部分（或单词，如果应用于文本数据）可以相互交互。对于相距较远的项目，需要一个更深层次的多层网络。</li>
+</ul>
+<p>transformer处理了以上的限制，</p>
+<ul>
+<li>可以并行计算序列中的所有词汇</li>
+<li>不在乎单词之间的距离，它同样擅长计算相邻单词和相距较远的单词之间的依赖关系。<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*Iygs9mQi4GbIJuc6fwBRKg.png" alt=""></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/transformer/" rel="tag"># transformer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/02/importance-sampling-in-stochastic-gradient/" rel="prev" title="importance sampling in stochastic gradient">
+      <i class="fa fa-chevron-left"></i> importance sampling in stochastic gradient
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/16/transformer%E7%90%86%E8%A7%A32/" rel="next" title="transformer的工作过程">
+      transformer的工作过程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E6%B6%88%E5%8C%96-Transformers-Explained-Visually-Part-1-Overview-of-Functionality"><span class="nav-number">1.</span> <span class="nav-text">重消化-Transformers Explained Visually (Part 1): Overview of Functionality</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#what-is-a-transformer"><span class="nav-number">1.1.</span> <span class="nav-text">what is a transformer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#what-does-attention-do"><span class="nav-number">1.2.</span> <span class="nav-text">what does attention do</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#training"><span class="nav-number">1.3.</span> <span class="nav-text">training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#inference"><span class="nav-number">1.4.</span> <span class="nav-text">inference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#teacher-forcing"><span class="nav-number">1.5.</span> <span class="nav-text">teacher forcing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#what-are-transformers-used-for"><span class="nav-number">1.6.</span> <span class="nav-text">what are transformers used for</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer-classification-architecture"><span class="nav-number">1.7.</span> <span class="nav-text">transformer classification architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transformer-Language-Model-architecture"><span class="nav-number">1.8.</span> <span class="nav-text">Transformer Language Model architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-are-they-better-than-RNNs"><span class="nav-number">1.9.</span> <span class="nav-text">how are they better than RNNs</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="upupwords"
+      src="/images/pig.png">
+  <p class="site-author-name" itemprop="name">upupwords</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:upupwords@hnu.edu.cn" title="E-Mail → mailto:upupwords@hnu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">upupwords</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

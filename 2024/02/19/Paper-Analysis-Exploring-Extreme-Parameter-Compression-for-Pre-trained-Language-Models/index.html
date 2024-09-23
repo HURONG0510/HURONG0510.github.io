@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
+  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
+  <meta name="baidu-site-verification" content="code-DKAkrnpO9u">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Paper-Analysis-Exploring Extreme Parameter Compression for Pre-trained Language Models">
+<meta property="og:url" content="https://hurong0510.github.io/2024/02/19/Paper-Analysis-Exploring-Extreme-Parameter-Compression-for-Pre-trained-Language-Models/index.html">
+<meta property="og:site_name" content="upupwords">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240219/image.2acrnb7z7xog.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240219/image.2lwoh7cbgug0.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.3m51698uwia0.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.12nszye6ti9s.webp">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.5im6dxh1prw0.webp">
+<meta property="article:published_time" content="2024-02-19T15:54:49.000Z">
+<meta property="article:modified_time" content="2024-05-19T12:13:57.000Z">
+<meta property="article:author" content="upupwords">
+<meta property="article:tag" content="论文分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240219/image.2acrnb7z7xog.png">
+
+<link rel="canonical" href="https://hurong0510.github.io/2024/02/19/Paper-Analysis-Exploring-Extreme-Parameter-Compression-for-Pre-trained-Language-Models/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Paper-Analysis-Exploring Extreme Parameter Compression for Pre-trained Language Models | upupwords</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">upupwords</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/02/19/Paper-Analysis-Exploring-Extreme-Parameter-Compression-for-Pre-trained-Language-Models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Paper-Analysis-Exploring Extreme Parameter Compression for Pre-trained Language Models
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-19 16:54:49" itemprop="dateCreated datePublished" datetime="2024-02-19T16:54:49+01:00">2024-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-19 14:13:57" itemprop="dateModified" datetime="2024-05-19T14:13:57+02:00">2024-05-19</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">论文分析</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Title-and-Authors"><a href="#Title-and-Authors" class="headerlink" title="Title and Authors"></a>Title and Authors</h1><p>Exploring Extreme Parameter Compression for Pre-trained Language Models</p>
+<h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>Pre-trained language（Bert and ALbert）大规模PLM的部署是具有挑战性的</p>
+<ol>
+<li>模型不能完全部署或存储在单个GPU服务器中，模型并行性将消耗许多服务器之间的网络通信的额外时间；</li>
+<li>边缘设备可能没有足够的空间来存储模型；</li>
+<li>长的推理时间无法支持实时反馈</li>
+</ol>
+<p>PLM中的参数冗余可以分成两类：</p>
+<ul>
+<li>intra-matrix redundancy。常发生在可以分开计算的heads中，头部之间的注意力作用于相似的子空间，因此是低秩的，同时每个FFN层都可以分解为许多独立的子FFN</li>
+<li>inter-matrix redundancy。发生在不同的层之间，例如，层之间的注意力图可能相似。</li>
+</ul>
+<p>对Transformer层中的主要权重矩阵的探索发现，这些权重矩阵可以以低秩的方式进行近似——证明了可能的矩阵内冗余和矩阵间冗余。本文分析比较了用于参数压缩的不同分解方法，包括矩阵分解，tt分解和tucker分解。区别在于</p>
+<ul>
+<li>由于intra-matrix冗余而对每个权重矩阵进行矩阵分解</li>
+<li>对于inter-matrix冗余，tt分解共享head和tail矩阵同时保持core matrix冗余</li>
+<li>tucker分解引入matrix bank，使得parameter scale几乎恒定<br>得出的结论是就压缩比而言，tucker分解比其他分解更有效。matrix/tensor 分解面临的挑战为</li>
+<li>分解可能导致原始权重和近似权重之间的差异，并且在大压缩比的情况下不可能进行精确分解。相反，知识蒸馏以损失感知的方式模拟原始模型的预测</li>
+<li>其次，重建可能导致额外的计算成本。有效的重建协议是通过对乘法运算进行重新排序来实现的，这些乘法运算也保持了相同的结果。</li>
+</ul>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><p>这项工作的贡献是：</p>
+<ol>
+<li>我们提出了一个具有标准化术语的形式化框架，以全面讨论矩阵/张量分解方法来压缩基于Transformer的语言模型；</li>
+<li>我们采用张量分解来压缩PLM，这也更快，而现有的工作没有显示出PLM加速的潜力；</li>
+<li>我们的压缩BERT在Transformer层中具有1/7个参数，其性能与GLUE基准测试中的原始BERT相当。此外，一个微小的版本在Transformer中仅具有1/48个参数，实现了96.7%的BERT基础性能，推理速度快2.7倍。我们直接在TinyBERT上使用所提出的方法（Jiao et al.，2020），该方法纯粹基于KD，因为我们的工作是对KD等现有压缩方法的补充。</li>
+</ol>
+<h1 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h1><p><strong>Compressing PLMs</strong>. 本文专注于基于transformer的预训练语言模型的压缩，而不是设计新的transformer。本文重用现有的模型，现有的压缩方法有<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240219/image.2acrnb7z7xog.png" alt=""><br>我们认为，现有的压缩方法（见表1）可能不足以进行极端参数压缩，这一点正在研究中。原因是多方面的，首先，基于知识提取的方法通常从头开始学习新的学生模型，在提取之前不能从教师模型继承太多知识。其次，一些方法具有压缩比的上限。例如，层共享ALBERT以最大L次压缩共享L层中的参数。量化将现有的32位参数替换为最大减少32倍的二进制参数。此外，量化还需要进一步的硬件支持，这通常是针对特定平台的。可以说，重量修剪不能实现大的压缩比。</p>
+<p><strong>matrix/tensor decomposition for compression</strong> 我们认为，使用矩阵/张量分解的现有工作的压缩比的PLM相对较小；它们中的大多数不具有加速效应，限制了它们在大规模PLM中的应用。利用矩阵/张量分解压缩PLM的潜力正在研究之中。在这项工作中，我们采用张量分解，对PLM的参数进行三次压缩。</p>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><p>PLM本质上是多个transformer的堆叠.</p>
+<blockquote>
+<p>transformer layers包含a self-attention module and a feed-forward network<br>为SAN和FFN引入一个称为“可分解性decomposability”的重要属性，这表明SAN或FFN中的每个子组件都是独立计算的，而子组件之间没有相互作用，因此它们可能是冗余的。</p>
+</blockquote>
+<ul>
+<li>decomposable的定义: A computing module $f$ 是 decomposable， 如果他的 sub-components $\{g_1, g_2, \cdots g_H \}$ 可以独立计算:$ f(x) =  \delta\big(g_1(x) ,g_2(x), \cdots, g_H(x) \big)$. 通常 $\delta$ 是一个相对$\{ g_h\}$可以忽略不计的简单操作 特别是，如果$\delta$是级联或加法，则子组件之间的反向传播是独立的。$f$中的子组件可以在没有交互的情况下并行计算。我们将检查SAN和FFN是否是可分解的。</li>
+</ul>
+<p><strong>decomposability in SAN</strong>.SAN可以分解成每个head的输出之和。For the query/key/value/output transformations parameterized by $W^Q / W^K / W^V / W^O$, we divide them as $N_h$ heads:  $\{W^Q_h\}^{N_h}, \{W^K_h\}^{N_h}, \{W^V_h\}^{N_h}, \{W^O_h\}^{N_h}$. A single head is calculated as </p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\small
+    \textrm{Att}_h (X)  =  \textrm{Softmax}( \frac{1}{\sqrt{d}} X W^Q_h {W^K_h}^T X^T) X W^V_h {W^O_h}^T 
+\end{equation}</script><p>Then $\textrm{SAN}(X)  = \sum_{h=1}^{N_h}  \textrm{Att}_h (X)$, indicating SAN is decomposable.<br>头部之间的注意力由于独立计算而学习冗余的密钥/查询投影。</p>
+<p><strong>decomposability in FFN</strong><br>FFN中的两个权重矩阵, $W^{In}$ and $W^{Out}$. </p>
+<script type="math/tex; mode=display">
+\begin{equation} \label{sec:ffn}
+\small
+    \textrm{FFN}(X)  = \sum_{h=1}^{4D}  \textrm{GeLU} (X W^{In}_{\cdot,h} + b^{In}_{h}  ) W^{Out}_{h,\cdot} + b^{Out}
+\end{equation}</script><p>FFN也作为一种类似于SAN的键值机制运行：可以将FFN的输入视为查询向量，将两个线性层的FFN分别视为键值。可能存在一些可能引入冗余的类似键值对。</p>
+<h2 id="expoloration-of-a-pre-trained-transformer"><a href="#expoloration-of-a-pre-trained-transformer" class="headerlink" title="expoloration of a pre-trained transformer"></a>expoloration of a pre-trained transformer</h2><p>Transformer的主要权重矩阵$\{W^Q,W^K,W^V,W^O, W^{In},  W^{Out}\}$，（FFN能以a multi-head fashion来分别计算的，我们将其分组为$\{ W^{In} \}$ and $\{ W^{Out} \}$ into four groups like $\{  W^{In}_h  \}^{h=4} $ and  $\{  W^{Out}_h  \}^{h=4} $ respectively.）。<br>这样操作后，所有的权重矩阵reshape为$D\times D$，此时得到了12个$D\times D$矩阵（4个来自SAN，8个来自FFN）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240219/image.2lwoh7cbgug0.png" alt=""><br>如上可以发现 intra-matrix and inter-matrix redundancy。<br>图1a看到只需要half dimensions的PCA就可以得到80%的方差， 还通过进行在两个任意配对的权重矩阵之间的级联矩阵上的PCA。见图1b，半维可以捕获近80%的方差，这表明压缩矩阵间冗余的可能性。这种矩阵间冗余可能是双重的：<br>（1）子FFN是可分解的；<br>（2）不同层中的计算（例如注意力图）可以是相似的。</p>
+<h2 id="exploring-parameter-compression"><a href="#exploring-parameter-compression" class="headerlink" title="exploring parameter compression"></a>exploring parameter compression</h2><p>我们将不同layer的SAN以及FFN中的权重矩阵堆叠在一起，第$j$-th transfomer的weight matrices为</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+    W^{(j)} = \left[ \{W^Q,W^K,W^V,W^O\}
+    \oplus    \{  W^{In}_h  \}^{h=4} \oplus \{  W^{Out}_h  \}^{h=4} \right]_j \in \mathbb{R}^{12 \times D \times D}.
+\end{equation}</script><p>对于L层的transformers而言，其权重矩阵可以堆叠为三阶张量大小为$12L\times D\times D$, The original non-decomposed weights is called  Ⅰ: $W^{Ⅰ} = \{W^{(j)}\}_{j=1}^{L} \in \mathbb{R}^{12LD^2}$.  Each weight matrix in  $W^{Ⅰ}$ is $W_i^{Ⅰ} = W_i \in\mathbb{R}^{D \times D}$.</p>
+<p><strong>Ⅱ matrix decomposition</strong>. 受intra-matrix redundancy的启发，可以采用矩阵分解将矩阵分解/近似为一些较小的矩阵。一种典型的方法就是SVD，called Ⅱ-$\alpha$, for each $D\times D$ matrix $W_i \in\mathbb{R}^{D \times D}$<br><!-- $W_i \in W^{Ⅰ} $,  --></p>
+<script type="math/tex; mode=display">
+\begin{equation}
+W_i \approx  W_i^{Ⅱ}= U_i \Sigma_i V_i \in \mathbb{R}^{D\times D}
+\end{equation}</script><p>One can also drop the diagonal ${\Sigma_i}$ by decomposing it into two parts that are  multiplied to $U_i$ and $V_i$,  namely $W_i   \approx  U_i  V_i$, denoted as `Ⅱ-$\beta$’.   $U_i \in \mathbb{R}^{D \times d} $ and $V_i \in \mathbb{R}^{d \times D}$ and usually $d&lt; D$. Since the compression ratio is $\frac{D^2}{2Dd}$ with reducing the rank from $ D$ to $d$, 近似矩阵的保留秩随着压缩率线性地减小。</p>
+<p><strong>Ⅲ tensor train decomposition</strong>. 受inter-matrix redundancy的启发，可以在矩阵之间共享参数。<br>在SVD中最大的矩阵是$U_i$和$V_i$ 因为$\{ {\Sigma_i} \}$ 相对其他矩阵参数量少。我们可以共享矩阵间的分解结果中的$ \{ U_i \}$和$ \{ V_i \}$,对于每个权重矩阵</p>
+<script type="math/tex; mode=display">
+\begin{equation}\label{eq:tt}
+W_i \approx W_i ^{Ⅲ}  =  U  V \in  \mathbb{R}^{D \times D}
+\end{equation}</script><p>Here,  $\{ {\Sigma_i} \}$ 不一定是对角线的。 This results in a tensor-train(TT) decomposition. </p>
+<blockquote>
+<p>A tensor-train decomposition  is to approximate a high-order tensor with a product of many smaller three-order tensors — except for the first and last ones being matrices. Here, for a three-order tensor $W \in \mathbb{R}^{12L \times D \times D}$, it is approximated by $W \approx  U G V$ and shape transpose, where $U \in \mathbb{R}^{D \times r_1}$, $G \in \mathbb{R}^{r_1 \times 12L \times r_2}$, and $V \in  \mathbb{R}^{r_2 \times D}$.  For a specific slice of $W$,  $W_i \approx  U G_{\cdot,i,\cdot} V$. $r_1$ and $r_2$ are the `TT ranks’.</p>
+</blockquote>
+<p>还可以考虑更高阶的TT分解（即，张量乘法的较长链），这可能更具参数效率；这通常需要用启发式方法将原始张量重塑为高阶张量。然而，在训练过程中，它更耗时，占用更多的GPU内存，我们将其作为未来的工作。</p>
+<p><strong>Ⅳ tucker decomposition.</strong> 在上式中，最大的项是 $\{ {\Sigma _i} \} \in \mathbb{R}^{ 12L \times d^2}$，特别是当模型的层数很大时。本文提出了一种固定尺寸的{matrix bank} 使得权重矩阵被视为bank中的矩阵的线性组合，使得参数尺寸相对于层数几乎不变。</p>
+<script type="math/tex; mode=display">
+\begin{equation}\label{eq:tucker}
+W_i \approx  W_i ^{Ⅳ} =  U (P _i C  ) V \in  \mathbb{R}^{D \times D} 
+\end{equation}</script><p>where  $C \in \mathbb{R}^{l \times d^2}$ is a  matrix bank with a size of $l$, each matrix is assigned with a  weight vector $ P_i  \in \mathbb{R}^{1 \times l} $.<br>ALBERT could be considered as a special case of $Ⅳ$.</p>
+<h2 id="comparison-between-these-decomposition"><a href="#comparison-between-these-decomposition" class="headerlink" title="comparison between these decomposition"></a>comparison between these decomposition</h2><p>下图表示这些分解方法的的参数规模。</p>
+<p>由于$D&gt;d$和$L&gt;l$，我们通常可以得出结论，参数尺度从Ⅰ Ⅱ Ⅲ 减小到Ⅳ。我们可以观察到，在Ⅳ中添加新层的边际参数成本接近$12l$，与其他参数相比可以忽略不计。在推理阶段，不涉及批量大小$b$或序列长度$n$的项在开始推理之前只能以离线方式计算一次，这需要更多的存储空间，但会略有加速-由于这项工作的主要目的是压缩模型，我们在这项工作中忽略了它，但鼓励在速度敏感的场景中这样做。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.3m51698uwia0.png" alt=""></p>
+<h2 id="extremely-compressing-bert-using-tensor-decomposition"><a href="#extremely-compressing-bert-using-tensor-decomposition" class="headerlink" title="extremely compressing bert using tensor decomposition"></a>extremely compressing bert using tensor decomposition</h2><h3 id="decomposition-protocol"><a href="#decomposition-protocol" class="headerlink" title="decomposition protocol"></a>decomposition protocol</h3><p>Ⅳ 减少空间复杂度从 $\mathcal{O}(12LD^2) $ 到  $\mathcal{O}(l  d ^2 + 12L  l + 2Dd ) $ where $d&lt;D$ and $l &lt; 12L$.<br>$l$决定了我们希望在所有模块之间共享Transformer参数的程度，这是一个灵活的因素，可以将普通BERT平滑地转换为layer-shared BERT（或称为“ALBERT”）$d$决定了每个线性变换的表达能力（秩）（最初为$D\times D$）。<br>估计权重矩阵总是与原始矩阵有些差距。由于多层神经网络架构，低层中权重矩阵的微小分解差异可能导致最终输出的累积差异，我们建议使用知识蒸馏来模拟原始模型的最终输出。</p>
+<script type="math/tex; mode=display">
+\begin{equation} 
+    f_{W^{Ⅰ}} (x)  \approx  f_{W^{Ⅳ} } (x)
+\end{equation}</script><p>$f_{W ^ {Ⅰ}}$是原始BERT模型，$f_{W^{Ⅳ}}$是压缩模型。我们认为，预测中的近似（如方程7中的知识提取）比权重中的近似更重要。这种压缩中的损失感知策略可以在量化中找到。</p>
+<h3 id="reconstruction-protocol"><a href="#reconstruction-protocol" class="headerlink" title="reconstruction protocol"></a>reconstruction protocol</h3><p>$D \times D$ 参数块的一个切片表示为矩阵乘积，$W_i^{Ⅳ}\approx U(P_i C)V\in\mathbb{R}^{D \times D}$.<br>对于输入$X \in \mathbb{R}^{b \times n \times D}$，其中b是批大小，n是序列长度，X和D×D参数块之间的线性变换的输出将是$Y = X{W}_{i;;} = XU(P_i C)V$.由于矩阵乘法是满足分配律，不同的乘法分配不会影响最终结果，但它们的计算复杂度可能不同。可以在表3中看到乘法阶的计算复杂性。在实践中，批量大小b将设置得尽可能大，以增加数据吞吐量并使训练更加稳定，我们可以得出结论，IV-3比IV-2更有效。<br>当$D&gt;2d$, IV-3比IV-1更有效。；在实践中D通常比d大得多并且$D&gt;2d$。总之，在这种情况下，设置IV-3是最有效的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.12nszye6ti9s.webp" alt=""></p>
+<h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h2 id="settings"><a href="#settings" class="headerlink" title="settings"></a>settings</h2><p><strong>decomposition</strong>. 对于BERT-base($L=12, D=768$),权重矩阵为$W^Ⅰ \in \mathbb{R}^{144 D^2}$被分解为三种因子矩阵<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/20240220/image.5im6dxh1prw0.webp" alt=""></p>
+<p><strong>Knowledge distillation</strong>. 对于压缩模型，我们使用两阶段知识提取。在普通蒸馏（GD）阶段，<br>我们采用知识蒸馏（KD）作为压缩模型来模拟通用教师模型（BERT库）的最后一层隐藏状态和最后一层注意力图。在第二阶段，<br>我们采用任务特定蒸馏（TD）来模拟任务特定BERT模型的logits（例如。fine-tuned on MNLI任务）。在GD中，压缩模型用两个时期进行训练。在TD中，我们还通过使用Glove根据词向量相似性或掩蔽目标词时BERT的预测物流，用相似词随机替换随机词来扩充训练数据，</p>
+<p><strong>GLUE evaluation</strong>. GLUE的微调和评估遵循Huggingface的设置。根据开发集选择性能最佳的模型，其中我们在[1e-5，2e-5]中选择学习率，在[16，32]中选择批量大小。</p>
+<ol>
+<li>结果<br>性能：其中一个配置，BERT-III-384，以Transformer层仅1/7的参数超越了BERT-base的性能，并略微增加了吞吐量。另一个模型，BERT-IV-72-384，以更少的参数与原始BERT模型表现相当。<br>压缩与效率：BERT-III和BERT-IV模型展示了在保持或略微提高GLUE基准任务性能指标的同时，实现极端压缩的潜力。文档特别强调了像BERT-III-64这样的模型，仅使用Transformer层1/48的参数就达到了BERT-base性能的96.7\%，并在推理速度上实现了2.7倍的加速。</li>
+</ol>
+<ol>
+<li>消融研究<br>知识蒸馏的必要性：一个消融研究确认了GD和TD阶段在实现压缩模型有效性能中的关键作用。去除TD显著降低了总体性能。<br>对FFNs或SANs的分解：尝试分别压缩前馈网络（FFNs）或自注意力网络（SANs），结果显示两者几乎可以匹敌原模型的性能。FFNs显示出略好的可压缩性。</li>
+</ol>
+<h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BA%E6%96%87%E5%88%86%E6%9E%90/" rel="tag"># 论文分析</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/02/07/LLM%E7%9A%84%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3%20(SFConflict%20upupwords@hnu.edu.cn%202024-09-23-12-39-00)/" rel="prev" title="LLM的基础理解">
+      <i class="fa fa-chevron-left"></i> LLM的基础理解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/02/importance-sampling-in-stochastic-gradient/" rel="next" title="importance sampling in stochastic gradient">
+      importance sampling in stochastic gradient <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Title-and-Authors"><span class="nav-number">1.</span> <span class="nav-text">Title and Authors</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Background-and-Motivation"><span class="nav-number">2.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Main-Contributions"><span class="nav-number">3.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Related-Work"><span class="nav-number">4.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Theoretical-Framework-Algorithm"><span class="nav-number">5.</span> <span class="nav-text">Theoretical Framework&#x2F;Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#expoloration-of-a-pre-trained-transformer"><span class="nav-number">5.1.</span> <span class="nav-text">expoloration of a pre-trained transformer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exploring-parameter-compression"><span class="nav-number">5.2.</span> <span class="nav-text">exploring parameter compression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#comparison-between-these-decomposition"><span class="nav-number">5.3.</span> <span class="nav-text">comparison between these decomposition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#extremely-compressing-bert-using-tensor-decomposition"><span class="nav-number">5.4.</span> <span class="nav-text">extremely compressing bert using tensor decomposition</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#decomposition-protocol"><span class="nav-number">5.4.1.</span> <span class="nav-text">decomposition protocol</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reconstruction-protocol"><span class="nav-number">5.4.2.</span> <span class="nav-text">reconstruction protocol</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Experimental-Design-and-Results"><span class="nav-number">6.</span> <span class="nav-text">Experimental Design and Results</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#settings"><span class="nav-number">6.1.</span> <span class="nav-text">settings</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Comparative-Analysis"><span class="nav-number">7.</span> <span class="nav-text">Comparative Analysis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Discussion-and-Limitations"><span class="nav-number">8.</span> <span class="nav-text">Discussion and Limitations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">9.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="upupwords"
+      src="/images/pig.png">
+  <p class="site-author-name" itemprop="name">upupwords</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:upupwords@hnu.edu.cn" title="E-Mail → mailto:upupwords@hnu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">upupwords</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

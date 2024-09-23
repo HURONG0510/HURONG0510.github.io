@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
+  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
+  <meta name="baidu-site-verification" content="code-DKAkrnpO9u">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="transformer的工作过程">
+<meta property="og:url" content="https://hurong0510.github.io/2024/03/16/transformer%E7%90%86%E8%A7%A32/index.html">
+<meta property="og:site_name" content="upupwords">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*cfNpm7aDO4lD3e-Wkwgc1g.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*b4MwVq8didNMg9-yD-hXyA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*OEaVrgvL_KN9RyDnWrGLWw.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/image.4qr2s7vbgy.webp">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*7LPcSJYhSgjPJZWJnp22XA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*586QwwjzHY9fP4aVPWrqiQ.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*Rch3UQW1oHUCrMygAZ_JFQ.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*yz-iScQJrwx8c0xB4PWRyQ.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*4hOio9qBzUxI3FQsTNUX5w.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*4UT-x4vd6FaBCPTy_Y74yA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*nEHe_LpPado5b8FRIcnTHQ.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*DKNIOlVfbh9K1EqU5iDJKA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1284/format:webp/1*z01aP_2l3OowwRVAeQH8Xw.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*026nzf4bw_DdSZ7kLJWcog.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*QxJ5ySWdZgDOUezj5iOhdg.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*H0r38u_sLfDUBKgeVg4ssA.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*cawtdZLjT9hp7ByG2vcKOQ.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*dQTK3oeYqOBUDVgNktSpCw.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*50j_urNlRnctglsXCRoeiw.png">
+<meta property="article:published_time" content="2024-03-16T14:00:52.000Z">
+<meta property="article:modified_time" content="2024-05-03T04:18:37.000Z">
+<meta property="article:author" content="upupwords">
+<meta property="article:tag" content="transformer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://miro.medium.com/v2/resize:fit:720/format:webp/1*cfNpm7aDO4lD3e-Wkwgc1g.png">
+
+<link rel="canonical" href="https://hurong0510.github.io/2024/03/16/transformer%E7%90%86%E8%A7%A32/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>transformer的工作过程 | upupwords</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">upupwords</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/03/16/transformer%E7%90%86%E8%A7%A32/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          transformer的工作过程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-03-16 15:00:52" itemprop="dateCreated datePublished" datetime="2024-03-16T15:00:52+01:00">2024-03-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-03 06:18:37" itemprop="dateModified" datetime="2024-05-03T06:18:37+02:00">2024-05-03</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">原文地址 [towardsdatascience.com](https://towardsdatascience.com/transformers-explained-visually-part-2-how-it-works-step-by-step-b49fa4a64f34)</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="重消化-Transformers-Explained-Visually-Part-2-How-it-works-step-by-step"><a href="#重消化-Transformers-Explained-Visually-Part-2-How-it-works-step-by-step" class="headerlink" title="重消化-Transformers Explained Visually (Part 2): How it works, step-by-step"></a>重消化-<a target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-explained-visually-part-2-how-it-works-step-by-step-b49fa4a64f34">Transformers Explained Visually (Part 2): How it works, step-by-step</a></h1><h2 id="architecture-overview"><a href="#architecture-overview" class="headerlink" title="architecture overview"></a>architecture overview</h2><p><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*cfNpm7aDO4lD3e-Wkwgc1g.png" alt=""><br>以上是只包含一个encoder和一个decoder的最简单的transformer。</p>
+<ul>
+<li>输入数据（encoder和decoder都有）<ul>
+<li>embedding layer</li>
+<li>position encoding layer</li>
+</ul>
+</li>
+<li>encoder<ul>
+<li>encoder stack包含一组encoders</li>
+<li>multi-head attention layer</li>
+<li>feed-forward layer</li>
+</ul>
+</li>
+<li>decoder<ul>
+<li>decoder stack包含一组decoders</li>
+<li>2个multi-head attention layers</li>
+<li>feed-forward layer</li>
+</ul>
+</li>
+<li>输出数据<ul>
+<li>linear layer</li>
+<li>softmax layer<br>接下来按照transformer的训练过程来说明其工作过程。</li>
+</ul>
+</li>
+</ul>
+<h2 id="embedding-and-position-encoding"><a href="#embedding-and-position-encoding" class="headerlink" title="embedding and position encoding"></a>embedding and position encoding</h2><p>每个word都应该输入这个词的meaning和在语句中的position.</p>
+<ul>
+<li>embedding layer encodes 单词的意思</li>
+<li>position encoding layer 表示 单词的位置</li>
+</ul>
+<h3 id="embedding"><a href="#embedding" class="headerlink" title="embedding"></a>embedding</h3><p>transformer包含两个embedding layers，输入和输出数据都需要喂给embedding layers，但是target sequence在喂之前需要在最前面插入一个start token。</p>
+<blockquote>
+<p>在inference过程中，由于没有target sequence，因此此时喂给output的embedding layer的是一个单纯的start token</p>
+</blockquote>
+<p><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*b4MwVq8didNMg9-yD-hXyA.png" alt=""></p>
+<p>文本序列根据vocabulary映射到word IDs,embedding layer将每个单词映射到一个embedding vector<br><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*OEaVrgvL_KN9RyDnWrGLWw.png" alt=""></p>
+<h3 id="position-encoding"><a href="#position-encoding" class="headerlink" title="position encoding"></a>position encoding</h3><p>transformerde的输入文本中的所有单词都是并行输入的，因此必须添加position信息。<br>同样也有两个position encoding layers。但是position encoding独立于input sequence计算，是一组固定的值，且只取决于sequence的最大长度。</p>
+<ul>
+<li>the first item is a constant code that indicates the first position</li>
+<li>the second item is a constant code that indicates the second position,</li>
+<li>and so on.<br>这些值的计算公式如下：<br><img src="https://cdn.jsdelivr.net/gh/HURONG0510/picx-images-hosting@master/image.4qr2s7vbgy.webp" alt=""></li>
+</ul>
+<h2 id="matrix-dimension"><a href="#matrix-dimension" class="headerlink" title="matrix dimension"></a>matrix dimension</h2><p>the embedding and position encoding layers操作一系列sequence samples表示的矩阵。embedding layer将每个word ID编码为一个word vector，其长度为embedding size，从而产生一个（samples, sequence length, embedding size）形状的矩阵。position encoding使用和embedding size一样的encoding size。因此他产生了一个形状相似的矩阵，可以加入embedding matrix中。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*7LPcSJYhSgjPJZWJnp22XA.png" alt=""></p>
+<p>当数据流经encoder和decoder stack时，embedding and position encoding layers生成的（samples, sequence length, embedding size）形状在整个 Transformer 中得到保留，直到由最终输出层重新整形。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*586QwwjzHY9fP4aVPWrqiQ.png" alt=""></p>
+<h2 id="encoder"><a href="#encoder" class="headerlink" title="encoder"></a>encoder</h2><p><img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*Rch3UQW1oHUCrMygAZ_JFQ.png" alt=""><br>第一个encoder从embedding和position encoding中获取其输入，其他的encoder是从他之前的那个encoder获得输入。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*yz-iScQJrwx8c0xB4PWRyQ.png" alt=""><br>上图是encoder的内部结构，self-attention和feed-forward sub-layers都有一个residual skip-connection，在layer-normalization之后。</p>
+<h2 id="decoder"><a href="#decoder" class="headerlink" title="decoder"></a>decoder</h2><p><img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*4hOio9qBzUxI3FQsTNUX5w.png" alt=""><br>decoder和encoder的结构相似，有几处不同。</p>
+<ul>
+<li><p>decoder将其输入传递到multi-head self-attention layer。它的运行方式与encoder中的运行方式略有不同。只允许参与sequence中earlier position。这是通过masking future position来完成的，我们很快就会讨论这一点。</p>
+</li>
+<li><p>decoder还有第二个multi-head self-attention layer,被称为 encoder-decoder attention layer这个layer的数据来源分为前一个self-attention以及encoder stack的输出。</p>
+</li>
+</ul>
+<p>self-attention、Encoder-Decoder attention和feed-forward sub-layers都有一个residual skip-connection，在layer-normalization之后。</p>
+<h2 id="attention"><a href="#attention" class="headerlink" title="attention"></a>attention</h2><p>在transformer中，一共有三处用到了attention。encoder中的self-attention，以及decoder中的self-attention和encoder-decoder attention.</p>
+<p>attention的输入参数为（query, key, value）:</p>
+<ul>
+<li>encoder self-attention: （query, key, value）</li>
+<li><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*4UT-x4vd6FaBCPTy_Y74yA.png" alt=""></li>
+<li>decoder self-attention: （query, key, value）</li>
+<li>decoder encoder-decoder attention: 来自最后一个encoder的输出传递（value, key）,下面的 Self-attention（和 Layer Norm）模块的输出被传递给 Query 参数. </li>
+<li><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*nEHe_LpPado5b8FRIcnTHQ.png" alt=""></li>
+</ul>
+<h2 id="multi-attention"><a href="#multi-attention" class="headerlink" title="multi-attention"></a>multi-attention</h2><p>transformer将每个attention processor称为一个attention head并且并行地执行多次attention，这就是multi-attention.<br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*DKNIOlVfbh9K1EqU5iDJKA.png" alt=""></p>
+<p>Query, key, value分别通过各自的linear layer，每个layer有自己的权重，产生三个结果称为Q,K,V,使用如下的attention公式来产生attention score。<br><img src="https://miro.medium.com/v2/resize:fit:1284/format:webp/1*z01aP_2l3OowwRVAeQH8Xw.png" alt=""><br>Q，K，V values包含了每个词汇的encoded representation，在注意力计算过程中，将每个单词与序列中其他单词结合，以便attention score对每个单词的score进行编码。</p>
+<h2 id="attention-masks"><a href="#attention-masks" class="headerlink" title="attention masks"></a>attention masks</h2><p>计算注意力分数时, masking应用于 计算Softmax 之前的的分子。被屏蔽的元素（白色方块）被设置为负无穷大，以便 Softmax 将这些值变为零。</p>
+<h3 id="in-the-encoder-self-attention-and-in-the-encoder-decoder-attention"><a href="#in-the-encoder-self-attention-and-in-the-encoder-decoder-attention" class="headerlink" title="in the encoder self-attention and in the encoder-decoder-attention"></a>in the encoder self-attention and in the encoder-decoder-attention</h3><p>masking用于在输入句子中有填充的情况下将注意力输出为零，以确保填充不会对自注意力产生影响。 （注意：由于输入序列可能具有不同的长度，因此它们像大多数 NLP 应用程序中一样使用填充标记进行扩展，以便可以将固定长度的向量输入到 Transformer。）</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*026nzf4bw_DdSZ7kLJWcog.png" alt=""><br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*QxJ5ySWdZgDOUezj5iOhdg.png" alt=""></p>
+<h3 id="in-the-decoder-self-attention"><a href="#in-the-decoder-self-attention" class="headerlink" title="in the decoder self-attention"></a>in the decoder self-attention</h3><p>masking用于防止decoder在预测下一个单词时‘偷看’ target sequence的剩余部分</p>
+<p>decoder处理input sequence中的单词并使用它们来预测target sequence中的单词。在训练期间，这是通过 Teacher Forcing 完成的，其中完整的target sequence作为decoder输入提供。因此，在预测某个位置处的单词时，decoder可以使用该单词之前的目标单词以及该单词之后的目标单词。这允许decoder通过使用未来“时间步骤”中的目标词来“作弊”。</p>
+<p>例如在预测 word3时，decoder只能根据Mi nimbere es来预测，不可以使用Ketan。<br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*H0r38u_sLfDUBKgeVg4ssA.png" alt=""><br>decoder会屏蔽本次单词之后的单词。<br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*cawtdZLjT9hp7ByG2vcKOQ.png" alt=""></p>
+<h2 id="generate-output"><a href="#generate-output" class="headerlink" title="generate output"></a>generate output</h2><p>decoder stack中的最后一个decoder将其输出传给output component，这个部件将输出转换成句子。</p>
+<p>linear layer将decoder vector投影到word score中，其中目标词汇表中每个唯一单词在句子中的每个位置都有一个分数值。例如，如果我们的最终输出句子有 7 个单词，而目标西班牙语词汇有 10000 个唯一单词，我们会为这 7 个单词中的每个单词生成 10000 个分值。分值表示词汇表中每个单词在句子的该位置出现的可能性。<br>然后，Softmax 层将这些分数转换为概率（加起来为 1.0）。在每个位置，我们找到概率最高的单词的索引，然后将该索引映射到词汇表中相应的单词。然后这些单词形成 Transformer 的输出序列。<br><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*dQTK3oeYqOBUDVgNktSpCw.png" alt=""></p>
+<h2 id="training-and-loss-function"><a href="#training-and-loss-function" class="headerlink" title="training and loss function"></a>training and loss function</h2><p>在训练过程中，我们使用交叉熵损失等损失函数来将生成的输出概率分布与目标序列进行比较。概率分布给出了每个单词出现在该位置的概率。</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*50j_urNlRnctglsXCRoeiw.png" alt=""></p>
+<p>假设我们的目标词汇只包含四个单词。我们的目标是产生与我们预期的目标序列“De nada END”相匹配的概率分布。<br>这意味着第一个单词位置的概率分布对于“De”来说应该是 1，而词汇表中所有其他单词的概率应该是 0。类似地，“nada”和“END”对于“De”来说应该有 1 的概率。分别是第二个和第三个词的位置。</p>
+<p>与往常一样，损失用于计算梯度，以通过反向传播训练 Transformer。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/transformer/" rel="tag"># transformer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/13/transformer%E7%90%86%E8%A7%A3/" rel="prev" title="transformer宏观理解">
+      <i class="fa fa-chevron-left"></i> transformer宏观理解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/04/29/Paper-Analysis-SVD-LLM-Truncation-aware-Singular-Value-Decomposition-for-Large-Language-Model-Compression/" rel="next" title="Paper-Analysis-SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression">
+      Paper-Analysis-SVD-LLM: Truncation-aware Singular Value Decomposition for Large Language Model Compression <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E6%B6%88%E5%8C%96-Transformers-Explained-Visually-Part-2-How-it-works-step-by-step"><span class="nav-number">1.</span> <span class="nav-text">重消化-Transformers Explained Visually (Part 2): How it works, step-by-step</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#architecture-overview"><span class="nav-number">1.1.</span> <span class="nav-text">architecture overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#embedding-and-position-encoding"><span class="nav-number">1.2.</span> <span class="nav-text">embedding and position encoding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#embedding"><span class="nav-number">1.2.1.</span> <span class="nav-text">embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#position-encoding"><span class="nav-number">1.2.2.</span> <span class="nav-text">position encoding</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matrix-dimension"><span class="nav-number">1.3.</span> <span class="nav-text">matrix dimension</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encoder"><span class="nav-number">1.4.</span> <span class="nav-text">encoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#decoder"><span class="nav-number">1.5.</span> <span class="nav-text">decoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attention"><span class="nav-number">1.6.</span> <span class="nav-text">attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multi-attention"><span class="nav-number">1.7.</span> <span class="nav-text">multi-attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attention-masks"><span class="nav-number">1.8.</span> <span class="nav-text">attention masks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#in-the-encoder-self-attention-and-in-the-encoder-decoder-attention"><span class="nav-number">1.8.1.</span> <span class="nav-text">in the encoder self-attention and in the encoder-decoder-attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#in-the-decoder-self-attention"><span class="nav-number">1.8.2.</span> <span class="nav-text">in the decoder self-attention</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generate-output"><span class="nav-number">1.9.</span> <span class="nav-text">generate output</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#training-and-loss-function"><span class="nav-number">1.10.</span> <span class="nav-text">training and loss function</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="upupwords"
+      src="/images/pig.png">
+  <p class="site-author-name" itemprop="name">upupwords</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:upupwords@hnu.edu.cn" title="E-Mail → mailto:upupwords@hnu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">upupwords</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

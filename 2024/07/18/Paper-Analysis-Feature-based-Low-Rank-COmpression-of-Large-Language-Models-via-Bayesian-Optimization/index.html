@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
+  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
+  <meta name="baidu-site-verification" content="code-DKAkrnpO9u">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Paper-Analysis-Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization">
+<meta property="og:url" content="https://hurong0510.github.io/2024/07/18/Paper-Analysis-Feature-based-Low-Rank-COmpression-of-Large-Language-Models-via-Bayesian-Optimization/index.html">
+<meta property="og:site_name" content="upupwords">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-18T13:28:23.000Z">
+<meta property="article:modified_time" content="2024-08-01T14:34:41.000Z">
+<meta property="article:author" content="upupwords">
+<meta property="article:tag" content="论文分析">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hurong0510.github.io/2024/07/18/Paper-Analysis-Feature-based-Low-Rank-COmpression-of-Large-Language-Models-via-Bayesian-Optimization/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Paper-Analysis-Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization | upupwords</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">upupwords</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/07/18/Paper-Analysis-Feature-based-Low-Rank-COmpression-of-Large-Language-Models-via-Bayesian-Optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Paper-Analysis-Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-18 15:28:23" itemprop="dateCreated datePublished" datetime="2024-07-18T15:28:23+02:00">2024-07-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-01 16:34:41" itemprop="dateModified" datetime="2024-08-01T16:34:41+02:00">2024-08-01</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">相关论文,论文阅读</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Feature-based-Low-Rank-Compression-of-Large-Language-Models-via-Bayesian-Optimization"><a href="#Feature-based-Low-Rank-Compression-of-Large-Language-Models-via-Bayesian-Optimization" class="headerlink" title="Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization"></a>Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization</h1><h1 id="Background-and-Motivation"><a href="#Background-and-Motivation" class="headerlink" title="Background and Motivation"></a>Background and Motivation</h1><p>随着现有的模型越来越大，当部署LLMs时，有必要考虑efficiency and performance. Such as pruning, quantization and knowledge distillation. 这些方法中unstructured pruning and quantization可以减少一半甚至更多的存储空间，但是他们需要特定的GPU内核函数来实现这样的加速过程。相反， structured pruning 可以生成不依赖专门的硬件的轻量级模型，但这种方法的性能会远远落后于原始模型。LRC是另一种方法，将权重矩阵分解为两个稠密low-rank矩阵乘积，舍弃不重要的参数。</p>
+<p>LRC的关键在于：low-rank decomposition methods and low-rank dimension allocation. 现有的LRC可以分为两类：weight-based and feature-based decomposition. 前者最小化截断SVD或者权重SVD产生的权重矩阵的重构误差。大多数基于 Transformer 的语言模型的权重具有高秩甚至接近满秩的典型特征；因此，直接分解可能会导致显着的误差。相反，模型的特征通常表现出低秩特征。因此，更多的工作集中在feature-based decomposition来最小化features的重构误差。另一方面，根据目标压缩率给不同的权重矩阵分配合适的低秩维度也可以减少模型整体性能的下降，因为它们对低秩压缩表现出不同的敏感度。</p>
+<p>LRC的challenges：</p>
+<ul>
+<li>hard to maintain LLMs generality while achieving feature-based low-rank compression。这是因为 LLM 的特征空间维度极高，使得特征分布更加复杂，异常特征的存在可能会干扰准确的分布估计。因此，我们使用池化协方差矩阵代替样本协方差矩阵，这样可以更准确地估计特征分布.</li>
+<li>manual design for low-rank dimension allocation很达到理想的效果，且需巨大的搜索空间，grid 搜索需要相当长的时间。经过实验验证，不同类型参数的low-rank sensitivity存在显著的差异。参数分为几组，让每组共享相同的低秩维度。这种方法有效地缩小了搜索空间，此外，我们利用样本高效的贝叶斯优化来确定最佳低秩分配。</li>
+</ul>
+<h1 id="Main-Contributions"><a href="#Main-Contributions" class="headerlink" title="Main Contributions"></a>Main Contributions</h1><ul>
+<li>我们分析了 LLM 在低秩压缩方面面临的挑战，并通过实证研究证明以 LLaMA 为代表的 LLM 对各种参数的低秩压缩表现出截然不同的敏感性。</li>
+<li>我们提出了一种基于贝叶斯优化的新型特征低秩压缩 (Bolaco)。</li>
+<li>大量实验表明，我们的 Bolaco 优于 LLM 中现有的强结构化剪枝和 LRC 方法。</li>
+</ul>
+<h1 id="Theoretical-Framework-Algorithm"><a href="#Theoretical-Framework-Algorithm" class="headerlink" title="Theoretical Framework/Algorithm"></a>Theoretical Framework/Algorithm</h1><p>weight-based factorization is one naive method. For a linear layer $W\in \mathbb{R}^{d_2\times d_1}$, the objective can be formulated as:</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\min_{B,A} \| W-BA\|_F\\
+& rank(BA)=r
+\end{align}</script><p>如果$r&lt;d_1d_2/(d_1+d_2)$，这个分解就可以减少总体的参数量。但是在大量的研究中发现，对权重矩阵进行直接的截断SVD会造成巨大的截断误差，这些weights通常有high rank。相反的是PLMs的representation space展现出了low-rank property。因此，考虑feature-based decomposition</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&\min_{B,A} \| WX-BAX\|_F\\
+& rank(BA)=r
+\end{align}</script><h1 id="Experimental-Design-and-Results"><a href="#Experimental-Design-and-Results" class="headerlink" title="Experimental Design and Results"></a>Experimental Design and Results</h1><h1 id="Comparative-Analysis"><a href="#Comparative-Analysis" class="headerlink" title="Comparative Analysis"></a>Comparative Analysis</h1><h1 id="Discussion-and-Limitations"><a href="#Discussion-and-Limitations" class="headerlink" title="Discussion and Limitations"></a>Discussion and Limitations</h1><h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>在论文的3.2章节“基于贝叶斯优化的低秩分配”中，具体通过以下步骤确定rank（秩）：</p>
+<ol>
+<li><p><strong>低秩压缩率分配的优化目标</strong>：</p>
+<ul>
+<li>定义了一个优化目标函数 ( H(\lambda) )，该函数评估压缩模型在特定低秩压缩率 ( \lambda ) 下的性能。这个优化问题的目标是在总压缩率 ( \rho ) 的约束条件下，最小化 ( H(\lambda) )。</li>
+</ul>
+</li>
+<li><p><strong>贝叶斯优化的应用</strong>：</p>
+<ul>
+<li>使用贝叶斯优化来寻找最优的低秩压缩率分配 ( \lambda )。贝叶斯优化通过一个随机代理模型（通常是高斯过程）来估计目标函数 ( H(\lambda) )，并根据每次搜索步骤的结果更新对 ( H(\lambda) ) 的后验估计。</li>
+<li>给定前 ( t-1 ) 步的搜索结果 (\{ \lambda_1, \lambda_2, …, \lambda_{t-1} \}) 及其评价 ( H_{t-1} )，更新代理模型的均值 ( \mu(\lambda) ) 和方差 ( \sigma^2(\lambda) )。</li>
+</ul>
+</li>
+<li><p><strong>获取函数（Acquisition Function）</strong>：</p>
+<ul>
+<li>使用期望改进（Expected Improvement, EI）作为获取函数来决定下一步的低秩压缩率分配状态。获取函数通过期望改进值 ( \alpha(\lambda) ) 来选择具有最大期望改进的点，从而引导搜索过程。</li>
+<li>公式为：[<br>\alpha(\lambda) = \mathbb{E}_{H(\lambda)} \left[ \max \{0, H’ - H(\lambda) \} \right]<br>]<br>其中 ( H’ ) 为目前观察到的最小值。贝叶斯优化选择具有最大期望改进的点来进一步探索。</li>
+</ul>
+</li>
+<li><p><strong>最终低秩确定</strong>：</p>
+<ul>
+<li>通过贝叶斯优化过程获得的最优压缩率分配 ( \lambda^* )，计算最终的低秩。为了充分利用GPU矩阵乘法的加速效果，将低秩维度四舍五入为八的倍数：</li>
+<li>公式为：[<br>r_i = \left[ \frac{(1-\lambda_i) d_1 d_2}{d_1 + d_2} / 8 \right] \times 8<br>]</li>
+</ul>
+</li>
+<li><p><strong>正则化项</strong>：</p>
+<ul>
+<li>为了防止贝叶斯优化在较小的验证集上过拟合，在优化目标中引入了反向KL散度（Reverse KL Divergence, RKL）作为正则化项。这个正则化项量化了压缩模型与原始模型预测分布之间的差异，从而平滑了目标函数，使高斯过程代理模型更准确地逼近真实的黑箱目标函数。</li>
+</ul>
+</li>
+</ol>
+<p>通过上述步骤，结合贝叶斯优化和低秩特征分解的方法，有效地确定了不同层和参数的最优低秩分配，从而在保持模型性能的同时实现了高效的低秩压缩。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BA%E6%96%87%E5%88%86%E6%9E%90/" rel="tag"># 论文分析</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/24/Paper-Analysis-Tensor-Decomposition-for-Hyperspectral-data-process-in-remote-sense/" rel="prev" title="Paper-Analysis-Tensor Decomposition for Hyperspectral data process in remote sense">
+      <i class="fa fa-chevron-left"></i> Paper-Analysis-Tensor Decomposition for Hyperspectral data process in remote sense
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/09/23/%E5%88%A9%E7%94%A8Python%E5%92%8CCUDA%E8%BF%9B%E8%A1%8CGPGPU%E7%BC%96%E7%A8%8B/" rel="next" title="利用Python和CUDA进行GPGPU编程">
+      利用Python和CUDA进行GPGPU编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Feature-based-Low-Rank-Compression-of-Large-Language-Models-via-Bayesian-Optimization"><span class="nav-number">1.</span> <span class="nav-text">Feature-based Low-Rank Compression of Large Language Models via Bayesian Optimization</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Background-and-Motivation"><span class="nav-number">2.</span> <span class="nav-text">Background and Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Main-Contributions"><span class="nav-number">3.</span> <span class="nav-text">Main Contributions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Theoretical-Framework-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Theoretical Framework&#x2F;Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Experimental-Design-and-Results"><span class="nav-number">5.</span> <span class="nav-text">Experimental Design and Results</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Comparative-Analysis"><span class="nav-number">6.</span> <span class="nav-text">Comparative Analysis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Discussion-and-Limitations"><span class="nav-number">7.</span> <span class="nav-text">Discussion and Limitations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="upupwords"
+      src="/images/pig.png">
+  <p class="site-author-name" itemprop="name">upupwords</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:upupwords@hnu.edu.cn" title="E-Mail → mailto:upupwords@hnu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">upupwords</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

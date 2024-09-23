@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/applepig.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/pig32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/pig16x16.png">
+  <link rel="mask-icon" href="/images/pig.svg" color="#222">
+  <meta name="google-site-verification" content="IRFteGxEuzxiFjeEMLHBp3smn1U2YIxsbim0UNU92fU">
+  <meta name="baidu-site-verification" content="code-DKAkrnpO9u">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hurong0510.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="张量分解与深度学习">
+<meta property="og:url" content="https://hurong0510.github.io/2024/01/10/%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="upupwords">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ai2-s2-public.s3.amazonaws.com/figures/2017-08-08/62e348e26976c3ef77909b9af9788ebc2509009a/3-Figure1-1.png">
+<meta property="article:published_time" content="2024-01-10T16:30:34.000Z">
+<meta property="article:modified_time" content="2024-01-27T14:34:06.000Z">
+<meta property="article:author" content="upupwords">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ai2-s2-public.s3.amazonaws.com/figures/2017-08-08/62e348e26976c3ef77909b9af9788ebc2509009a/3-Figure1-1.png">
+
+<link rel="canonical" href="https://hurong0510.github.io/2024/01/10/%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>张量分解与深度学习 | upupwords</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">upupwords</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">26</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hurong0510.github.io/2024/01/10/%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/pig.png">
+      <meta itemprop="name" content="upupwords">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="upupwords">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          张量分解与深度学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-01-10 17:30:34" itemprop="dateCreated datePublished" datetime="2024-01-10T17:30:34+01:00">2024-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-01-27 15:34:06" itemprop="dateModified" datetime="2024-01-27T15:34:06+01:00">2024-01-27</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">论文转载</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a target="_blank" rel="noopener" href="https://jacobgil.github.io/deeplearning/tensor-decompositions-deep-learning">论文的源地址</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jacobgil/pytorch-tensor-decompositions">My PyTorch implementation for tensor decomposition methods on convolutional layers.</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/JeanKossaifi/tensorly-notebooks/blob/master/05_pytorch_backend/cnn_acceleration_tensorly_and_pytorch.ipynb">Notebook contributed to TensorLy.</a></p>
+<h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><p>In this post I will cover a few low rank tensor decomposition methods for taking layers in existing deep learning models and making them more compact. I will also share PyTorch code that uses <a target="_blank" rel="noopener" href="https://tensorly.github.io/stable/index.html">Tensorly</a> for performing CP decomposition and Tucker decomposition of convolutional layers.</p>
+<p>Although hopefully most of the post is self contained, a good review of tensor decompositions can be found <a target="_blank" rel="noopener" href="http://www.sandia.gov/~tgkolda/pubs/pubfiles/TensorReview.pdf">here</a>. The author of Tensorly also created some <a target="_blank" rel="noopener" href="https://github.com/JeanKossaifi/tensorly-notebooks">really nice notebooks</a> about Tensors basics. That helped me getting started, and I recommend going through that.</p>
+<p>Together with pruning, tensor decompositions are practical tools for speeding up existing deep neural networks, and I hope this post will make them a bit more accessible.</p>
+<blockquote>
+<p>张量分解和剪枝一样是用来加速DNN的，张量分解将one layer分解为多个smaller layer，尽管层数增加了，但是整个浮点数操作的数量和权重都会减少。</p>
+</blockquote>
+<p>These methods take a layer and decompose it into several smaller layers. Although there will be more layers after the decomposition, the total number of floating point operations and weights will be smaller. Some reported results are on the order of x8 for entire networks (not aimed at large tasks like imagenet, though), or x4 for specific layers inside imagenet. My experience was that with these decompositions I was able to get a speedup of between x2 to x4, depending on the accuracy drop I was willing to take.</p>
+<p>In <a target="_blank" rel="noopener" href="https://jacobgil.github.io/deeplearning/pruning-deep-learning">this blog post</a> I covered a technique called pruning for reducing the number of parameters in a model. Pruning requires making a forward pass (and sometimes a backward pass) on a dataset, and then ranks the neurons according to some criterion on the activations in the network.</p>
+<blockquote>
+<p>上面那个链接里包含了很多剪枝的内容，它提到剪枝需要进行前向传播和后向传播并且对神经元进行排序。而TD支队当前层的权重进行分解，并且它的低秩特点使得他在过拟合的网络上效果最好。</p>
+</blockquote>
+<p>Quite different from that, tensor decomposition methods use only the weights of a layer, with the assumption that the layer is over parameterized and its weights can be represented by a matrix or tensor with a lower rank. This means they work best in cases of over parameterized networks. Networks like VGG are over parameterized by design. Another example of an over parameterized model is fine tuning a network for an easier task with fewer categories.</p>
+<p>Similarly to pruning, after the decomposition usually the model needs to be fine tuned to restore accuracy.</p>
+<blockquote>
+<p>和剪枝一样，在分解之后，需要对模型进行微调来恢复精度。但是还有一些缺点</p>
+<ol>
+<li>他们对线性关系的layer进行操作（卷积层或全连接层），会忽视这些层之后的非线性关系</li>
+<li>忽视不同layer之间的交互</li>
+</ol>
+</blockquote>
+<p>One last thing worth noting before we dive into details, is that while these methods are practical and give nice results, they have a few drawbacks:</p>
+<ul>
+<li>They operate on the weights of a linear layer (like a convolution or a fully connected layer), and ignore any non linearity that comes after them.</li>
+<li>They are greedy and perform the decomposition layer wise, ignoring interactions between different layers.</li>
+</ul>
+<p>There are works that try to address these issues, and its still an active research area.</p>
+<h1 id="Truncated-SVD-for-decomposing-fully-connected-layers"><a href="#Truncated-SVD-for-decomposing-fully-connected-layers" class="headerlink" title="Truncated SVD for decomposing fully connected layers"></a>Truncated SVD for decomposing fully connected layers</h1><p>The first reference I could find of using this for accelerating deep neural networks, is in the <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1504.08083">Fast-RCNN</a> paper. Ross Girshick used it to speed up the fully connected layers used for detection. Code for this can be found in the <a target="_blank" rel="noopener" href="https://github.com/rbgirshick/py-faster-rcnn/blob/master/tools/compress_net.py">pyfaster-rcnn implementation.</a></p>
+<h1 id="SVD-recap"><a href="#SVD-recap" class="headerlink" title="SVD recap"></a>SVD recap</h1><p>The singular value decomposition lets us decompose any matrix A with n rows and m columns:</p>
+<script type="math/tex; mode=display">A_{n\times m} = U_{n\times n} S_{n\times m} V^T_{m\times m}</script><p>S is a diagonal matrix with non negative values along its diagonal (the singular values), and is usually constructed such that the singular values are sorted in descending order. U and V are orthogonal matrices: $U^TU=V^TV=I$</p>
+<p>If we take the largest $t$ singular values and zero out the rest, we get an approximation of $A$: </p>
+<script type="math/tex; mode=display">\hat{A} = U_{n\times t}S_{t\times t}V^T_{m\times t}</script><blockquote>
+<p>截断SVD，具有t秩</p>
+</blockquote>
+<p>$\hat{A}$ has the nice property of being the rank $t$ matrix that has the Frobenius-norm closest to $A$, so $\hat{A}$ is a good approximation of $A$ if $t$ is large enough.</p>
+<h1 id="SVD-on-a-fully-connected-layer"><a href="#SVD-on-a-fully-connected-layer" class="headerlink" title="SVD on a fully connected layer"></a>SVD on a fully connected layer</h1><p>A fully connected layer essentially does matrix multiplication of its input by a matrix A, and then adds a bias b:</p>
+<script type="math/tex; mode=display">Ax+b</script><p>We can take the SVD of A, and keep only the first t singular values.</p>
+<script type="math/tex; mode=display">(U_{n\times t}S_{t\times t}V^T_{m\times t})x + b = U_{n\times t} ( S_{t\times t}V^T_{m\times t} x ) + b</script><p>Instead of a single fully connected layer, this guides us how to implement it as two smaller ones:</p>
+<ul>
+<li>The first one will have a shape of $m\times t$, will have no bias, and its weights will be taken from $S_{t\times t}V^T$.</li>
+<li>The second one will have a shape of $t\times n$, will have a bias equal to b, and its weights will be taken from $U$.</li>
+</ul>
+<p>The total number of weights dropped from $n\times m$ to $t(n+m)$.</p>
+<h1 id="Tensor-decompositions-on-convolutional-layers"><a href="#Tensor-decompositions-on-convolutional-layers" class="headerlink" title="Tensor decompositions on convolutional layers"></a>Tensor decompositions on convolutional layers</h1><p>A 2D convolutional layer is a multi dimensional matrix (from now on - tensor) with 4 dimensions:</p>
+<p><code>cols x rows x input_channels x output_channels</code>.</p>
+<blockquote>
+<p>filters的大小为cols x rows x input_channels，有output_channels个filters</p>
+</blockquote>
+<p>Following the SVD example, we would want to somehow decompose the tensor into several smaller tensors. The convolutional layer would then be approximated by several smaller convolutional layers.</p>
+<p>For this we will use the two popular (well, at least in the world of Tensor algorithms) tensor decompositions: the CP decomposition and the Tucker decomposition (also called higher-order SVD and many other names).</p>
+<h1 id="深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析"><a href="#深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析" class="headerlink" title="深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析"></a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/366744794">深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析</a></h1><h1 id="1412-6553-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition"><a href="#1412-6553-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition" class="headerlink" title="1412.6553 Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition"></a>1412.6553 Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition</h1><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1412.6553">_1412.6553 Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition_</a> shows how CP-Decomposition can be used to speed up convolutional layers. As we will see, this factors the convolutional layer into something that resembles mobile nets.</p>
+<p>They were able to use this to accelerate a network by more than x8 without significant decrease in accuracy. In my own experiments I was able to use this get a x2 speedup on a network based on VGG16 without accuracy drop.</p>
+<p>My experience with this method is that the fine tuning learning rate needs to be chosen very carefuly to get it to work, and the learning rate should usually be very small (around $10^{-6}$).</p>
+<p>A rank R matrix can be viewed as a sum of R rank 1 matrices, were each rank 1 matrix is a column vector multiplying a row vector: $\sum_1^Ra_i*b_i^T$</p>
+<p>The SVD gives us a way for writing this sum for matrices using the columns of U and V from the SVD: $\sum_1^R \sigma_i u_i*v_i^T$.</p>
+<p>If we choose an R that is less than the full rank of the matrix, than this sum is just an approximation, like in the case of truncated SVD.</p>
+<p>The CP decomposition lets us generalize this for tensors.</p>
+<p>Using CP-Decompoisition, our convolutional kernel, a 4 dimensional tensor $K(i, j, s, t)$ can be approximated similarly for a chosen R:</p>
+<p>$\sum_{r=1}^R K^x(i,r)K^y(j,r)K^s(s,r)K^t(t,r)$.</p>
+<p>We will want R to be small for the decomposition to be effecient, but large enough to keep a high approximation accuracy.</p>
+<h1 id="The-convolution-forward-pass-with-CP-Decomposition"><a href="#The-convolution-forward-pass-with-CP-Decomposition" class="headerlink" title="The convolution forward pass with CP Decomposition"></a>The convolution forward pass with CP Decomposition</h1><p>To forward the layer, we do convolution with an input $X(i, j, s)$:</p>
+<script type="math/tex; mode=display">
+V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s) \\= \sum_r\sum_i \sum_j \sum_sK^x(i,r)K^y(j,r)K^s(s,r)K^t(t,r)X(x-i, y-j, s) \\= \sum_rK^t(t,r) \sum_i \sum_j K^x(i,r)K^y(j,r)\sum_sK^s(s,r)X(x-i, y-j, s)</script><p>This gives us a recipe to do the convolution:</p>
+<ol>
+<li><p>First do a pointwise ($1\times 1\times S$) convolution with $K(s)$. This reduces the number of input channels from S to R. The convolutions will next be done on a smaller number of channels, making them faster.</p>
+</li>
+<li><p>Perform seperable convolutions in the spatial dimensions with $K^x_r,K^y_r$. <strong>Like in <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1704.04861">mobilenets</a> the convolutions are depthwise seperable, done in each channel separately.</strong> <strong>Unlike mobilenets the convolutions are also separable in the spatial dimensions.</strong></p>
+</li>
+<li><p>Do another pointwise convolution to change the number of channels from R to T If the original convolutional layer had a bias, add it at this point.</p>
+</li>
+</ol>
+<blockquote>
+<ol>
+<li><strong>点卷积（pointwise convolution）</strong><br>点卷积是一种特殊的卷积运算，他的卷积大小是$1 \times 1$。其作用主要是改变输入数据的通道数channels，在深度学习中用于将高维空间映射到地位空间，而不改变数据的空间维度（宽度和高度）</li>
+<li><strong>可分离卷积 （separable convolution）</strong><br>这是一种将常规卷积分解成更小或更易于计算的操作的技术。在深度学习中，最常见的可分离卷积是深度可分离卷积（depthwise separable convolution），它由两个步骤组成：深度卷积（depthwise convolution）和点卷积。</li>
+</ol>
+<ul>
+<li>深度卷积: 这一步骤单独对每个输入通道进行卷积操作。这意味着每个通道有一个独立的卷积核，这些卷积核只在其相应的通道上滑动，处理空间信息。</li>
+</ul>
+</blockquote>
+<p>好的，让我们一步一步地了解这个公式，并将其与您之前提到的三个关于卷积操作的观点联系起来。</p>
+<h3 id="公式解释："><a href="#公式解释：" class="headerlink" title="公式解释："></a>公式解释：</h3><p>公式描述了如何使用 CP 分解（Candecomp/Parafac）来执行卷积操作。在这里，原始的卷积核 ( K(i, j, s, t) ) 被分解为更小的成分 ( K^x(i,r) )，( K^y(j,r) )，( K^s(s,r) )，和 ( K^t(t,r) )。</p>
+<ul>
+<li><p><strong>第一部分</strong>: ( V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s) )</p>
+<ul>
+<li>这表示标准的卷积操作，其中 ( K ) 是卷积核，( X ) 是输入特征图，( V ) 是输出特征图。</li>
+</ul>
+</li>
+<li><p><strong>第二部分</strong>: ( = \sum_r\sum_i \sum_j \sum_sK^x(i,r)K^y(j,r)K^s(s,r)K^t(t,r)X(x-i, y-j, s) )</p>
+<ul>
+<li>这表示 CP 分解的应用。卷积核 ( K ) 被分解为四个部分，分别处理不同的维度（空间和通道）。</li>
+</ul>
+</li>
+<li><p><strong>第三部分</strong>: ( = \sum_rK^t(t,r) \sum_i \sum_j K^x(i,r)K^y(j,r)\sum_sK^s(s,r)X(x-i, y-j, s) )</p>
+<ul>
+<li>这是将上述分解进一步展开，显示了分解操作是如何整合进卷积计算中的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="关联到三个观点："><a href="#关联到三个观点：" class="headerlink" title="关联到三个观点："></a>关联到三个观点：</h3><ol>
+<li><p><strong>点卷积（Pointwise Convolution）</strong>:</p>
+<ul>
+<li>公式中的 ( \sum_sK^s(s,r)X(x-i, y-j, s) ) 代表点卷积。这里，( K^s(s,r) ) 起到了改变通道数量的作用，从 ( S ) 通道减少到 ( R )。</li>
+</ul>
+</li>
+<li><p><strong>可分离卷积（Separable Convolution）</strong>:</p>
+<ul>
+<li>公式中的 ( \sum_i \sum_j K^x(i,r)K^y(j,r) ) 表示可分离卷积。这里，卷积核被分解为沿 x 和 y 方向的两个独立成分，这减少了计算量。</li>
+</ul>
+</li>
+<li><p><strong>再次进行点卷积</strong>:</p>
+<ul>
+<li>公式中的 ( \sum_rK^t(t,r) ) 是另一个点卷积步骤。在这一步中，通道数从 ( R ) 再变回原来的 ( T )。这种操作与 MobileNets 中使用的类似，但是由于它是从原始卷积层的分解得来的，因此它可以用于已存在的网络架构。</li>
+</ul>
+</li>
+</ol>
+<p>通过这种方式，CP 分解使得我们可以通过一系列更简单、计算量更小的操作来近似原始的卷积操作。这不仅减少了所需的计算资源，还保持了网络的效能。希望这能帮助您更好地理解这个公式和它与卷积操作之间的联系！如果您还有其他疑问，欢迎继续提问。</p>
+<p>Notice the combination of pointwise and depthwise convolutions like in mobilenets. While with mobilenets you have to train a network from scratch to get this structure, here we can decompose an existing layer into this form.</p>
+<p>As with mobile nets, to get the most speedup you will need a platform that has an efficient implementation of depthwise separable convolutions.</p>
+<p><img src="https://ai2-s2-public.s3.amazonaws.com/figures/2017-08-08/62e348e26976c3ef77909b9af9788ebc2509009a/3-Figure1-1.png" alt=""> _Image taken from the <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1412.6553">paper</a>. The bottom row is an illustration of the convolution steps after CP-decomposition._</p>
+<h1 id="Convolutional-layer-CP-Decomposition-with-PyTorch-and-Tensorly"><a href="#Convolutional-layer-CP-Decomposition-with-PyTorch-and-Tensorly" class="headerlink" title="Convolutional layer CP-Decomposition with PyTorch and Tensorly"></a>Convolutional layer CP-Decomposition with PyTorch and Tensorly</h1><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">def cp_decomposition_conv_layer(layer, rank):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; Gets a conv layer and a target rank, </span></span><br><span class="line"><span class="string">        returns a nn.Sequential object with the decomposition &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    # Perform CP decomposition on the layer weight tensorly. </span><br><span class="line">    last, first, vertical, horizontal = \</span><br><span class="line">        parafac(layer.weight.data, <span class="attribute">rank</span>=rank, <span class="attribute">init</span>=<span class="string">&#x27;svd&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    pointwise_s_to_r_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=first.shape[0], \</span><br><span class="line">            <span class="attribute">out_channels</span>=first.shape[1], <span class="attribute">kernel_size</span>=1, <span class="attribute">stride</span>=1, <span class="attribute">padding</span>=0, </span><br><span class="line">            <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    depthwise_vertical_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=vertical.shape[1], </span><br><span class="line">            <span class="attribute">out_channels</span>=vertical.shape[1], kernel_size=(vertical.shape[0], 1),</span><br><span class="line">            <span class="attribute">stride</span>=1, padding=(layer.padding[0], 0), <span class="attribute">dilation</span>=layer.dilation,</span><br><span class="line">            <span class="attribute">groups</span>=vertical.shape[1], <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    depthwise_horizontal_layer = \</span><br><span class="line">        torch.nn.Conv2d(<span class="attribute">in_channels</span>=horizontal.shape[1], \</span><br><span class="line">            <span class="attribute">out_channels</span>=horizontal.shape[1], </span><br><span class="line">            kernel_size=(1, horizontal.shape[0]), <span class="attribute">stride</span>=layer.stride,</span><br><span class="line">            padding=(0, layer.padding[0]), </span><br><span class="line">            <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">groups</span>=horizontal.shape[1], <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    pointwise_r_to_t_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=last.shape[1], \</span><br><span class="line">            <span class="attribute">out_channels</span>=last.shape[0], <span class="attribute">kernel_size</span>=1, <span class="attribute">stride</span>=1,</span><br><span class="line">            <span class="attribute">padding</span>=0, <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">bias</span>=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    pointwise_r_to_t_layer.bias.data = layer.bias.data</span><br><span class="line"></span><br><span class="line">    depthwise_horizontal_layer.weight.data = \</span><br><span class="line">        torch.transpose(horizontal, 1, 0).unsqueeze(1).unsqueeze(1)</span><br><span class="line">    depthwise_vertical_layer.weight.data = \</span><br><span class="line">        torch.transpose(vertical, 1, 0).unsqueeze(1).unsqueeze(-1)</span><br><span class="line">    pointwise_s_to_r_layer.weight.data = \</span><br><span class="line">        torch.transpose(first, 1, 0).unsqueeze(-1).unsqueeze(-1)</span><br><span class="line">    pointwise_r_to_t_layer.weight.data = last.unsqueeze(-1).unsqueeze(-1)</span><br><span class="line"></span><br><span class="line">    new_layers = [pointwise_s_to_r_layer, depthwise_vertical_layer, \</span><br><span class="line">                    depthwise_horizontal_layer, pointwise_r_to_t_layer]</span><br><span class="line">    </span><br><span class="line">    return nn.Sequential(*new_layers)</span><br></pre></td></tr></table></figure>
+<h1 id="1511-06530-Compression-of-Deep-Convolutional-Neural-Networks-for-Fast-and-Low-Power-Mobile-Applications"><a href="#1511-06530-Compression-of-Deep-Convolutional-Neural-Networks-for-Fast-and-Low-Power-Mobile-Applications" class="headerlink" title="1511.06530 Compression of Deep Convolutional Neural Networks for Fast and Low Power Mobile Applications"></a>1511.06530 Compression of Deep Convolutional Neural Networks for Fast and Low Power Mobile Applications</h1><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1511.06530">_1511.06530 Compression of Deep Convolutional Neural Networks for Fast and Low Power Mobile Applications_</a> is a really cool paper that shows how to use the Tucker Decomposition for speeding up convolutional layers with even better results. I also used this accelerate an over-parameterized VGG based network, with better accuracy than CP Decomposition. As the authors note in the paper, it lets us do the finetuning using higher learning rates (I used $10^{-3}$).</p>
+<p>The Tucker Decomposition, also known as the higher order SVD (HOSVD) and many other names, is a generalization of SVD for tensors. $K(i, j, s, t) = \sum_{r_1=1}^{R_1}\sum_{r_2=1}^{R_2}\sum_{r_3=1}^{R_3}\sum_{r_4=1}^{R_4}\sigma_{r_1 r_2 r_3 r_4} K^x_{r1}(i)K^y_{r2}(j)K^s_{r3}(s)K^t_{r4}(t)$</p>
+<p>The reason its considered a generalization of the SVD is that often the components of $\sigma_{r_1 r_2 r_3 r_4}$ are orthogonal, but this isn’t really important for our purpose. $\sigma_{r_1 r_2 r_3 r_4}$ is called the core matrix, and defines how different axis interact.</p>
+<p>In the CP Decomposition described above, the decomposition along the spatial dimensions $K^x_r(i)K^y_r(j)$ caused a spatially separable convolution. The filters are quite small anyway, typically 3x3 or 5x5, so the separable convolution isn’t saving us a lot of computation, and is an aggressive approximation.</p>
+<p>The Tucker decomposition has the useful property that it doesn’t have to be decomposed along all the axis (modes). We can perform the decomposition along the input and output channels instead (a mode-2 decomposition):</p>
+<script type="math/tex; mode=display">K(i, j, s, t) = \sum_{r_3=1}^{R_3}\sum_{r_4=1}^{R_4}\sigma_{i j r_3 r_4}(j)K^s_{r3}(s)K^t_{r4}(t)</script><h1 id="The-convolution-forward-pass-with-Tucker-Decomposition"><a href="#The-convolution-forward-pass-with-Tucker-Decomposition" class="headerlink" title="The convolution forward pass with Tucker Decomposition"></a>The convolution forward pass with Tucker Decomposition</h1><p>Like for CP decomposition, lets write the convolution formula and plug in the kernel decomposition:</p>
+<script type="math/tex; mode=display">V(x, y, t) = \sum_i \sum_j \sum_sK(i, j, s, t)X(x-i, y-j, s)</script><script type="math/tex; mode=display">V(x, y, t) = \sum_i \sum_j \sum_s\sum_{r_3=1}^{R_3}\sum_{r_4=1}^{R_4}\sigma_{(i)(j) r_3 r_4}K^s_{r3}(s)K^t_{r4}(t)X(x-i, y-j, s)</script><script type="math/tex; mode=display">V(x, y, t) = \sum_i \sum_j \sum_{r_4=1}^{R_4}\sum_{r_3=1}^{R_3}K^t_{r4}(t)\sigma_{(i)(j) r_3 r_4} \sum_s\ K^s_{r3}(s)X(x-i, y-j, s)</script><p>This gives us the following recipe for doing the convolution with Tucker Decomposition:</p>
+<ol>
+<li><p>Point wise convolution with $K^s_{r3}(s)$ for reducing the number of channels from S to $R_3$.</p>
+</li>
+<li><p>Regular (not separable) convolution with $\sigma_{(i)(j) r_3 r_4}$. Instead of S input channels and T output channels like the original layer had, this convolution has $R_3$ input channels and $R_4$ output channels. If these ranks are smaller than S and T, this is were the reduction comes from.</p>
+</li>
+<li><p>Pointwise convolution with $K^t_{r4}(t)$ to get back to T output channels like the original convolution. Since this is the last convolution, at this point we add the bias if there is one.</p>
+</li>
+</ol>
+<h1 id="How-can-we-select-the-ranks-for-the-decomposition"><a href="#How-can-we-select-the-ranks-for-the-decomposition" class="headerlink" title="How can we select the ranks for the decomposition ?"></a>How can we select the ranks for the decomposition ?</h1><p>One way would be trying different values and checking the accuracy. I played with heuristics like $R_3 = S/3$ , $R_4 = T/3$ with good results.</p>
+<p>_Ideally selecting the ranks should be automated._</p>
+<p>The authors suggested using <a target="_blank" rel="noopener" href="http://www.jmlr.org/papers/volume14/nakajima13a/nakajima13a.pdf">variational Bayesian matrix factorization (VBMF) (Nakajima et al., 2013)</a> as a method for estimating the rank.</p>
+<p>VBMF is complicated and is out of the scope of this post, but in a really high level summary what they do is approximate a matrix $V_{LxM}$ as the sum of a lower ranking matrix $B_{LxH}A^T_{HxM}$ and gaussian noise. After A and B are found, H is an upper bound on the rank.</p>
+<p>To use this for tucker decomposition, we can unfold the s and t components of the original weight tensor to create matrices. Then we can estimate $R_3$ and $R_4$ as the rank of the matrices using VBMF.</p>
+<p>I used this <a target="_blank" rel="noopener" href="https://github.com/CasvandenBogaard/VBMF">python implementation of VBMF</a> and got convinced it works :-)</p>
+<p>VBMF usually returned ranks very close to what I previously found with careful and tedious manual tuning.</p>
+<p>This could also be used for estimating the rank for Truncated SVD acceleration of fully connected layers.</p>
+<h1 id="Convolutional-layer-Tucker-Decomposition-with-PyTorch-and-Tensorly"><a href="#Convolutional-layer-Tucker-Decomposition-with-PyTorch-and-Tensorly" class="headerlink" title="Convolutional layer Tucker-Decomposition with PyTorch and Tensorly"></a>Convolutional layer Tucker-Decomposition with PyTorch and Tensorly</h1><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">def estimate_ranks(layer):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; Unfold the 2 modes of the Tensor the decomposition will </span></span><br><span class="line"><span class="string">    be performed on, and estimates the ranks of the matrices using VBMF </span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    weights = layer.weight.data.numpy()</span><br><span class="line">    unfold_0 = tensorly.base.unfold(weights, 0) </span><br><span class="line">    unfold_1 = tensorly.base.unfold(weights, 1)</span><br><span class="line">    _, diag_0, _, _ = VBMF.EVBMF(unfold_0)</span><br><span class="line">    _, diag_1, _, _ = VBMF.EVBMF(unfold_1)</span><br><span class="line">    ranks = [diag_0.shape[0], diag_1.shape[1]]</span><br><span class="line">    return ranks</span><br><span class="line"></span><br><span class="line">def tucker_decomposition_conv_layer(layer):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot; Gets a conv layer, </span></span><br><span class="line"><span class="string">        returns a nn.Sequential object with the Tucker decomposition.</span></span><br><span class="line"><span class="string">        The ranks are estimated with a Python implementation of VBMF</span></span><br><span class="line"><span class="string">        https://github.com/CasvandenBogaard/VBMF</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    ranks = estimate_ranks(layer)</span><br><span class="line">    <span class="built_in">print</span>(layer, <span class="string">&quot;VBMF Estimated ranks&quot;</span>, ranks)</span><br><span class="line">    core, [last, first] = \</span><br><span class="line">        partial_tucker(layer.weight.data, \</span><br><span class="line">            modes=[0, 1], <span class="attribute">ranks</span>=ranks, <span class="attribute">init</span>=<span class="string">&#x27;svd&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    # A pointwise convolution that reduces the channels <span class="keyword">from</span> S <span class="keyword">to</span> R3</span><br><span class="line">    first_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=first.shape[0], \</span><br><span class="line">            <span class="attribute">out_channels</span>=first.shape[1], <span class="attribute">kernel_size</span>=1,</span><br><span class="line">            <span class="attribute">stride</span>=1, <span class="attribute">padding</span>=0, <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    # A regular 2D convolution layer with R3 input channels </span><br><span class="line">    # <span class="keyword">and</span> R3 output channels</span><br><span class="line">    core_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=core.shape[1], \</span><br><span class="line">            <span class="attribute">out_channels</span>=core.shape[0], <span class="attribute">kernel_size</span>=layer.kernel_size,</span><br><span class="line">            <span class="attribute">stride</span>=layer.stride, <span class="attribute">padding</span>=layer.padding, <span class="attribute">dilation</span>=layer.dilation,</span><br><span class="line">            <span class="attribute">bias</span>=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    # A pointwise convolution that increases the channels <span class="keyword">from</span> R4 <span class="keyword">to</span> T</span><br><span class="line">    last_layer = torch.nn.Conv2d(<span class="attribute">in_channels</span>=last.shape[1], \</span><br><span class="line">        <span class="attribute">out_channels</span>=last.shape[0], <span class="attribute">kernel_size</span>=1, <span class="attribute">stride</span>=1,</span><br><span class="line">        <span class="attribute">padding</span>=0, <span class="attribute">dilation</span>=layer.dilation, <span class="attribute">bias</span>=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    last_layer.bias.data = layer.bias.data</span><br><span class="line"></span><br><span class="line">    first_layer.weight.data = \</span><br><span class="line">        torch.transpose(first, 1, 0).unsqueeze(-1).unsqueeze(-1)</span><br><span class="line">    last_layer.weight.data = last.unsqueeze(-1).unsqueeze(-1)</span><br><span class="line">    core_layer.weight.data = core</span><br><span class="line"></span><br><span class="line">    new_layers = [first_layer, core_layer, last_layer]</span><br><span class="line">    return nn.Sequential(*new_layers)</span><br></pre></td></tr></table></figure>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p>In this post we went over a few tensor decomposition methods for accelerating layers in deep neural networks.</p>
+<ul>
+<li><p>Truncated SVD can be used for accelerating fully connected layers.</p>
+</li>
+<li><p>CP Decomposition decomposes convolutional layers into something that resembles mobile-nets, although it is even more aggressive since it is also separable in the spatial dimensions.</p>
+</li>
+<li><p>Tucker Decomposition reduced the number of input and output channels the 2D convolution layer operated on, and used pointwise convolutions to switch the number of channels before and after the 2D convolution.</p>
+</li>
+</ul>
+<p>I think it’s interesting how common patterns in network design, pointwise and depthwise convolutions, naturally appear in these decompositions!</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/08/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%BC%A0%E9%87%8F%E5%88%86%E8%A7%A3/" rel="prev" title="贝叶斯张量分解">
+      <i class="fa fa-chevron-left"></i> 贝叶斯张量分解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/01/14/Paper-Analysis-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition/" rel="next" title="Paper Analysis: Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition">
+      Paper Analysis: Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Truncated-SVD-for-decomposing-fully-connected-layers"><span class="nav-number">2.</span> <span class="nav-text">Truncated SVD for decomposing fully connected layers</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SVD-recap"><span class="nav-number">3.</span> <span class="nav-text">SVD recap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SVD-on-a-fully-connected-layer"><span class="nav-number">4.</span> <span class="nav-text">SVD on a fully connected layer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tensor-decompositions-on-convolutional-layers"><span class="nav-number">5.</span> <span class="nav-text">Tensor decompositions on convolutional layers</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B%E5%8D%B7%E7%A7%AF%E7%9A%84%E7%BB%BC%E5%90%88%E4%BB%8B%E7%BB%8D%EF%BC%9A2D%E5%8D%B7%E7%A7%AF%E3%80%813D%E5%8D%B7%E7%A7%AF%E3%80%81%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF%E3%80%81%E6%89%A9%E5%BC%A0%E5%8D%B7%E7%A7%AF%E3%80%81%E5%8F%AF%E5%88%86%E7%A6%BB%E5%8D%B7%E7%A7%AF%E3%80%81%E6%89%81%E5%B9%B3%E5%8D%B7%E7%A7%AF%E3%80%81%E5%88%86%E7%BB%84%E5%8D%B7%E7%A7%AF%E3%80%81%E9%9A%8F%E6%9C%BA%E5%88%86%E7%BB%84%E5%8D%B7%E7%A7%AF%E3%80%81%E9%80%90%E7%82%B9%E5%88%86%E7%BB%84%E5%8D%B7%E7%A7%AF%E7%AD%89pytorch%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E8%A7%A3%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">深度学习中不同类型卷积的综合介绍：2D卷积、3D卷积、转置卷积、扩张卷积、可分离卷积、扁平卷积、分组卷积、随机分组卷积、逐点分组卷积等pytorch代码实现和解析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1412-6553-Speeding-up-Convolutional-Neural-Networks-Using-Fine-tuned-CP-Decomposition"><span class="nav-number">7.</span> <span class="nav-text">1412.6553 Speeding-up Convolutional Neural Networks Using Fine-tuned CP-Decomposition</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-convolution-forward-pass-with-CP-Decomposition"><span class="nav-number">8.</span> <span class="nav-text">The convolution forward pass with CP Decomposition</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%BC%8F%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="nav-number">8.0.1.</span> <span class="nav-text">公式解释：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E5%88%B0%E4%B8%89%E4%B8%AA%E8%A7%82%E7%82%B9%EF%BC%9A"><span class="nav-number">8.0.2.</span> <span class="nav-text">关联到三个观点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Convolutional-layer-CP-Decomposition-with-PyTorch-and-Tensorly"><span class="nav-number">9.</span> <span class="nav-text">Convolutional layer CP-Decomposition with PyTorch and Tensorly</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1511-06530-Compression-of-Deep-Convolutional-Neural-Networks-for-Fast-and-Low-Power-Mobile-Applications"><span class="nav-number">10.</span> <span class="nav-text">1511.06530 Compression of Deep Convolutional Neural Networks for Fast and Low Power Mobile Applications</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-convolution-forward-pass-with-Tucker-Decomposition"><span class="nav-number">11.</span> <span class="nav-text">The convolution forward pass with Tucker Decomposition</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#How-can-we-select-the-ranks-for-the-decomposition"><span class="nav-number">12.</span> <span class="nav-text">How can we select the ranks for the decomposition ?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Convolutional-layer-Tucker-Decomposition-with-PyTorch-and-Tensorly"><span class="nav-number">13.</span> <span class="nav-text">Convolutional layer Tucker-Decomposition with PyTorch and Tensorly</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Summary"><span class="nav-number">14.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="upupwords"
+      src="/images/pig.png">
+  <p class="site-author-name" itemprop="name">upupwords</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:upupwords@hnu.edu.cn" title="E-Mail → mailto:upupwords@hnu.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">upupwords</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
